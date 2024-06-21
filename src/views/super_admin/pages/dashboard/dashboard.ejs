@@ -1,0 +1,57 @@
+<div>
+    <% if(message !='' ) { %>
+      <div id="myDivSuccess" class="alert alert-dismissible fade show mb-0"
+        style="background-color: rgb(183, 237, 183); border: none; color: rgb(2, 120, 2);" role="alert">
+        <%= message %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
+            onclick="hideDivSuccess()"></button>
+      </div>
+      <script>
+        function hideDivSuccess() {
+          var div = document.getElementById('myDivSuccess');
+          div.style.display = 'none';
+        }
+      </script>
+      <% } else if(error !='' ){ %>
+        <div id="myDiv" class="alert alert-dismissible fade show mb-0"
+          style="background-color: rgb(237 183 183); border: none; color: rgb(120 2 2);" role="alert">
+          <%= error %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
+              onclick="hideDiv()"></button>
+        </div>
+        <script>
+          function hideDiv() {
+            var div = document.getElementById('myDiv');
+            div.style.display = 'none';
+          }
+        </script>
+        <% } %>
+  </div>
+  <div class="page-content-wrapper">
+    <div class="page-content">
+      <div class="page-bar">
+        <div class="page-title-breadcrumb">
+          <div class=" pull-left">
+            <div class="page-title">
+              <%= __('Dashboard') %>
+            </div>
+          </div>
+          <ol class="breadcrumb page-breadcrumb pull-right">
+            <li><i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="/admin/dashboard">
+                <%= __('Home') %>
+              </a>&nbsp;<i class="fa fa-angle-right"></i>
+            </li>
+            <li class="active">
+              <%= __('Dashboard') %>
+            </li>
+          </ol>
+        </div>
+      </div>
+     <h2>Welcome to Super Admin Dashboard (Under Construction)</h2>
+      <!-- <div id="myScroll">
+          </div> -->
+          <!-- <h1 class="text-center mt-5" style="margin-top:400px">Under Construction</h1> -->
+    </div>
+
+   
+  </div>

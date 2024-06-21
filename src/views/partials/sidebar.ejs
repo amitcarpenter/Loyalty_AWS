@@ -1,0 +1,160 @@
+<!-- start sidebar menu -->
+<div class="sidebar-container">
+    <div class="sidemenu-container navbar-collapse collapse fixed-menu">
+        <div id="remove-scroll" class="left-sidemenu">
+            <ul class="sidemenu page-header-fixed slimscroll-style" data-keep-expanded="false" data-auto-scroll="true"
+                data-slide-speed="200" style="padding-top: 20px">
+                <li class="nav-item <%= (active === 1) ? " active" : "" %>">
+                    <a href="/admin/dashboard" class="nav-link nav-toggle"><i data-feather="airplay"></i>
+                        <span class="title">Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item <%= (active === 2 || active === 3) ? " active" : "" %>">
+                    <a href="#" class="nav-link nav-toggle"><i data-feather="user"></i>
+                        <span class="title">
+                            <%= __('Manage Cashier') %>
+                        </span>
+                        <span class="arrow"></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item <%= (active === 2) ? " active" : "" %>">
+                            <a href="/admin/cashier/create" class="nav-link ">
+                                <span class="title mx-4">
+                                    <%= __('Create Cashier') %>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item <%= (active === 3) ? " active" : "" %>">
+                            <a href="/admin/cashier/list" class="nav-link ">
+                                <span class="title mx-4">
+                                    <%= __('All Cashiers') %>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item <%= (active === 4 || active === 5) ? " active" : "" %>">
+                    <a href="#" class="nav-link nav-toggle">
+                        <i data-feather="award"></i>
+                        <span class="title">
+                            <%= __('Loyalty Points Rules') %>
+                        </span>
+                        <span class="arrow"></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <!-- <li class="nav-item <%= (active === 4) ? " active" : "" %>">
+                            <a href="/admin/loyalty/create" class="nav-link ">
+                                <span class="title mx-4">
+                                    <%= __('Create Loyalty Points') %>
+                                </span>
+                            </a>
+                        </li> -->
+
+                        <% if (active === 4) { %>
+                            <li class="nav-item <%= (active === 4) ? 'active' : '' %>">
+                                <a href="/admin/loyalty/create" class="nav-link">
+                                    <span class="title mx-4">
+                                        <%= __('Create Loyalty Points') %>
+                                    </span>
+                                </a>
+                            </li>
+                        <% } %>
+                        
+                        
+                        <!-- <li class="nav-item <%= (active === 5) ? " active" : "" %>">
+                            <a href="/admin/loyalty/list" class="nav-link ">
+                                <span class="title mx-4">
+                                    <%= __('All Loyalty Points') %>
+                                </span>
+                            </a>
+                        </li> -->
+                        <li class="nav-item <%= (active === 6) ? " active" : "" %>">
+                            <a href="/admin/loyalty/pointperdollar" class="nav-link ">
+                                <span class="title mx-4">
+                                    <%= __('Point Per Dollar') %>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item <%= (active === 6 || active === 7) ? " active" : "" %>">
+                    <a href="#" class="nav-link nav-toggle">
+                        <i data-feather="star"></i>
+                        <span class="title">
+                            <%= __('Rewards') %>
+                        </span>
+                        
+                        <span class="arrow"></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item <%= (active === 6) ? " active" : "" %>">
+                            <a href="/admin/reward/create" class="nav-link ">
+                                <span class="title mx-4">
+                                    <%= __('Create Reward') %>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item <%= (active === 7) ? " active" : "" %>">
+                            <a href="/admin/reward/list" class="nav-link ">
+                                <span class="title mx-4">
+                                    <%= __('All Rewards') %>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item <%= (active === 8 || active === 9) ? " active" : "" %>">
+                    <a href="#" class="nav-link nav-toggle"><i data-feather="tag"></i>
+                        <span class="title"><%= __('Promotions') %></span>
+                        <span class="arrow"></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item <%= (active === 8) ? " active" : "" %>">
+                            <a href="/admin/promotion/create" class="nav-link ">
+                                <span class="title mx-4">
+                                    <%= __('Create Promotions') %>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item <%= (active === 9) ? " active" : "" %>">
+                            <a href="/admin/promotion/list" class="nav-link ">
+                                <span class="title mx-4">
+                                    <%= __('All Promotions') %>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item <%= (active === 10) ? " active" : "" %>">
+                    <a href="/admin/customer/list" class="nav-link nav-toggle"> 
+                       <i data-feather="users"></i>
+                        <span class="title"><%= __('Customers Info') %></span>
+                    </a>
+                </li>
+                <li class="nav-item <%= (active === 11) ? " active" : "" %>">
+                    <a href="/admin/available/subscription/list" class="nav-link nav-toggle"><i data-feather="bookmark"></i>
+                        <span class="title"><%= __('Subscriptions') %></span>
+                    </a>
+                </li>
+                <!-- <li class="nav-item">
+                    <a href="/admin/MySubscription" class="nav-link nav-toggle"><i data-feather="bookmark"></i>
+                        <span class="title"><%= __('My Subscription') %></span>
+                    </a>
+                </li> -->
+                <li class="nav-item <%= (active === 12) ? " active" : "" %>">
+                    <a href="/admin/setting" class="nav-link nav-toggle"><i data-feather="settings"></i>
+                        <span class="title"><%= __('Settings') %></span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/log-out" class="nav-link nav-toggle"><i data-feather="log-out"></i>
+                        <span class="title">
+                            <%= __('Sign Out') %>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- end sidebar menu -->

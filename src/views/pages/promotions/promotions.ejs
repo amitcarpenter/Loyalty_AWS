@@ -1,0 +1,254 @@
+<div class="page-content-wrapper">
+    <div class="page-content">
+      <div class="page-bar">
+        <div class="page-title-breadcrumb">
+          <div class=" pull-left">
+            <div class="page-title">
+              <%= __('All Promotions') %>
+            </div>
+          </div>
+          <ol class="breadcrumb page-breadcrumb pull-right">
+            <li><i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="/admin/dashboard">
+                <%= __('Home') %>
+              </a>&nbsp;<i class="fa fa-angle-right"></i>
+            </li>
+            <li><a class="parent-item" href="/promotion/list">
+                <%= __('Promotions') %>
+              </a>&nbsp;<i class="fa fa-angle-right"></i>
+            </li>
+            <!-- <li><a class="parent-item" href="#"><%= __('Create Banner') %></a></li> -->
+          </ol>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="tabbable-line">
+            <div class="tab-content">
+              <div class="tab-pane active fontawesome-demo" id="tab1">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="card">
+                      <div class="card-body">
+                        <div>
+                          <% if(message !='' ) { %>
+                            <div id="myDivSuccess" class="alert alert-dismissible fade show mb-0"
+                              style="background-color: rgb(183, 237, 183); border: none; color: rgb(2, 120, 2);"
+                              role="alert">
+                              <%= message %>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
+                                  onclick="hideDivSuccess()"></button>
+                            </div>
+                            <script>
+                              function hideDivSuccess() {
+                                var div = document.getElementById('myDivSuccess');
+                                div.style.display = 'none';
+                              }
+                            </script>
+                            <% } else if(error !='' ){ %>
+                              <div id="myDiv" class="alert alert-dismissible fade show mb-0"
+                                style="background-color: rgb(237 183 183); border: none; color: rgb(120 2 2);"
+                                role="alert">
+                                <%= error %>
+                                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
+                                    onclick="hideDiv()"></button>
+                              </div>
+                              <script>
+                                function hideDiv() {
+                                  var div = document.getElementById('myDiv');
+                                  div.style.display = 'none';
+                                }
+                              </script>
+                              <% } %>
+                        </div>
+                        <div class="d-flex bd-highlight mb-3">
+                          <div class="p-2 bd-highlight"><a type="button" class="btn btn-round btn-primary"
+                              href="/admin/promotion/create">
+                              <%= __('Add Promotion') %>
+                            </a></div>
+                          <!-- <div class="p-2 bd-highlight">
+                            <button type="button" class="btn btn-round btn-primary" id="editCategoryButton"
+                              data-bs-toggle="modal" data-bs-target="#categoryModal">
+                              <%= __('Login as Cashier') %>
+                            </button>
+                          </div> -->
+  
+                        </div>
+                        <div class="d-flex justify-content-between">
+                          <!-- <div class="card-head ms-3"> -->
+                          <!-- <ul class="navbar-nav ms-auto mb-2 mb-lg-2">
+                                <a type="button" class="btn btn-round btn-primary" href="/Cashier/create">
+                                  <%= __('Add Cashier') %>
+                                </a>
+                              </ul> -->
+                          <!-- </div> -->
+                          <!-- <ul>
+                              <form method="get" style="display: flex">
+                                <ul class="navbar-nav ms-auto mb-2 mb-lg-2 me-3">
+                                  <input
+                                    type="text"
+                                    value="<%= search_text%>"
+                                    name="search_text"
+                                    style="height: 35px"
+                                    class="form-control form-control-lg border-1"
+                                    placeholder="<%= __('Banner Title') %>"
+                                  />
+                                </ul>
+                                <ul class="navbar-nav ms-auto mb-2 mb-lg-2">
+                                  <button
+                                    type="button"
+                                    class="btn btn-round btn-primary"
+                                    onclick="submit()"
+                                  >
+                                    <%= __('Search') %>
+                                  </button>
+                                </ul>
+                              </form>
+                            </ul> -->
+                        </div>
+                        <table class="table table-striped table-responsive table-bordered table-hover custom-table table-sm" id="example4">
+                          <thead>
+                            <tr>
+                              <th class="text-center"><%= __('S. No.') %></th>
+                              <th class="text-center"><%= __('Promotion Message') %></th>
+                              <!-- <th class="text-center"><%= __('Age') %></th> -->
+                              <th class="text-center"><%= __('Promotion Start Date') %></th>
+                              <!-- <th class="text-center"><%= __('Start Date') %></th> -->
+                              <th class="text-center"><%= __('Status') %></th>
+                              <th class="text-center"><%= __('Actions') %></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <% if (totalItems) { %>
+                              <% items.forEach((data, index) => { %>
+                                <tr>
+                                  <td class="text-center"><%= index + 1 + ((currentPage - 1) * 10) %></td>
+                                  <td class="text-center"><%= data.message ? data.message: "" %></td>
+                               
+                                  <!-- <td class="text-center"><%= data.age ? data.age : "" %></td> -->
+                                  <td class="text-center"><%= data.start_date ? data.start_date : "" %></td>
+                                  <td class="text-center"><%= data.status ? data.status : "" %></td>
+                                  <td class="text-center">
+                                    <!-- <a href="/admin/cashier/block/<%= data.id %>" class="tblEditBtn">
+                                      <i class="fa fa-lock"></i>
+                                    </a> -->
+                                    <a onclick="openSmsList(<%= data.id %>)" class="tblEditBtn">
+                                      <i class="fa fa-eye"></i>
+                                    </a>
+                                    <a href="/admin/promotion/edit/<%= data.id %>" class="tblEditBtn">
+                                      <i class="fa fa-pencil"></i>
+                                    </a>
+                                    <button data-id="<%= data.id %>" style="border: none;" value="<%= data.id %>"
+                                      type="button" class="deleteRequest tblDelBtn btn">
+                                      <i class="fa fa-trash-o"></i>
+                                    </button>
+                                  </td>
+                                </tr>
+                              <% }) %>
+                            <% } else { %>
+                              <!-- If no data is available -->
+                              <tr>
+                                <td valign="top" colspan="8" class="dataTables_empty" style="width: 200%">
+                                  <%= __('No data found') %>
+                                </td>
+                              </tr>
+                            <% } %>
+                          </tbody>                    
+                        </table>
+                        <nav aria-label="Page navigation example">
+                          <% if (totalPages> 0) { %>
+                            <ul class="pagination text-center">
+                              <% if (currentPage==1) { %>
+                                <li class="disabled"><a>
+                                    <%= __('First') %>
+                                  </a></li>
+                                <% } else { %>
+                                  <li>
+                                    <a href="/admin/promotion/list?page=1&limit=10?search_text=<%= search_text%>">
+                                      <%= __('First') %>
+                                    </a>
+                                  </li>
+                                  <% } %>
+                                    <% var i=(Number(currentPage)> 5 ?
+                                      Number(currentPage) - 4 : 1) %> <% if (i !==1) { %>
+                                        <li class="disabled"><a>...</a></li>
+                                        <% } %>
+                                          <% for (; i <=(Number(currentPage) + 4) && i <=totalPages; i++) { %>
+                                            <% if (i==currentPage) { %>
+                                              <li class="active"><a>
+                                                  <%= i %>
+                                                </a></li>
+                                              <% } else { %>
+                                                <li>
+                                                  <a href="/admin/promotion/list?page=<%= i %>&limit=10?search_text=<%= search_text%>">
+                                                    <%= i %>
+                                                  </a>
+                                                </li>
+                                                <% } %>
+                                                  <% if (i==Number(currentPage) + 4 && i < totalPages) { %>
+                                                    <li class="disabled"><a>...</a></li>
+                                                    <% } %>
+                                                      <% } %>
+                                                        <% if (currentPage==totalPages) { %>
+                                                          <li class="disabled"><a>
+                                                              <%= __('Last') %>
+                                                            </a></li>
+                                                          <% } else { %>
+                                                            <li>
+                                                              <a
+                                                                href="/admin/promotion/list?page=<%= totalPages %>&limit=10?search_text=<%= search_text%>">
+                                                                <%= __('Last') %>
+                                                              </a>
+                                                            </li>
+                                                            <% } %>
+                            </ul>
+                            <% } %>
+                        </nav>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane" id="tab2"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <script>
+    let id;
+    const deleteButtons = document.querySelectorAll('.deleteRequest');
+    deleteButtons.forEach((button) => {
+      button.addEventListener('click', (e) => {
+        const DataId = e.target.closest('[data-id]').getAttribute('data-id');
+        id = DataId;
+        console.log(DataId)
+        event.preventDefault();
+        confirmDelete(e.target.href);
+        console.log("id")
+      })
+    })
+    function confirmDelete(deleteUrl) {
+      Swal.fire({
+        title: '<%- __("Are you sure") -%>',
+        text: '<%- __("You want to delete it") -%>',
+        icon: '<%- __("warning") -%>',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '<%- __("Yes, delete it") -%>'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = `/admin/promotion/delete/${id}`;
+        }
+      });
+    }
+    function openSmsList(id) {
+        // Construct the URL with the query parameter
+        const url = `/admin/promotion/viewSmsList/${id}?filter=ALL`;
+
+        // Redirect to the constructed URL or perform any other action
+        window.location.href = url;
+    }
+  </script>

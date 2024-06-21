@@ -1,0 +1,3008 @@
+
+<% if (admin && admin.Organizations && admin.Organizations.length > 0) { %>
+  <% const organization = admin.Organizations[0]; %>
+
+  <% if (organization.Admin_Subscriptions && organization.Admin_Subscriptions.length > 0) { %>
+    <% const firstSubscription = organization.Admin_Subscriptions[0]; %>
+
+    <% const currentDate = new Date(); %>
+    <% const planEndDate = new Date(firstSubscription.plan_period_end); %>
+
+    <% if (planEndDate >= currentDate && firstSubscription.status === 'active') { %>
+      <div>
+        <% if(message !='' ) { %>
+          <div id="myDivSuccess" class="alert alert-dismissible fade show mb-0"
+            style="background-color: rgb(183, 237, 183); border: none; color: rgb(2, 120, 2);" role="alert">
+            <%= message %>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
+                onclick="hideDivSuccess()"></button>
+          </div>
+          <script>
+            function hideDivSuccess() {
+              var div = document.getElementById('myDivSuccess');
+              div.style.display = 'none';
+            }
+          </script>
+          <% } else if(error !='' ){ %>
+            <div id="myDiv" class="alert alert-dismissible fade show mb-0"
+              style="background-color: rgb(237 183 183); border: none; color: rgb(120 2 2);" role="alert">
+              <%= error %>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
+                  onclick="hideDiv()"></button>
+            </div>
+            <script>
+              function hideDiv() {
+                var div = document.getElementById('myDiv');
+                div.style.display = 'none';
+              }
+            </script>
+            <% } %>
+      </div>
+      <div class="page-content-wrapper">
+        <div class="page-content">
+          <div class="page-bar">
+            <div class="page-title-breadcrumb">
+              <div class=" pull-left">
+                <div class="page-title dashboard">
+                  <%= __('Dashboard') %>
+                </div>
+              </div>
+              <ol class="breadcrumb page-breadcrumb pull-right">
+                <li><i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="/admin/dashboard">
+                    <%= __('Home') %>
+                  </a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li class="active">
+                  <%= __('Dashboard') %>
+                </li>
+              </ol>
+            </div>
+          </div>
+          <!-- <h2>Welcome to Admin Dashboard (Under Construction)</h2> -->
+          <div class="row ">
+            <div class="col-xl-4 col-md-3 col-12">
+              <div class="info-box bg-danger">
+                <span class="info-box-icon push-bottom"><i class="material-icons">monetization_on</i></span>
+                <div class="info-box-content">
+                  <span class="info-box-text fw-bold mt-1 ">
+                    <%= __('Total Revenue') %>
+                  </span>
+                  <a href="#" class="text-decoration-none text-white">
+                    <span class="progress-description mt-2 mb-2">
+                      $<%= roundedTotalRevenue == null ? 0 : roundedTotalRevenue %>
+                        <%= __('Total Revenue') %>
+                    </span>
+                  </a>
+                  <a href="#" class="text-decoration-none text-white">
+                    <span class="progress-description fs-4 mb-5">
+                      
+                    </span>
+                </a>
+                  <span class="progress-description fs-4 mb-2">
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-4 col-md-3 col-12">
+              <div class="info-box bg-orange">
+                <span class="info-box-icon push-bottom">
+                  <i class="material-icons">group</i>
+                </span>
+                <div class="info-box-content">
+                  <span class="info-box-text fw-bold mt-1 ">
+                    <%= __('Total Members') %>
+                  </span>
+                  <a href="#" class="text-decoration-none text-white">
+                    <span class="progress-description mt-2 mb-2">
+                      <%= totalMembers %>
+                        <%= __('Total Members') %>
+                    </span>
+                  </a>
+                  <a href="#" class="text-decoration-none text-white">
+                    <span class="progress-description fs-4 mb-5">
+                      
+                    </span>
+                </a>
+                  <span class="progress-description fs-4 mb-2">
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-4 col-md-3 col-12">
+              <div class="info-box bg-purple">
+                <span class="info-box-icon push-bottom">
+                  <i class="material-icons">local_offer</i>
+                </span>
+                <div class="info-box-content">
+                  <span class="info-box-text fw-bold mt-1 ">
+                    <%= __('Total Promotions') %>
+                  </span>
+                  <a href="#" class="text-decoration-none text-white">
+                    <span class="progress-description mt-2 mb-2">
+                      <%= totalPromotions %>
+                        <%= __('Total Promotions') %>
+                    </span>
+                  </a>
+                  <a href="#" class="text-decoration-none text-white">
+                    <span class="progress-description fs-4 mb-5">
+                      
+                    </span>
+                </a>
+                  <span class="progress-description fs-4 mb-2">
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-4 col-md-3 col-12">
+              <div class="info-box deepPink-bgcolor">
+                <span class="info-box-icon push-bottom"><i class="material-icons">redeem</i></span>
+                <div class="info-box-content">
+                  <span class="info-box-text fw-bold mt-1 ">
+                    <%= __('Total Points Redeemed') %>
+                  </span>
+                  <a href="#" class="text-decoration-none text-white">
+                    <span class="progress-description mt-2 mb-2">
+                      <%= totalLoyaltyPointsRedeemed == null ? 0 : totalLoyaltyPointsRedeemed %>
+                        <%= __('Total Points Redeemed') %>
+                    </span>
+                  </a>
+                  <a href="#" class="text-decoration-none text-white">
+                    <span class="progress-description fs-4 mb-5">
+                      
+                    </span>
+                </a>
+                  <span class="progress-description fs-4 mb-2">
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-4 col-md-3 col-12">
+              <div class="info-box bg-blue">
+                <span class="info-box-icon push-bottom"><i class="material-icons">loyalty</i></span>
+                <div class="info-box-content">
+                  <span class="info-box-text fw-bold mt-1 ">
+                    <%= __('Total Loyalty Points Issued') %>
+                  </span>
+                  <a href="#" class="text-decoration-none text-white">
+                    <span class="progress-description mt-2 mb-2">
+                      <%= loyaltyPointsSum == null ? 0 : loyaltyPointsSum %>
+                        <%= __('Total Loyalty Points Issued') %>
+                    </span>
+                  </a>
+                  <a href="#" class="text-decoration-none text-white">
+                    <span class="progress-description fs-4 mb-5">
+                      
+                    </span>
+                </a>
+                  <span class="progress-description fs-4 mb-2">
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-4 col-md-3 col-12">
+              <div class="info-box bg-success">
+                <span class="info-box-icon push-bottom"><i class="material-icons">
+                  account_balance_wallet:
+                </i></span>
+                <div class="info-box-content">
+                  <span class="info-box-text fw-bold mt-1 ">
+                    <%= __('Total Additional Revenue') %>
+                  </span>
+                  <a href="#" class="text-decoration-none text-white">
+                    <span class="progress-description mt-2 mb-2">
+                      $<%= (isNaN(TARofconservative) || TARofconservative == null) ? 0 : TARofconservative %>
+                        <%= __('Conservative Revenue') %>
+                    </span>
+                </a>
+                <a href="#" class="text-decoration-none text-white">
+                  <span class="progress-description fs-5">
+                    $<%= (isNaN(TARofoptimistic) || TARofoptimistic == null) ? 0 : TARofoptimistic %>
+                    <%= __('Optimistic Revenue') %>
+                  </span>
+              </a>
+                  <span class="progress-description fs-4 mb-3">
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-4 col-md-3 col-12">
+              <div class="info-box bg-orange">
+                  <span class="info-box-icon push-bottom"><i class="material-icons">group</i></span>
+                  <div class="info-box-content">
+                      <span class="info-box-text fw-bold mt-1 ">
+                          <%= __('Total Spent Per Member') %>
+                      </span>
+                      <a href="#" class="text-decoration-none text-white">
+                        <span class="progress-description mt-2 mb-2">
+                          $<%= (isNaN(totalSpentPerMemberWithOutDiscountAmount) || totalSpentPerMemberWithOutDiscountAmount == null) ? 0 : totalSpentPerMemberWithOutDiscountAmount %>
+                            <%= __('Before Discount Amount') %>
+                        </span>
+                    </a>
+                    <a href="#" class="text-decoration-none text-white">
+                      <span class="progress-description fs-5">
+                        $<%= (isNaN(totalSpentPerMemberWithDiscountAmount) || totalSpentPerMemberWithDiscountAmount == null) ? 0 : totalSpentPerMemberWithDiscountAmount %>
+                        <%= __('After Discount Amount') %>
+                      </span>
+                  </a>
+                  </div>
+              </div>
+          </div>
+          </div>
+          <div class="row clearfix">
+            <div class="col-12 col-sm-12 col-lg-6">
+              <div class="card">
+                <div class="card-head">
+                  <header>New User Sign-Up (Bar Chart)</header>
+                </div>
+                <div class="card-body">
+                 
+                  <div class="mdl-tabs mdl-js-tabs">
+                    <div class="mdl-tabs__tab-bar tab-left-side">
+                      <a href="#monthlySignup" class="mdl-tabs__tab is-active tab1">Monthly</a>
+                      <a href="#thisWeekSignup" class="mdl-tabs__tab tab1">Weekly</a>
+                      <a href="#lastWeekSignup" class="mdl-tabs__tab tab1">Daily</a>
+                    </div>
+                    <div class="mdl-tabs__panel p-t-20 is-active" id="monthlySignup"></div>
+                    <div class="mdl-tabs__panel p-t-20" id="thisWeekSignup"></div>
+                    <div class="mdl-tabs__panel p-t-20" id="lastWeekSignup"></div>
+                  </div>
+                  <!-- <div class="recent-report__chart">
+                    <div id="chart8"></div>
+                  </div> -->
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-12 col-lg-6">
+              <div class="card" style="height: 485px;">
+                <div class="card-head">
+                  <header>Spending Trends</header>
+                </div>
+                <div class="card-body">
+                  <div class="d-flex justify-content-between">
+                    <div class="mdl-tabs mdl-js-tabs">
+                      <div class="mdl-tabs__tab-bar tab-left-side">
+                        <a href="#monthlySignup" class="mdl-tabs__tab is-active">
+                          Monthly
+                        </a>
+                        <a href="#thisWeekSignup" class="mdl-tabs__tab">
+                          Yearly
+                        </a>
+                      </div>
+                      <div class="mdl-tabs__panel p-t-20 is-active" id="monthlySignup">
+                        <table class="table table-striped table-responsive table-bordered table-hover custom-table table-sm" id="example4">
+                          <thead>
+                            <tr>
+                              <!-- <th class="text-center">
+                                <%= __('S. No.') %>
+                              </th> -->
+                              <th class="text-center">
+                                <%= __('Month') %>
+                              </th>
+                              <th class="text-center">
+                                <%= __('Spending Trends') %>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td class="text-center">Last Month (<%= lastMonthNameWithYear %>)</td>
+                              <td class="text-center">
+                                $<%= (isNaN(lastMonthSpendingTrend) || lastMonthSpendingTrend === null || !isFinite(lastMonthSpendingTrend)) ? 0 : lastMonthSpendingTrend %>
+                               </td>
+                            </tr>
+                            <tr>
+                              <td class="text-center">This Month (<%= currentMonthNameWithYear %>)</td>
+                              <td class="text-center">
+                                $<%= (isNaN(thisMonthSpendingTrend) || thisMonthSpendingTrend === null || !isFinite(thisMonthSpendingTrend)) ? 0 : thisMonthSpendingTrend 
+                                %>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="mdl-tabs__panel p-t-20" id="thisWeekSignup">
+                        <table class="table table-striped table-responsive table-bordered table-hover custom-table table-sm" id="example4">
+                          <thead>
+                            <tr>
+                              <th class="text-center">
+                                <%= __('Year') %>
+                              </th>
+                              <th class="text-center">
+                                <%= __('Spending Trends') %>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                                <td class="text-center">Last Year (<%= lastYearName %>)</td>
+                              <td class="text-center">
+                                $<%= (isNaN(lastYearSpendingTrend) || lastYearSpendingTrend === null || !isFinite(lastYearSpendingTrend)) ? 0 : lastYearSpendingTrend %>
+                             </td>
+                            </tr>
+                            <tr>
+                              <td class="text-center">This Year (<%= currentYearName %>)</td>
+                              <td class="text-center">
+                                $<%= (isNaN(thisYearSpendingTrend) || thisYearSpendingTrend === null || !isFinite(thisYearSpendingTrend)) ? 0 : thisYearSpendingTrend %>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row clearfix">
+           
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="tabbable-line">
+                <div class="tab-content">
+                  <div class="tab-pane active fontawesome-demo" id="tab1">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="card">
+                          <div class="card-head">
+                            <header>Growth Rate of membership</header>
+                          </div>
+                          <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                              <div class="mdl-tabs mdl-js-tabs">
+                                <div class="mdl-tabs__tab-bar tab-left-side">
+                                  <a href="#monthlySignup" class="mdl-tabs__tab is-active">
+                                    Monthly
+                                  </a>
+                                  <a href="#thisWeekSignup" class="mdl-tabs__tab">
+                                    Weekly
+                                  </a>
+                                  <a href="#lastWeekSignup" class="mdl-tabs__tab">
+                                    Daily
+                                  </a>
+                                </div>
+                                <div class="mdl-tabs__panel p-t-20 is-active" id="monthlySignup">
+                                  <table class="table table-striped table-responsive table-bordered table-hover custom-table table-sm" id="example4">
+                                    <thead>
+                                      <tr>
+                                        <!-- <th class="text-center">
+                                          <%= __('S. No.') %>
+                                        </th> -->
+                                        <th class="text-center">
+                                          <%= __('Month') %>
+                                        </th>
+                                        <th class="text-center">
+                                          <%= __('Total Sign-Up') %>
+                                        </th>
+                                        <th class="text-center">
+                                          <%= __('Growth Rate') %>
+                                        </th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                     
+                                      <% let initialValue = 0; %>
+                                  
+                                      <% // Display last month first %>
+                                      <% if (lastMonthAndThisMonthUserSignups.last_month !== 'month_total') { %>
+                                        <tr>
+                                         
+                                          <td class="text-center">Last Month (<%= lastMonthNameWithYear %>)</td>
+                                          <td class="text-center"><%= lastMonthAndThisMonthUserSignups.last_month %></td>
+                                          <td class="text-center">
+                                            <% if (lastMonthAndThisMonthUserSignups.last_month !== 0 && typeof lastMonthAndThisMonthUserSignups.last_month !== 'undefined') { %>
+                                              <i class="fas fa-arrow-up"></i>
+                                              <%= (lastMonthAndThisMonthUserSignups.last_month * 100).toFixed(2) %>% 
+                                              
+                                            <% } else { %>
+                                              <%= (lastMonthAndThisMonthUserSignups.last_month * 100).toFixed(2) %>% 
+                                            <% } %>
+                                          </td>
+                                        </tr>
+                                      
+                                      <% } %>
+                                  
+                                      <% // Display this month %>
+                                      <% if (lastMonthAndThisMonthUserSignups.this_month !== 'month_total') { %>
+                                        <tr>
+                                         
+                                          <td class="text-center">This Month (<%= currentMonthNameWithYear %>)</td>
+                                          <td class="text-center"><%= lastMonthAndThisMonthUserSignups.this_month %></td>
+                                          <td class="text-center">
+                                            <%
+                                              let monthGrowthRate;
+                                              if (lastMonthAndThisMonthUserSignups.last_month !== 0 && typeof lastMonthAndThisMonthUserSignups.last_month !== 'undefined') {
+                                                monthGrowthRate = (lastMonthAndThisMonthUserSignups.this_month - lastMonthAndThisMonthUserSignups.last_month) / lastMonthAndThisMonthUserSignups.last_month * 100;
+                                              } else {
+                                                monthGrowthRate = lastMonthAndThisMonthUserSignups.this_month * 100;
+                                              }
+                                            %>
+                                            <% if (monthGrowthRate > 0) { %>
+                                              <i class="fas fa-arrow-up"></i>
+                                              <%= monthGrowthRate.toFixed(2) %>%
+                                            <% } else if (monthGrowthRate < 0) { %>
+                                              <i class="fas fa-arrow-down"></i>
+                                              <%= monthGrowthRate.toFixed(2) %>%
+                                            <% } else { %>
+                                              -
+                                            <% } %>
+                                          </td>
+                                        </tr>
+                                      <% } %>
+                                    </tbody>
+                                  </table>
+                                </div>
+                                <div class="mdl-tabs__panel p-t-20" id="thisWeekSignup">
+                                  <table class="table table-striped table-responsive table-bordered table-hover custom-table table-sm" id="example4">
+                                    <thead>
+                                      <tr>
+                                        <th class="text-center">
+                                          <%= __('Week') %>
+                                        </th>
+                                        <th class="text-center">
+                                          <%= __('Total Sign-Up') %>
+                                        </th>
+                                        <th class="text-center">
+                                          <%= __('Growth Rate') %>
+                                        </th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr>
+                                        <td class="text-center">Last Week (<%= `${lastWeekStartDate} - ${lastWeekEndDate}` %>)</td>
+                                        <td class="text-center"><%= lastWeekNewUserSignups.last_week_total %></td>
+                                        <td class="text-center">
+                                          <%
+                                            // Calculate last week growth rate
+                                            let lastWeekGrowthRate = 0;
+                                            if (lastWeekNewUserSignups.last_week_total !== 0 && typeof lastWeekNewUserSignups.last_week_total !== 'undefined') {
+                                              lastWeekGrowthRate = (lastWeekNewUserSignups.last_week_total * 100).toFixed(2);
+                                            } else {
+                                              lastWeekGrowthRate = (lastWeekNewUserSignups.last_week_total * 100).toFixed(2);
+                                            }
+                                    
+                                            // Set arrow class based on growth rate
+                                            let lastWeekArrowClass = lastWeekGrowthRate > 0 ? "fas fa-arrow-up" : "fas fa-arrow-down";
+                                          %>
+                                          <i class="<%= lastWeekArrowClass %>"></i>
+                                          <%= lastWeekGrowthRate %>%
+                                        </td>
+                                      </tr>
+                                    
+                                      <tr>
+                                        <td class="text-center">This Week (<%= `${currentWeekStartDate} - ${ currentWeekEndDate}` %>)</td>
+                                        <td class="text-center"><%= newUserweek.week_total %></td>
+                                        <td class="text-center">
+                                          <%
+                                            // Calculate this week growth rate
+                                            let thisWeekGrowthRate = 0;
+                                            if (lastWeekNewUserSignups.last_week_total !== 0 && typeof lastWeekNewUserSignups.last_week_total !== 'undefined') {
+                                              thisWeekGrowthRate = ((newUserweek.week_total - lastWeekNewUserSignups.last_week_total) / lastWeekNewUserSignups.last_week_total * 100).toFixed(2);
+                                            } else {
+                                              thisWeekGrowthRate = (newUserweek.week_total * 100).toFixed(2);
+                                            }
+                                    
+                                            // Set arrow class based on growth rate
+                                            let thisWeekArrowClass = thisWeekGrowthRate > 0 ? "fas fa-arrow-up" : "fas fa-arrow-down";
+                                          %>
+                                          <i class="<%= thisWeekArrowClass %>"></i>
+                                          <%= thisWeekGrowthRate %>%
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                    
+                                  </table>
+                                </div>
+                                <div class="mdl-tabs__panel p-t-20" id="lastWeekSignup">
+                                  <table class="table table-striped table-responsive table-bordered table-hover custom-table table-sm" id="example4">
+                                    <thead>
+                                      <tr>
+                                        <th class="text-center">
+                                          <%= __('Day') %>
+                                        </th>
+                                        <th class="text-center">
+                                          <%= __('Total Sign-Up') %>
+                                        </th>
+                                        <th class="text-center">
+                                          <%= __('Growth Rate') %>
+                                        </th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr>
+                                        <td class="text-center">Yesterday (<%= yesterdayDate %>)</td>
+                                        <td class="text-center"><%= currentAndYesterdayUserSignups.yesterday %></td>
+                                        <td class="text-center">
+                                          <%
+      
+                                            let yesterdayGrowthRate;
+                                    
+                                            // Check if yesterday is non-zero before calculating growth rate
+                                            if (currentAndYesterdayUserSignups.two_day_total !== 0) {
+                                              yesterdayGrowthRate = currentAndYesterdayUserSignups.yesterday * 100;
+                                            } else {
+                                              yesterdayGrowthRate = currentAndYesterdayUserSignups.yesterday * 100;
+                                            }
+                                          %>
+                                          <% if (yesterdayGrowthRate > 0) { %>
+                                    
+                                            <i class="fas fa-arrow-up"></i>
+                                    
+                                            <%= yesterdayGrowthRate.toFixed(2) %>%
+                                    
+                                          <% } else if (yesterdayGrowthRate < 0) { %>
+                                    
+                                            <i class="fas fa-arrow-down"></i>
+                                    
+                                            <%= yesterdayGrowthRate.toFixed(2) %>%
+                                    
+                                          <% } else { %>
+      
+                                            -
+      
+                                          <% } %>
+                                    
+                                        </td>
+                                    
+                                      </tr>
+                                    
+                                      <!-- Display Today's Growth Rate -->
+                                    
+                                      <tr>
+                                    
+                                        <td class="text-center">Today (<%= todayDate %>)</td>
+                                    
+                                        <td class="text-center"><%= currentAndYesterdayUserSignups.today %></td>
+                                    
+                                        <td class="text-center">
+                                    
+                                          <%
+                                            let todayGrowthRate;
+        
+                                            // Check if yesterday is non-zero before calculating growth rate
+                                            if (currentAndYesterdayUserSignups.yesterday !== 0) {
+                                              todayGrowthRate = (currentAndYesterdayUserSignups.today - currentAndYesterdayUserSignups.yesterday) / currentAndYesterdayUserSignups.yesterday * 100;
+                                            } else {
+                                              todayGrowthRate = currentAndYesterdayUserSignups.today * 100;
+                                            }
+                                    
+                                          %>
+                  
+                                          <% if (todayGrowthRate > 0) { %>
+                                    
+                                            <i class="fas fa-arrow-up"></i>
+                                    
+                                            <%= todayGrowthRate.toFixed(2) %>%
+                                    
+                                          <% } else if (todayGrowthRate < 0) { %>
+                                    
+                                            <i class="fas fa-arrow-down"></i>
+                                    
+                                            <%= todayGrowthRate.toFixed(2) %>%
+                                    
+                                          <% } else { %>
+                                            -
+                                          <% } %>
+                                    
+                                        </td>
+                                    
+                                      </tr>
+                                    
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tab-pane" id="tab2"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="tabbable-line">
+                <div class="tab-content">
+                  <div class="tab-pane active fontawesome-demo" id="tab1">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="card">
+                          <div class="card-head">
+                            <header>Amount Spent (Average Expenditure)</header>
+                          </div>
+                          <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                              <div class="mdl-tabs mdl-js-tabs">
+                                <div class="mdl-tabs__tab-bar tab-left-side">
+                                  <a href="#monthlySignup" class="mdl-tabs__tab is-active">
+                                    Monthly
+                                  </a>
+                                  <a href="#thisWeekSignup" class="mdl-tabs__tab">
+                                    Weekly
+                                  </a>
+                                </div>
+                                <div class="mdl-tabs__panel p-t-20 is-active" id="monthlySignup">
+                                  <table class="table table-striped table-responsive table-bordered table-hover custom-table table-sm" id="example4">
+                                    <thead>
+                                      <tr>
+                                        <!-- <th class="text-center">
+                                          <%= __('S. No.') %>
+                                        </th> -->
+                                        <th class="text-center">
+                                          <%= __('Month') %>
+                                        </th>
+                                        <th class="text-center">
+                                          <%= __('Average Expenditure') %>
+                                        </th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr>
+                                        <td class="text-center">Last Month (<%= lastMonthNameWithYear %>)</td>
+                                        <td class="text-center">
+                                          $<%= (isNaN(lastMonthAverageExpenditure) || lastMonthAverageExpenditure === null || !isFinite(lastMonthAverageExpenditure)) ? 0 : lastMonthAverageExpenditure %>
+                                         </td>
+                                      </tr>
+                                      <tr>
+                                        <td class="text-center">This Month (<%= currentMonthNameWithYear %>)</td>
+                                        <td class="text-center">
+                                          $<%= (isNaN(thisMonthAverageExpenditure) || thisMonthAverageExpenditure === null || !isFinite(thisMonthAverageExpenditure)) ? 0 : thisMonthAverageExpenditure 
+                                          %>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                                <div class="mdl-tabs__panel p-t-20" id="thisWeekSignup">
+                                  <table class="table table-striped table-responsive table-bordered table-hover custom-table table-sm" id="example4">
+                                    <thead>
+                                      <tr>
+                                        <th class="text-center">
+                                          <%= __('Week') %>
+                                        </th>
+                                        <th class="text-center">
+                                          <%= __('Average Expenditure') %>
+                                        </th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr>
+                                          <td class="text-center">Last Week (<%= `${lastWeekStartDate} - ${lastWeekEndDate}` %>)</td>
+                                        <td class="text-center">
+                                          $<%= (isNaN(lastWeekAverageExpenditure) || lastWeekAverageExpenditure === null || !isFinite(lastWeekAverageExpenditure)) ? 0 : lastWeekAverageExpenditure %>
+                                       </td>
+                                      </tr>
+                                      <tr>
+                                        <td class="text-center">This Week (<%= `${currentWeekStartDate} - ${ currentWeekEndDate}` %>)</td>
+                                        <td class="text-center">
+                                          $<%= (isNaN(thisWeekAverageExpenditure) || thisWeekAverageExpenditure === null || !isFinite(thisWeekAverageExpenditure)) ? 0 : thisWeekAverageExpenditure %>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tab-pane" id="tab2"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    <% } else { %>
+      <div class="page-content-wrapper">
+        <div class="page-content">
+          <div class="page-bar">
+            <div class="page-title-breadcrumb">
+              <div class=" pull-left">
+                <div class="page-title dashboard">
+                  <%= __('Dashboard') %>
+                </div>
+              </div>
+              <ol class="breadcrumb page-breadcrumb pull-right">
+                <li><i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="/admin/dashboard">
+                    <%= __('Home') %>
+                  </a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li class="active">
+                  <%= __('Dashboard') %>
+                </li>
+              </ol>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="tabbable-line">
+                <div class="tab-content">
+                  <div class="tab-pane active fontawesome-demo" id="tab1">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="card">
+                          <div class="card-body">
+                            <div>
+                              <% if(message !='' ) { %>
+                                <div id="myDivSuccess" class="alert alert-dismissible fade show mb-0"
+                                  style="background-color: rgb(183, 237, 183); border: none; color: rgb(2, 120, 2);"
+                                  role="alert">
+                                  <%= message %>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
+                                      onclick="hideDivSuccess()"></button>
+                                </div>
+                                <script>
+                                  function hideDivSuccess() {
+                                    var div = document.getElementById('myDivSuccess');
+                                    div.style.display = 'none';
+                                  }
+                                </script>
+                                <% } else if(error !='' ){ %>
+                                  <div id="myDiv" class="alert alert-dismissible fade show mb-0"
+                                    style="background-color: rgb(237 183 183); border: none; color: rgb(120 2 2);"
+                                    role="alert">
+                                    <%= error %>
+                                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
+                                        onclick="hideDiv()"></button>
+                                  </div>
+                                  <script>
+                                    function hideDiv() {
+                                      var div = document.getElementById('myDiv');
+                                      div.style.display = 'none';
+                                    }
+                                  </script>
+                                  <% } %>
+                            </div>
+                         
+                            <!-- <h1>Subscription expired</h1> -->
+                            <div class="subscription-expired-notice">
+                              <h2>Attention! Your Subscription Has Expired</h2>
+                              <p>We noticed that your subscription has expired. As a result, you may not be able to access all the features and services you previously enjoyed. To continue using these features and enjoy uninterrupted service, please purchase a new subscription.</p>
+                              <!-- <a href="/admin/available/subscription/list" class="hidden-button">Purchase a New Subscription (link)</a> -->
+                              <!-- <button class="btn btn-primary mb-4">Purchase New Subscription</button> -->
+                              <a href="/admin/available/subscription/list" class="btn btn-primary mb-4">Purchase New Subscription</a>
+                              <p>By renewing your subscription, you'll regain access to all the benefits, including:</p>
+                              <ul>
+                                <li><b>Manage Your Team:</b> Create new cashiers and manage their access within the admin dashboard.</li>
+                                <li><b>Boost Sales with Promotions:</b> Manage and send targeted SMS promotions to reach your customers more effectively.</li>
+                                <li><b>Brand Identity:</b> Update your business logo and other details to maintain a professional image.</li>
+                                <li><b>Data Insights:</b> Gain valuable insights through the comprehensive dashboard to optimize your business strategies.</li>
+                                <li><b>Reward Your Customers:</b> Design and manage a loyalty program to incentivize repeat business and customer engagement (Manage Rewards and Loyalty points).</li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tab-pane" id="tab2"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- <h2>Welcome to Admin Dashboard (Under Construction)</h2> -->
+          <div class="row ">
+            <div class="col-xl-4 col-md-3 col-12">
+              <div class="info-box bg-danger">
+                <span class="info-box-icon push-bottom"><i class="material-icons">monetization_on</i></span>
+                <div class="info-box-content">
+                  <span class="info-box-text fw-bold mt-1 ">
+                    <%= __('Total Revenue') %>
+                  </span>
+                  <a href="#" class="text-decoration-none text-white">
+                    <span class="progress-description mt-2 mb-2">
+                      $<%= roundedTotalRevenue == null ? 0 : roundedTotalRevenue %>
+                        <%= __('Total Revenue') %>
+                    </span>
+                  </a>
+                  <a href="#" class="text-decoration-none text-white">
+                    <span class="progress-description fs-4 mb-5">
+                      
+                    </span>
+                </a>
+                  <span class="progress-description fs-4 mb-2">
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-4 col-md-3 col-12">
+              <div class="info-box bg-orange">
+                <span class="info-box-icon push-bottom">
+                  <i class="material-icons">group</i>
+                </span>
+                <div class="info-box-content">
+                  <span class="info-box-text fw-bold mt-1 ">
+                    <%= __('Total Members') %>
+                  </span>
+                  <a href="#" class="text-decoration-none text-white">
+                    <span class="progress-description mt-2 mb-2">
+                      <%= totalMembers %>
+                        <%= __('Total Members') %>
+                    </span>
+                  </a>
+                  <a href="#" class="text-decoration-none text-white">
+                    <span class="progress-description fs-4 mb-5">
+                      
+                    </span>
+                </a>
+                  <span class="progress-description fs-4 mb-2">
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-4 col-md-3 col-12">
+              <div class="info-box bg-purple">
+                <span class="info-box-icon push-bottom">
+                  <i class="material-icons">local_offer</i>
+                </span>
+                <div class="info-box-content">
+                  <span class="info-box-text fw-bold mt-1 ">
+                    <%= __('Total Promotions') %>
+                  </span>
+                  <a href="#" class="text-decoration-none text-white">
+                    <span class="progress-description mt-2 mb-2">
+                      <%= totalPromotions %>
+                        <%= __('Total Promotions') %>
+                    </span>
+                  </a>
+                  <a href="#" class="text-decoration-none text-white">
+                    <span class="progress-description fs-4 mb-5">
+                      
+                    </span>
+                </a>
+                  <span class="progress-description fs-4 mb-2">
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-4 col-md-3 col-12">
+              <div class="info-box deepPink-bgcolor">
+                <span class="info-box-icon push-bottom"><i class="material-icons">redeem</i></span>
+                <div class="info-box-content">
+                  <span class="info-box-text fw-bold mt-1 ">
+                    <%= __('Total Points Redeemed') %>
+                  </span>
+                  <a href="#" class="text-decoration-none text-white">
+                    <span class="progress-description mt-2 mb-2">
+                      <%= totalLoyaltyPointsRedeemed == null ? 0 : totalLoyaltyPointsRedeemed %>
+                        <%= __('Total Points Redeemed') %>
+                    </span>
+                  </a>
+                  <a href="#" class="text-decoration-none text-white">
+                    <span class="progress-description fs-4 mb-5">
+                      
+                    </span>
+                </a>
+                  <span class="progress-description fs-4 mb-2">
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-4 col-md-3 col-12">
+              <div class="info-box bg-blue">
+                <span class="info-box-icon push-bottom"><i class="material-icons">loyalty</i></span>
+                <div class="info-box-content">
+                  <span class="info-box-text fw-bold mt-1 ">
+                    <%= __('Total Loyalty Points Issued') %>
+                  </span>
+                  <a href="#" class="text-decoration-none text-white">
+                    <span class="progress-description mt-2 mb-2">
+                      <%= loyaltyPointsSum == null ? 0 : loyaltyPointsSum %>
+                        <%= __('Total Loyalty Points Issued') %>
+                    </span>
+                  </a>
+                  <a href="#" class="text-decoration-none text-white">
+                    <span class="progress-description fs-4 mb-5">
+                      
+                    </span>
+                </a>
+                  <span class="progress-description fs-4 mb-2">
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-4 col-md-3 col-12">
+              <div class="info-box bg-success">
+                <span class="info-box-icon push-bottom"><i class="material-icons">
+                  account_balance_wallet:
+                </i></span>
+                <div class="info-box-content">
+                  <span class="info-box-text fw-bold mt-1 ">
+                    <%= __('Total Additional Revenue') %>
+                  </span>
+                  <a href="#" class="text-decoration-none text-white">
+                    <span class="progress-description mt-2 mb-2">
+                      $<%= (isNaN(TARofconservative) || TARofconservative == null) ? 0 : TARofconservative %>
+                        <%= __('Conservative Revenue') %>
+                    </span>
+                </a>
+                <a href="#" class="text-decoration-none text-white">
+                  <span class="progress-description fs-5">
+                    $<%= (isNaN(TARofoptimistic) || TARofoptimistic == null) ? 0 : TARofoptimistic %>
+                    <%= __('Optimistic Revenue') %>
+                  </span>
+              </a>
+                  <span class="progress-description fs-4 mb-3">
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-4 col-md-3 col-12">
+              <div class="info-box bg-orange">
+                  <span class="info-box-icon push-bottom"><i class="material-icons">group</i></span>
+                  <div class="info-box-content">
+                      <span class="info-box-text fw-bold mt-1 ">
+                          <%= __('Total Spent Per Member') %>
+                      </span>
+                      <a href="#" class="text-decoration-none text-white">
+                        <span class="progress-description mt-2 mb-2">
+                          $<%= (isNaN(totalSpentPerMemberWithOutDiscountAmount) || totalSpentPerMemberWithOutDiscountAmount == null) ? 0 : totalSpentPerMemberWithOutDiscountAmount %>
+                            <%= __('Before Discount Amount') %>
+                        </span>
+                    </a>
+                    <a href="#" class="text-decoration-none text-white">
+                      <span class="progress-description fs-5">
+                        $<%= (isNaN(totalSpentPerMemberWithDiscountAmount) || totalSpentPerMemberWithDiscountAmount == null) ? 0 : totalSpentPerMemberWithDiscountAmount %>
+                        <%= __('After Discount Amount') %>
+                      </span>
+                  </a>
+                  </div>
+              </div>
+          </div>
+          </div>
+          <div class="row clearfix">
+            <div class="col-12 col-sm-12 col-lg-6">
+              <div class="card">
+                <div class="card-head">
+                  <header>New User Sign-Up (Bar Chart)</header>
+                </div>
+                <div class="card-body">
+                 
+                
+                  <div class="mdl-tabs mdl-js-tabs">
+                    <div class="mdl-tabs__tab-bar tab-left-side">
+                      <a href="#monthlySignup" class="mdl-tabs__tab is-active tab1">Monthly</a>
+                      <a href="#thisWeekSignup" class="mdl-tabs__tab tab1">Weekly</a>
+                      <a href="#lastWeekSignup" class="mdl-tabs__tab tab1">Daily</a>
+                    </div>
+                    <div class="mdl-tabs__panel p-t-20 is-active" id="monthlySignup"></div>
+                    <div class="mdl-tabs__panel p-t-20" id="thisWeekSignup"></div>
+                    <div class="mdl-tabs__panel p-t-20" id="lastWeekSignup"></div>
+                  </div>
+                  <!-- <div class="recent-report__chart">
+                    <div id="chart8"></div>
+                  </div> -->
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-12 col-lg-6">
+              <div class="card" style="height: 485px;">
+                <div class="card-head">
+                  <header>Spending Trends</header>
+                </div>
+                <div class="card-body">
+                  <div class="d-flex justify-content-between">
+                    <div class="mdl-tabs mdl-js-tabs">
+                      <div class="mdl-tabs__tab-bar tab-left-side">
+                        <a href="#monthlySignup" class="mdl-tabs__tab is-active">
+                          Monthly
+                        </a>
+                        <a href="#thisWeekSignup" class="mdl-tabs__tab">
+                          Yearly
+                        </a>
+                      </div>
+                      <div class="mdl-tabs__panel p-t-20 is-active" id="monthlySignup">
+                        <table class="table table-striped table-responsive table-bordered table-hover custom-table table-sm" id="example4">
+                          <thead>
+                            <tr>
+                              <!-- <th class="text-center">
+                                <%= __('S. No.') %>
+                              </th> -->
+                              <th class="text-center">
+                                <%= __('Month') %>
+                              </th>
+                              <th class="text-center">
+                                <%= __('Spending Trends') %>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td class="text-center">Last Month (<%= lastMonthNameWithYear %>)</td>
+                              <td class="text-center">
+                                $<%= (isNaN(lastMonthSpendingTrend) || lastMonthSpendingTrend === null || !isFinite(lastMonthSpendingTrend)) ? 0 : lastMonthSpendingTrend %>
+                               </td>
+                            </tr>
+                            <tr>
+                              <td class="text-center">This Month (<%= currentMonthNameWithYear %>)</td>
+                              <td class="text-center">
+                                $<%= (isNaN(thisMonthSpendingTrend) || thisMonthSpendingTrend === null || !isFinite(thisMonthSpendingTrend)) ? 0 : thisMonthSpendingTrend 
+                                %>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="mdl-tabs__panel p-t-20" id="thisWeekSignup">
+                        <table class="table table-striped table-responsive table-bordered table-hover custom-table table-sm" id="example4">
+                          <thead>
+                            <tr>
+                              <th class="text-center">
+                                <%= __('Year') %>
+                              </th>
+                              <th class="text-center">
+                                <%= __('Spending Trends') %>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                                <td class="text-center">Last Year (<%= lastYearName %>)</td>
+                              <td class="text-center">
+                                $<%= (isNaN(lastYearSpendingTrend) || lastYearSpendingTrend === null || !isFinite(lastYearSpendingTrend)) ? 0 : lastYearSpendingTrend %>
+                             </td>
+                            </tr>
+                            <tr>
+                              <td class="text-center">This Year (<%= currentYearName %>)</td>
+                              <td class="text-center">
+                                $<%= (isNaN(thisYearSpendingTrend) || thisYearSpendingTrend === null || !isFinite(thisYearSpendingTrend)) ? 0 : thisYearSpendingTrend %>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row clearfix">
+           
+          </div>
+      
+          <div class="row">
+            <div class="col-md-6">
+              <div class="tabbable-line">
+                <div class="tab-content">
+                  <div class="tab-pane active fontawesome-demo" id="tab1">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="card">
+                          <div class="card-head">
+                            <header>Growth Rate of membership</header>
+                          </div>
+                          <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                              <div class="mdl-tabs mdl-js-tabs">
+                                <div class="mdl-tabs__tab-bar tab-left-side">
+                                  <a href="#monthlySignup" class="mdl-tabs__tab is-active">
+                                    Monthly
+                                  </a>
+                                  <a href="#thisWeekSignup" class="mdl-tabs__tab">
+                                    Weekly
+                                  </a>
+                                  <a href="#lastWeekSignup" class="mdl-tabs__tab">
+                                    Daily
+                                  </a>
+                                </div>
+                                <div class="mdl-tabs__panel p-t-20 is-active" id="monthlySignup">
+                                  <table class="table table-striped table-responsive table-bordered table-hover custom-table table-sm" id="example4">
+                                    <thead>
+                                      <tr>
+                                        <!-- <th class="text-center">
+                                          <%= __('S. No.') %>
+                                        </th> -->
+                                        <th class="text-center">
+                                          <%= __('Month') %>
+                                        </th>
+                                        <th class="text-center">
+                                          <%= __('Total Sign-Up') %>
+                                        </th>
+                                        <th class="text-center">
+                                          <%= __('Growth Rate') %>
+                                        </th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                     
+                                      <% let initialValue = 0; %>
+                                  
+                                      <% // Display last month first %>
+                                      <% if (lastMonthAndThisMonthUserSignups.last_month !== 'month_total') { %>
+                                        <tr>
+                                         
+                                          <td class="text-center">Last Month (<%= lastMonthNameWithYear %>)</td>
+                                          <td class="text-center"><%= lastMonthAndThisMonthUserSignups.last_month %></td>
+                                          <td class="text-center">
+                                            <% if (lastMonthAndThisMonthUserSignups.last_month !== 0 && typeof lastMonthAndThisMonthUserSignups.last_month !== 'undefined') { %>
+                                              <i class="fas fa-arrow-up"></i>
+                                              <%= (lastMonthAndThisMonthUserSignups.last_month * 100).toFixed(2) %>% 
+                                              
+                                            <% } else { %>
+                                              <%= (lastMonthAndThisMonthUserSignups.last_month * 100).toFixed(2) %>% 
+                                            <% } %>
+                                          </td>
+                                        </tr>
+                                      
+                                      <% } %>
+                                  
+                                      <% // Display this month %>
+                                      <% if (lastMonthAndThisMonthUserSignups.this_month !== 'month_total') { %>
+                                        <tr>
+                                         
+                                          <td class="text-center">This Month (<%= currentMonthNameWithYear %>)</td>
+                                          <td class="text-center"><%= lastMonthAndThisMonthUserSignups.this_month %></td>
+                                          <td class="text-center">
+                                            <%
+                                              let monthGrowthRate;
+                                              if (lastMonthAndThisMonthUserSignups.last_month !== 0 && typeof lastMonthAndThisMonthUserSignups.last_month !== 'undefined') {
+                                                monthGrowthRate = (lastMonthAndThisMonthUserSignups.this_month - lastMonthAndThisMonthUserSignups.last_month) / lastMonthAndThisMonthUserSignups.last_month * 100;
+                                              } else {
+                                                monthGrowthRate = lastMonthAndThisMonthUserSignups.this_month * 100;
+                                              }
+                                            %>
+                                            <% if (monthGrowthRate > 0) { %>
+                                              <i class="fas fa-arrow-up"></i>
+                                              <%= monthGrowthRate.toFixed(2) %>%
+                                            <% } else if (monthGrowthRate < 0) { %>
+                                              <i class="fas fa-arrow-down"></i>
+                                              <%= monthGrowthRate.toFixed(2) %>%
+                                            <% } else { %>
+                                              -
+                                            <% } %>
+                                          </td>
+                                        </tr>
+                                      <% } %>
+                                    </tbody>
+                                  </table>
+                                </div>
+                                <div class="mdl-tabs__panel p-t-20" id="thisWeekSignup">
+                                  <table class="table table-striped table-responsive table-bordered table-hover custom-table table-sm" id="example4">
+                                    <thead>
+                                      <tr>
+                                        <th class="text-center">
+                                          <%= __('Week') %>
+                                        </th>
+                                        <th class="text-center">
+                                          <%= __('Total Sign-Up') %>
+                                        </th>
+                                        <th class="text-center">
+                                          <%= __('Growth Rate') %>
+                                        </th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr>
+                                        <td class="text-center">Last Week (<%= `${lastWeekStartDate} - ${lastWeekEndDate}` %>)</td>
+                                        <td class="text-center"><%= lastWeekNewUserSignups.last_week_total %></td>
+                                        <td class="text-center">
+                                          <%
+                                            // Calculate last week growth rate
+                                            let lastWeekGrowthRate = 0;
+                                            if (lastWeekNewUserSignups.last_week_total !== 0 && typeof lastWeekNewUserSignups.last_week_total !== 'undefined') {
+                                              lastWeekGrowthRate = (lastWeekNewUserSignups.last_week_total * 100).toFixed(2);
+                                            } else {
+                                              lastWeekGrowthRate = (lastWeekNewUserSignups.last_week_total * 100).toFixed(2);
+                                            }
+                                    
+                                            // Set arrow class based on growth rate
+                                            let lastWeekArrowClass = lastWeekGrowthRate > 0 ? "fas fa-arrow-up" : "fas fa-arrow-down";
+                                          %>
+                                          <i class="<%= lastWeekArrowClass %>"></i>
+                                          <%= lastWeekGrowthRate %>%
+                                        </td>
+                                      </tr>
+                                    
+                                      <tr>
+                                        <td class="text-center">This Week (<%= `${currentWeekStartDate} - ${ currentWeekEndDate}` %>)</td>
+                                        <td class="text-center"><%= newUserweek.week_total %></td>
+                                        <td class="text-center">
+                                          <%
+                                            // Calculate this week growth rate
+                                            let thisWeekGrowthRate = 0;
+                                            if (lastWeekNewUserSignups.last_week_total !== 0 && typeof lastWeekNewUserSignups.last_week_total !== 'undefined') {
+                                              thisWeekGrowthRate = ((newUserweek.week_total - lastWeekNewUserSignups.last_week_total) / lastWeekNewUserSignups.last_week_total * 100).toFixed(2);
+                                            } else {
+                                              thisWeekGrowthRate = (newUserweek.week_total * 100).toFixed(2);
+                                            }
+                                    
+                                            // Set arrow class based on growth rate
+                                            let thisWeekArrowClass = thisWeekGrowthRate > 0 ? "fas fa-arrow-up" : "fas fa-arrow-down";
+                                          %>
+                                          <i class="<%= thisWeekArrowClass %>"></i>
+                                          <%= thisWeekGrowthRate %>%
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                    
+                                  </table>
+                                </div>
+                                <div class="mdl-tabs__panel p-t-20" id="lastWeekSignup">
+                                  <table class="table table-striped table-responsive table-bordered table-hover custom-table table-sm" id="example4">
+                                    <thead>
+                                      <tr>
+                                        <th class="text-center">
+                                          <%= __('Day') %>
+                                        </th>
+                                        <th class="text-center">
+                                          <%= __('Total Sign-Up') %>
+                                        </th>
+                                        <th class="text-center">
+                                          <%= __('Growth Rate') %>
+                                        </th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr>
+                                        <td class="text-center">Yesterday (<%= yesterdayDate %>)</td>
+                                        <td class="text-center"><%= currentAndYesterdayUserSignups.yesterday %></td>
+                                        <td class="text-center">
+                                          <%
+      
+                                            let yesterdayGrowthRate;
+                                    
+                                            // Check if yesterday is non-zero before calculating growth rate
+                                            if (currentAndYesterdayUserSignups.two_day_total !== 0) {
+                                              yesterdayGrowthRate = currentAndYesterdayUserSignups.yesterday * 100;
+                                            } else {
+                                              yesterdayGrowthRate = currentAndYesterdayUserSignups.yesterday * 100;
+                                            }
+                                          %>
+                                          <% if (yesterdayGrowthRate > 0) { %>
+                                    
+                                            <i class="fas fa-arrow-up"></i>
+                                    
+                                            <%= yesterdayGrowthRate.toFixed(2) %>%
+                                    
+                                          <% } else if (yesterdayGrowthRate < 0) { %>
+                                    
+                                            <i class="fas fa-arrow-down"></i>
+                                    
+                                            <%= yesterdayGrowthRate.toFixed(2) %>%
+                                    
+                                          <% } else { %>
+      
+                                            -
+      
+                                          <% } %>
+                                    
+                                        </td>
+                                    
+                                      </tr>
+                                    
+                                      <!-- Display Today's Growth Rate -->
+                                    
+                                      <tr>
+                                    
+                                        <td class="text-center">Today (<%= todayDate %>)</td>
+                                    
+                                        <td class="text-center"><%= currentAndYesterdayUserSignups.today %></td>
+                                    
+                                        <td class="text-center">
+                                    
+                                          <%
+                                            let todayGrowthRate;
+        
+                                            // Check if yesterday is non-zero before calculating growth rate
+                                            if (currentAndYesterdayUserSignups.yesterday !== 0) {
+                                              todayGrowthRate = (currentAndYesterdayUserSignups.today - currentAndYesterdayUserSignups.yesterday) / currentAndYesterdayUserSignups.yesterday * 100;
+                                            } else {
+                                              todayGrowthRate = currentAndYesterdayUserSignups.today * 100;
+                                            }
+                                    
+                                          %>
+                  
+                                          <% if (todayGrowthRate > 0) { %>
+                                    
+                                            <i class="fas fa-arrow-up"></i>
+                                    
+                                            <%= todayGrowthRate.toFixed(2) %>%
+                                    
+                                          <% } else if (todayGrowthRate < 0) { %>
+                                    
+                                            <i class="fas fa-arrow-down"></i>
+                                    
+                                            <%= todayGrowthRate.toFixed(2) %>%
+                                    
+                                          <% } else { %>
+                                            -
+                                          <% } %>
+                                    
+                                        </td>
+                                    
+                                      </tr>
+                                    
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tab-pane" id="tab2"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="tabbable-line">
+                <div class="tab-content">
+                  <div class="tab-pane active fontawesome-demo" id="tab1">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="card">
+                          <div class="card-head">
+                            <header>Amount Spent (Average Expenditure)</header>
+                          </div>
+                          <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                              <div class="mdl-tabs mdl-js-tabs">
+                                <div class="mdl-tabs__tab-bar tab-left-side">
+                                  <a href="#monthlySignup" class="mdl-tabs__tab is-active">
+                                    Monthly
+                                  </a>
+                                  <a href="#thisWeekSignup" class="mdl-tabs__tab">
+                                    Weekly
+                                  </a>
+                                </div>
+                                <div class="mdl-tabs__panel p-t-20 is-active" id="monthlySignup">
+                                  <table class="table table-striped table-responsive table-bordered table-hover custom-table table-sm" id="example4">
+                                    <thead>
+                                      <tr>
+                                        <!-- <th class="text-center">
+                                          <%= __('S. No.') %>
+                                        </th> -->
+                                        <th class="text-center">
+                                          <%= __('Month') %>
+                                        </th>
+                                        <th class="text-center">
+                                          <%= __('Average Expenditure') %>
+                                        </th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr>
+                                        <td class="text-center">Last Month (<%= lastMonthNameWithYear %>)</td>
+                                        <td class="text-center">
+                                          $<%= (isNaN(lastMonthAverageExpenditure) || lastMonthAverageExpenditure === null || !isFinite(lastMonthAverageExpenditure)) ? 0 : lastMonthAverageExpenditure %>
+                                         </td>
+                                      </tr>
+                                      <tr>
+                                        <td class="text-center">This Month (<%= currentMonthNameWithYear %>)</td>
+                                        <td class="text-center">
+                                          $<%= (isNaN(thisMonthAverageExpenditure) || thisMonthAverageExpenditure === null || !isFinite(thisMonthAverageExpenditure)) ? 0 : thisMonthAverageExpenditure 
+                                          %>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                                <div class="mdl-tabs__panel p-t-20" id="thisWeekSignup">
+                                  <table class="table table-striped table-responsive table-bordered table-hover custom-table table-sm" id="example4">
+                                    <thead>
+                                      <tr>
+                                        <th class="text-center">
+                                          <%= __('Week') %>
+                                        </th>
+                                        <th class="text-center">
+                                          <%= __('Average Expenditure') %>
+                                        </th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr>
+                                          <td class="text-center">Last Week (<%= `${lastWeekStartDate} - ${lastWeekEndDate}` %>)</td>
+                                        <td class="text-center">
+                                          $<%= (isNaN(lastWeekAverageExpenditure) || lastWeekAverageExpenditure === null || !isFinite(lastWeekAverageExpenditure)) ? 0 : lastWeekAverageExpenditure %>
+                                       </td>
+                                      </tr>
+                                      <tr>
+                                        <td class="text-center">This Week (<%= `${currentWeekStartDate} - ${ currentWeekEndDate}` %>)</td>
+                                        <td class="text-center">
+                                          $<%= (isNaN(thisWeekAverageExpenditure) || thisWeekAverageExpenditure === null || !isFinite(thisWeekAverageExpenditure)) ? 0 : thisWeekAverageExpenditure %>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tab-pane" id="tab2"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% } %>
+
+  <% } else { %>
+    <div class="page-content-wrapper">
+      <div class="page-content">
+        <div class="page-bar">
+          <div class="page-title-breadcrumb">
+            <div class=" pull-left">
+              <div class="page-title dashboard">
+                <%= __('Dashboard') %>
+              </div>
+            </div>
+            <ol class="breadcrumb page-breadcrumb pull-right">
+              <li><i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="/admin/dashboard">
+                  <%= __('Home') %>
+                </a>&nbsp;<i class="fa fa-angle-right"></i>
+              </li>
+              <li class="active">
+                <%= __('Dashboard') %>
+              </li>
+            </ol>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="tabbable-line">
+              <div class="tab-content">
+                <div class="tab-pane active fontawesome-demo" id="tab1">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="card">
+                        <div class="card-body">
+                          <div>
+                            <% if(message !='' ) { %>
+                              <div id="myDivSuccess" class="alert alert-dismissible fade show mb-0"
+                                style="background-color: rgb(183, 237, 183); border: none; color: rgb(2, 120, 2);"
+                                role="alert">
+                                <%= message %>
+                                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
+                                    onclick="hideDivSuccess()"></button>
+                              </div>
+                              <script>
+                                function hideDivSuccess() {
+                                  var div = document.getElementById('myDivSuccess');
+                                  div.style.display = 'none';
+                                }
+                              </script>
+                              <% } else if(error !='' ){ %>
+                                <div id="myDiv" class="alert alert-dismissible fade show mb-0"
+                                  style="background-color: rgb(237 183 183); border: none; color: rgb(120 2 2);"
+                                  role="alert">
+                                  <%= error %>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
+                                      onclick="hideDiv()"></button>
+                                </div>
+                                <script>
+                                  function hideDiv() {
+                                    var div = document.getElementById('myDiv');
+                                    div.style.display = 'none';
+                                  }
+                                </script>
+                                <% } %>
+                          </div>
+                       
+                          <!-- <h1>Subscription expired</h1> -->
+                          <div class="subscription-expired-notice">
+                            <h2>Attention! Your Subscription Has Expired</h2>
+                            <p>We noticed that your subscription has expired. As a result, you may not be able to access all the features and services you previously enjoyed. To continue using these features and enjoy uninterrupted service, please purchase a new subscription.</p>
+                            <!-- <a href="/admin/available/subscription/list" class="hidden-button">Purchase a New Subscription (link)</a> -->
+                            <!-- <button class="btn btn-primary mb-4">Purchase New Subscription</button> -->
+                            <a href="/admin/available/subscription/list" class="btn btn-primary mb-4">Purchase New Subscription</a>
+                            <p>By renewing your subscription, you'll regain access to all the benefits, including:</p>
+                            <ul>
+                              <li><b>Manage Your Team:</b> Create new cashiers and manage their access within the admin dashboard.</li>
+                              <li><b>Boost Sales with Promotions:</b> Manage and send targeted SMS promotions to reach your customers more effectively.</li>
+                              <li><b>Brand Identity:</b> Update your business logo and other details to maintain a professional image.</li>
+                              <li><b>Data Insights:</b> Gain valuable insights through the comprehensive dashboard to optimize your business strategies.</li>
+                              <li><b>Reward Your Customers:</b> Design and manage a loyalty program to incentivize repeat business and customer engagement (Manage Rewards and Loyalty points).</li>
+                            </ul>
+                          </div>
+                          
+                          
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane" id="tab2"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <h2>Welcome to Admin Dashboard (Under Construction)</h2> -->
+        <div class="row ">
+          <div class="col-xl-4 col-md-3 col-12">
+            <div class="info-box bg-danger">
+              <span class="info-box-icon push-bottom"><i class="material-icons">monetization_on</i></span>
+              <div class="info-box-content">
+                <span class="info-box-text fw-bold mt-1 ">
+                  <%= __('Total Revenue') %>
+                </span>
+                <a href="#" class="text-decoration-none text-white">
+                  <span class="progress-description mt-2 mb-2">
+                    $<%= roundedTotalRevenue == null ? 0 :roundedTotalRevenue %>
+                      <%= __('Total Revenue') %>
+                  </span>
+                </a>
+                <a href="#" class="text-decoration-none text-white">
+                  <span class="progress-description fs-4 mb-5">
+                    
+                  </span>
+              </a>
+                <span class="progress-description fs-4 mb-2">
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-4 col-md-3 col-12">
+            <div class="info-box bg-orange">
+              <span class="info-box-icon push-bottom">
+                <i class="material-icons">group</i>
+              </span>
+              <div class="info-box-content">
+                <span class="info-box-text fw-bold mt-1 ">
+                  <%= __('Total Members') %>
+                </span>
+                <a href="#" class="text-decoration-none text-white">
+                  <span class="progress-description mt-2 mb-2">
+                    <%= totalMembers %>
+                      <%= __('Total Members') %>
+                  </span>
+                </a>
+                <a href="#" class="text-decoration-none text-white">
+                  <span class="progress-description fs-4 mb-5">
+                    
+                  </span>
+              </a>
+                <span class="progress-description fs-4 mb-2">
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-4 col-md-3 col-12">
+            <div class="info-box bg-purple">
+              <span class="info-box-icon push-bottom">
+                <i class="material-icons">local_offer</i>
+              </span>
+              <div class="info-box-content">
+                <span class="info-box-text fw-bold mt-1 ">
+                  <%= __('Total Promotions') %>
+                </span>
+                <a href="#" class="text-decoration-none text-white">
+                  <span class="progress-description mt-2 mb-2">
+                    <%= totalPromotions %>
+                      <%= __('Total Promotions') %>
+                  </span>
+                </a>
+                <a href="#" class="text-decoration-none text-white">
+                  <span class="progress-description fs-4 mb-5">
+                    
+                  </span>
+              </a>
+                <span class="progress-description fs-4 mb-2">
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-4 col-md-3 col-12">
+            <div class="info-box deepPink-bgcolor">
+              <span class="info-box-icon push-bottom"><i class="material-icons">redeem</i></span>
+              <div class="info-box-content">
+                <span class="info-box-text fw-bold mt-1 ">
+                  <%= __('Total Points Redeemed') %>
+                </span>
+                <a href="#" class="text-decoration-none text-white">
+                  <span class="progress-description mt-2 mb-2">
+                    <%= totalLoyaltyPointsRedeemed == null ? 0 : totalLoyaltyPointsRedeemed %>
+                      <%= __('Total Points Redeemed') %>
+                  </span>
+                </a>
+                <a href="#" class="text-decoration-none text-white">
+                  <span class="progress-description fs-4 mb-5">
+                    
+                  </span>
+              </a>
+                <span class="progress-description fs-4 mb-2">
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-4 col-md-3 col-12">
+            <div class="info-box bg-blue">
+              <span class="info-box-icon push-bottom"><i class="material-icons">loyalty</i></span>
+              <div class="info-box-content">
+                <span class="info-box-text fw-bold mt-1 ">
+                  <%= __('Total Loyalty Points Issued') %>
+                </span>
+                <a href="#" class="text-decoration-none text-white">
+                  <span class="progress-description mt-2 mb-2">
+                    <%= loyaltyPointsSum == null ? 0 : loyaltyPointsSum %>
+                      <%= __('Total Loyalty Points Issued') %>
+                  </span>
+                </a>
+                <a href="#" class="text-decoration-none text-white">
+                  <span class="progress-description fs-4 mb-5">
+                    
+                  </span>
+              </a>
+                <span class="progress-description fs-4 mb-2">
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-4 col-md-3 col-12">
+            <div class="info-box bg-success">
+              <span class="info-box-icon push-bottom"><i class="material-icons">
+                account_balance_wallet:
+              </i></span>
+              <div class="info-box-content">
+                <span class="info-box-text fw-bold mt-1 ">
+                  <%= __('Total Additional Revenue') %>
+                </span>
+                <a href="#" class="text-decoration-none text-white">
+                  <span class="progress-description mt-2 mb-2">
+                    $<%= (isNaN(TARofconservative) || TARofconservative == null) ? 0 : TARofconservative %>
+                      <%= __('Conservative Revenue') %>
+                  </span>
+              </a>
+              <a href="#" class="text-decoration-none text-white">
+                <span class="progress-description fs-5">
+                  $<%= (isNaN(TARofoptimistic) || TARofoptimistic == null) ? 0 : TARofoptimistic %>
+                  <%= __('Optimistic Revenue') %>
+                </span>
+            </a>
+                <span class="progress-description fs-4 mb-3">
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-4 col-md-3 col-12">
+            <div class="info-box bg-orange">
+                <span class="info-box-icon push-bottom"><i class="material-icons">group</i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text fw-bold mt-1 ">
+                        <%= __('Total Spent Per Member') %>
+                    </span>
+                    <a href="#" class="text-decoration-none text-white">
+                      <span class="progress-description mt-2 mb-2">
+                        $<%= (isNaN(totalSpentPerMemberWithOutDiscountAmount) || totalSpentPerMemberWithOutDiscountAmount == null) ? 0 : totalSpentPerMemberWithOutDiscountAmount %>
+                          <%= __('Before Discount Amount') %>
+                      </span>
+                  </a>
+                  <a href="#" class="text-decoration-none text-white">
+                    <span class="progress-description fs-5">
+                      $<%= (isNaN(totalSpentPerMemberWithDiscountAmount) || totalSpentPerMemberWithDiscountAmount == null) ? 0 : totalSpentPerMemberWithDiscountAmount %>
+                      <%= __('After Discount Amount') %>
+                    </span>
+                </a>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="row clearfix">
+          <div class="col-12 col-sm-12 col-lg-6">
+            <div class="card">
+              <div class="card-head">
+                <header>New User Sign-Up (Bar Chart)</header>
+              </div>
+              <div class="card-body">
+               
+                <div class="mdl-tabs mdl-js-tabs">
+                  <div class="mdl-tabs__tab-bar tab-left-side">
+                    <a href="#monthlySignup" class="mdl-tabs__tab is-active">
+                      Monthly
+                    </a>
+                    <a href="#thisWeekSignup" class="mdl-tabs__tab">
+                      Weekly
+                    </a>
+                    <a href="#lastWeekSignup" class="mdl-tabs__tab">
+                      Daily
+                    </a>
+                  </div>
+                  <div class="mdl-tabs__panel p-t-20 is-active" id="monthlySignup">
+                  </div>
+                  <div class="mdl-tabs__panel p-t-20" id="thisWeekSignup">
+                  </div>
+                  <div class="mdl-tabs__panel p-t-20" id="lastWeekSignup">
+                  </div>
+                </div>
+                <!-- <div class="recent-report__chart">
+                  <div id="chart8"></div>
+                </div> -->
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-sm-12 col-lg-6">
+            <div class="card" style="height: 485px;">
+              <div class="card-head">
+                <header>Spending Trends</header>
+              </div>
+              <div class="card-body">
+                <div class="d-flex justify-content-between">
+                  <div class="mdl-tabs mdl-js-tabs">
+                    <div class="mdl-tabs__tab-bar tab-left-side">
+                      <a href="#monthlySignup" class="mdl-tabs__tab is-active">
+                        Monthly
+                      </a>
+                      <a href="#thisWeekSignup" class="mdl-tabs__tab">
+                        Yearly
+                      </a>
+                    </div>
+                    <div class="mdl-tabs__panel p-t-20 is-active" id="monthlySignup">
+                      <table class="table table-striped table-responsive table-bordered table-hover custom-table table-sm" id="example4">
+                        <thead>
+                          <tr>
+                            <!-- <th class="text-center">
+                              <%= __('S. No.') %>
+                            </th> -->
+                            <th class="text-center">
+                              <%= __('Month') %>
+                            </th>
+                            <th class="text-center">
+                              <%= __('Spending Trends') %>
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td class="text-center">Last Month (<%= lastMonthNameWithYear %>)</td>
+                            <td class="text-center">
+                              $<%= (isNaN(lastMonthSpendingTrend) || lastMonthSpendingTrend === null || !isFinite(lastMonthSpendingTrend)) ? 0 : lastMonthSpendingTrend %>
+                             </td>
+                          </tr>
+                          <tr>
+                            <td class="text-center">This Month (<%= currentMonthNameWithYear %>)</td>
+                            <td class="text-center">
+                              $<%= (isNaN(thisMonthSpendingTrend) || thisMonthSpendingTrend === null || !isFinite(thisMonthSpendingTrend)) ? 0 : thisMonthSpendingTrend 
+                              %>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="mdl-tabs__panel p-t-20" id="thisWeekSignup">
+                      <table class="table table-striped table-responsive table-bordered table-hover custom-table table-sm" id="example4">
+                        <thead>
+                          <tr>
+                            <th class="text-center">
+                              <%= __('Year') %>
+                            </th>
+                            <th class="text-center">
+                              <%= __('Spending Trends') %>
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                              <td class="text-center">Last Year (<%= lastYearName %>)</td>
+                            <td class="text-center">
+                              $<%= (isNaN(lastYearSpendingTrend) || lastYearSpendingTrend === null || !isFinite(lastYearSpendingTrend)) ? 0 : lastYearSpendingTrend %>
+                           </td>
+                          </tr>
+                          <tr>
+                            <td class="text-center">This Year (<%= currentYearName %>)</td>
+                            <td class="text-center">
+                              $<%= (isNaN(thisYearSpendingTrend) || thisYearSpendingTrend === null || !isFinite(thisYearSpendingTrend)) ? 0 : thisYearSpendingTrend %>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row clearfix">
+         
+        </div>
+    
+        <div class="row">
+          <div class="col-md-6">
+            <div class="tabbable-line">
+              <div class="tab-content">
+                <div class="tab-pane active fontawesome-demo" id="tab1">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="card">
+                        <div class="card-head">
+                          <header>Growth Rate of membership</header>
+                        </div>
+                        <div class="card-body">
+                          <div class="d-flex justify-content-between">
+                            <div class="mdl-tabs mdl-js-tabs">
+                              <div class="mdl-tabs__tab-bar tab-left-side">
+                                <a href="#monthlySignup" class="mdl-tabs__tab is-active">
+                                  Monthly
+                                </a>
+                                <a href="#thisWeekSignup" class="mdl-tabs__tab">
+                                  Weekly
+                                </a>
+                                <a href="#lastWeekSignup" class="mdl-tabs__tab">
+                                  Daily
+                                </a>
+                              </div>
+                              <div class="mdl-tabs__panel p-t-20 is-active" id="monthlySignup">
+                                <table class="table table-striped table-responsive table-bordered table-hover custom-table table-sm" id="example4">
+                                  <thead>
+                                    <tr>
+                                      <!-- <th class="text-center">
+                                        <%= __('S. No.') %>
+                                      </th> -->
+                                      <th class="text-center">
+                                        <%= __('Month') %>
+                                      </th>
+                                      <th class="text-center">
+                                        <%= __('Total Sign-Up') %>
+                                      </th>
+                                      <th class="text-center">
+                                        <%= __('Growth Rate') %>
+                                      </th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                   
+                                    <% let initialValue = 0; %>
+                                
+                                    <% // Display last month first %>
+                                    <% if (lastMonthAndThisMonthUserSignups.last_month !== 'month_total') { %>
+                                      <tr>
+                                       
+                                        <td class="text-center">Last Month (<%= lastMonthNameWithYear %>)</td>
+                                        <td class="text-center"><%= lastMonthAndThisMonthUserSignups.last_month %></td>
+                                        <td class="text-center">
+                                          <% if (lastMonthAndThisMonthUserSignups.last_month !== 0 && typeof lastMonthAndThisMonthUserSignups.last_month !== 'undefined') { %>
+                                            <i class="fas fa-arrow-up"></i>
+                                            <%= (lastMonthAndThisMonthUserSignups.last_month * 100).toFixed(2) %>% 
+                                            
+                                          <% } else { %>
+                                            <%= (lastMonthAndThisMonthUserSignups.last_month * 100).toFixed(2) %>% 
+                                          <% } %>
+                                        </td>
+                                      </tr>
+                                    
+                                    <% } %>
+                                
+                                    <% // Display this month %>
+                                    <% if (lastMonthAndThisMonthUserSignups.this_month !== 'month_total') { %>
+                                      <tr>
+                                       
+                                        <td class="text-center">This Month (<%= currentMonthNameWithYear %>)</td>
+                                        <td class="text-center"><%= lastMonthAndThisMonthUserSignups.this_month %></td>
+                                        <td class="text-center">
+                                          <%
+                                            let monthGrowthRate;
+                                            if (lastMonthAndThisMonthUserSignups.last_month !== 0 && typeof lastMonthAndThisMonthUserSignups.last_month !== 'undefined') {
+                                              monthGrowthRate = (lastMonthAndThisMonthUserSignups.this_month - lastMonthAndThisMonthUserSignups.last_month) / lastMonthAndThisMonthUserSignups.last_month * 100;
+                                            } else {
+                                              monthGrowthRate = lastMonthAndThisMonthUserSignups.this_month * 100;
+                                            }
+                                          %>
+                                          <% if (monthGrowthRate > 0) { %>
+                                            <i class="fas fa-arrow-up"></i>
+                                            <%= monthGrowthRate.toFixed(2) %>%
+                                          <% } else if (monthGrowthRate < 0) { %>
+                                            <i class="fas fa-arrow-down"></i>
+                                            <%= monthGrowthRate.toFixed(2) %>%
+                                          <% } else { %>
+                                            -
+                                          <% } %>
+                                        </td>
+                                      </tr>
+                                    <% } %>
+                                  </tbody>
+                                </table>
+                              </div>
+                              <div class="mdl-tabs__panel p-t-20" id="thisWeekSignup">
+                                <table class="table table-striped table-responsive table-bordered table-hover custom-table table-sm" id="example4">
+                                  <thead>
+                                    <tr>
+                                      <th class="text-center">
+                                        <%= __('Week') %>
+                                      </th>
+                                      <th class="text-center">
+                                        <%= __('Total Sign-Up') %>
+                                      </th>
+                                      <th class="text-center">
+                                        <%= __('Growth Rate') %>
+                                      </th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      <td class="text-center">Last Week (<%= `${lastWeekStartDate} - ${lastWeekEndDate}` %>)</td>
+                                      <td class="text-center"><%= lastWeekNewUserSignups.last_week_total %></td>
+                                      <td class="text-center">
+                                        <%
+                                          // Calculate last week growth rate
+                                          let lastWeekGrowthRate = 0;
+                                          if (lastWeekNewUserSignups.last_week_total !== 0 && typeof lastWeekNewUserSignups.last_week_total !== 'undefined') {
+                                            lastWeekGrowthRate = (lastWeekNewUserSignups.last_week_total * 100).toFixed(2);
+                                          } else {
+                                            lastWeekGrowthRate = (lastWeekNewUserSignups.last_week_total * 100).toFixed(2);
+                                          }
+                                  
+                                          // Set arrow class based on growth rate
+                                          let lastWeekArrowClass = lastWeekGrowthRate > 0 ? "fas fa-arrow-up" : "fas fa-arrow-down";
+                                        %>
+                                        <i class="<%= lastWeekArrowClass %>"></i>
+                                        <%= lastWeekGrowthRate %>%
+                                      </td>
+                                    </tr>
+                                  
+                                    <tr>
+                                      <td class="text-center">This Week (<%= `${currentWeekStartDate} - ${ currentWeekEndDate}` %>)</td>
+                                      <td class="text-center"><%= newUserweek.week_total %></td>
+                                      <td class="text-center">
+                                        <%
+                                          // Calculate this week growth rate
+                                          let thisWeekGrowthRate = 0;
+                                          if (lastWeekNewUserSignups.last_week_total !== 0 && typeof lastWeekNewUserSignups.last_week_total !== 'undefined') {
+                                            thisWeekGrowthRate = ((newUserweek.week_total - lastWeekNewUserSignups.last_week_total) / lastWeekNewUserSignups.last_week_total * 100).toFixed(2);
+                                          } else {
+                                            thisWeekGrowthRate = (newUserweek.week_total * 100).toFixed(2);
+                                          }
+                                  
+                                          // Set arrow class based on growth rate
+                                          let thisWeekArrowClass = thisWeekGrowthRate > 0 ? "fas fa-arrow-up" : "fas fa-arrow-down";
+                                        %>
+                                        <i class="<%= thisWeekArrowClass %>"></i>
+                                        <%= thisWeekGrowthRate %>%
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                  
+                                </table>
+                              </div>
+                              <div class="mdl-tabs__panel p-t-20" id="lastWeekSignup">
+                                <table class="table table-striped table-responsive table-bordered table-hover custom-table table-sm" id="example4">
+                                  <thead>
+                                    <tr>
+                                      <th class="text-center">
+                                        <%= __('Day') %>
+                                      </th>
+                                      <th class="text-center">
+                                        <%= __('Total Sign-Up') %>
+                                      </th>
+                                      <th class="text-center">
+                                        <%= __('Growth Rate') %>
+                                      </th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      <td class="text-center">Yesterday (<%= yesterdayDate %>)</td>
+                                      <td class="text-center"><%= currentAndYesterdayUserSignups.yesterday %></td>
+                                      <td class="text-center">
+                                        <%
+    
+                                          let yesterdayGrowthRate;
+                                  
+                                          // Check if yesterday is non-zero before calculating growth rate
+                                          if (currentAndYesterdayUserSignups.two_day_total !== 0) {
+                                            yesterdayGrowthRate = currentAndYesterdayUserSignups.yesterday * 100;
+                                          } else {
+                                            yesterdayGrowthRate = currentAndYesterdayUserSignups.yesterday * 100;
+                                          }
+                                        %>
+                                        <% if (yesterdayGrowthRate > 0) { %>
+                                  
+                                          <i class="fas fa-arrow-up"></i>
+                                  
+                                          <%= yesterdayGrowthRate.toFixed(2) %>%
+                                  
+                                        <% } else if (yesterdayGrowthRate < 0) { %>
+                                  
+                                          <i class="fas fa-arrow-down"></i>
+                                  
+                                          <%= yesterdayGrowthRate.toFixed(2) %>%
+                                  
+                                        <% } else { %>
+    
+                                          -
+    
+                                        <% } %>
+                                  
+                                      </td>
+                                  
+                                    </tr>
+                                  
+                                    <!-- Display Today's Growth Rate -->
+                                  
+                                    <tr>
+                                  
+                                      <td class="text-center">Today (<%= todayDate %>)</td>
+                                  
+                                      <td class="text-center"><%= currentAndYesterdayUserSignups.today %></td>
+                                  
+                                      <td class="text-center">
+                                  
+                                        <%
+                                          let todayGrowthRate;
+      
+                                          // Check if yesterday is non-zero before calculating growth rate
+                                          if (currentAndYesterdayUserSignups.yesterday !== 0) {
+                                            todayGrowthRate = (currentAndYesterdayUserSignups.today - currentAndYesterdayUserSignups.yesterday) / currentAndYesterdayUserSignups.yesterday * 100;
+                                          } else {
+                                            todayGrowthRate = currentAndYesterdayUserSignups.today * 100;
+                                          }
+                                  
+                                        %>
+                
+                                        <% if (todayGrowthRate > 0) { %>
+                                  
+                                          <i class="fas fa-arrow-up"></i>
+                                  
+                                          <%= todayGrowthRate.toFixed(2) %>%
+                                  
+                                        <% } else if (todayGrowthRate < 0) { %>
+                                  
+                                          <i class="fas fa-arrow-down"></i>
+                                  
+                                          <%= todayGrowthRate.toFixed(2) %>%
+                                  
+                                        <% } else { %>
+                                          -
+                                        <% } %>
+                                  
+                                      </td>
+                                  
+                                    </tr>
+                                  
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane" id="tab2"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="tabbable-line">
+              <div class="tab-content">
+                <div class="tab-pane active fontawesome-demo" id="tab1">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="card">
+                        <div class="card-head">
+                          <header>Amount Spent (Average Expenditure)</header>
+                        </div>
+                        <div class="card-body">
+                          <div class="d-flex justify-content-between">
+                            <div class="mdl-tabs mdl-js-tabs">
+                              <div class="mdl-tabs__tab-bar tab-left-side">
+                                <a href="#monthlySignup" class="mdl-tabs__tab is-active">
+                                  Monthly
+                                </a>
+                                <a href="#thisWeekSignup" class="mdl-tabs__tab">
+                                  Weekly
+                                </a>
+                              </div>
+                              <div class="mdl-tabs__panel p-t-20 is-active" id="monthlySignup">
+                                <table class="table table-striped table-responsive table-bordered table-hover custom-table table-sm" id="example4">
+                                  <thead>
+                                    <tr>
+                                      <!-- <th class="text-center">
+                                        <%= __('S. No.') %>
+                                      </th> -->
+                                      <th class="text-center">
+                                        <%= __('Month') %>
+                                      </th>
+                                      <th class="text-center">
+                                        <%= __('Average Expenditure') %>
+                                      </th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      <td class="text-center">Last Month (<%= lastMonthNameWithYear %>)</td>
+                                      <td class="text-center">
+                                        $<%= (isNaN(lastMonthAverageExpenditure) || lastMonthAverageExpenditure === null || !isFinite(lastMonthAverageExpenditure)) ? 0 : lastMonthAverageExpenditure %>
+                                       </td>
+                                    </tr>
+                                    <tr>
+                                      <td class="text-center">This Month (<%= currentMonthNameWithYear %>)</td>
+                                      <td class="text-center">
+                                        $<%= (isNaN(thisMonthAverageExpenditure) || thisMonthAverageExpenditure === null || !isFinite(thisMonthAverageExpenditure)) ? 0 : thisMonthAverageExpenditure 
+                                        %>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                              <div class="mdl-tabs__panel p-t-20" id="thisWeekSignup">
+                                <table class="table table-striped table-responsive table-bordered table-hover custom-table table-sm" id="example4">
+                                  <thead>
+                                    <tr>
+                                      <th class="text-center">
+                                        <%= __('Week') %>
+                                      </th>
+                                      <th class="text-center">
+                                        <%= __('Average Expenditure') %>
+                                      </th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                        <td class="text-center">Last Week (<%= `${lastWeekStartDate} - ${lastWeekEndDate}` %>)</td>
+                                      <td class="text-center">
+                                        $<%= (isNaN(lastWeekAverageExpenditure) || lastWeekAverageExpenditure === null || !isFinite(lastWeekAverageExpenditure)) ? 0 : lastWeekAverageExpenditure %>
+                                     </td>
+                                    </tr>
+                                    <tr>
+                                      <td class="text-center">This Week (<%= `${currentWeekStartDate} - ${ currentWeekEndDate}` %>)</td>
+                                      <td class="text-center">
+                                        $<%= (isNaN(thisWeekAverageExpenditure) || thisWeekAverageExpenditure === null || !isFinite(thisWeekAverageExpenditure)) ? 0 : thisWeekAverageExpenditure %>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane" id="tab2"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% } %>
+
+<% } else { %>
+  <div class="page-content-wrapper">
+    <div class="page-content">
+      <div class="page-bar">
+        <div class="page-title-breadcrumb">
+          <div class=" pull-left">
+            <div class="page-title dashboard">
+              <%= __('Dashboard') %>
+            </div>
+          </div>
+          <ol class="breadcrumb page-breadcrumb pull-right">
+            <li><i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="/admin/dashboard">
+                <%= __('Home') %>
+              </a>&nbsp;<i class="fa fa-angle-right"></i>
+            </li>
+            <li class="active">
+              <%= __('Dashboard') %>
+            </li>
+          </ol>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="tabbable-line">
+            <div class="tab-content">
+              <div class="tab-pane active fontawesome-demo" id="tab1">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="card">
+                      <div class="card-body">
+                        <div>
+                          <% if(message !='' ) { %>
+                            <div id="myDivSuccess" class="alert alert-dismissible fade show mb-0"
+                              style="background-color: rgb(183, 237, 183); border: none; color: rgb(2, 120, 2);"
+                              role="alert">
+                              <%= message %>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
+                                  onclick="hideDivSuccess()"></button>
+                            </div>
+                            <script>
+                              function hideDivSuccess() {
+                                var div = document.getElementById('myDivSuccess');
+                                div.style.display = 'none';
+                              }
+                            </script>
+                            <% } else if(error !='' ){ %>
+                              <div id="myDiv" class="alert alert-dismissible fade show mb-0"
+                                style="background-color: rgb(237 183 183); border: none; color: rgb(120 2 2);"
+                                role="alert">
+                                <%= error %>
+                                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
+                                    onclick="hideDiv()"></button>
+                              </div>
+                              <script>
+                                function hideDiv() {
+                                  var div = document.getElementById('myDiv');
+                                  div.style.display = 'none';
+                                }
+                              </script>
+                              <% } %>
+                        </div>
+                     
+                        <!-- <h1>Subscription expired</h1> -->
+                        <div class="subscription-expired-notice">
+                          <h2>Attention! Your Subscription Has Expired</h2>
+                          <p>We noticed that your subscription has expired. As a result, you may not be able to access all the features and services you previously enjoyed. To continue using these features and enjoy uninterrupted service, please purchase a new subscription.</p>
+                          <!-- <a href="/admin/available/subscription/list" class="hidden-button">Purchase a New Subscription (link)</a> -->
+                          <!-- <button class="btn btn-primary mb-4">Purchase New Subscription</button> -->
+                          <a href="/admin/available/subscription/list" class="btn btn-primary mb-4">Purchase New Subscription</a>
+                          <p>By renewing your subscription, you'll regain access to all the benefits, including:</p>
+                          <ul>
+                            <li><b>Manage Your Team:</b> Create new cashiers and manage their access within the admin dashboard.</li>
+                            <li><b>Boost Sales with Promotions:</b> Manage and send targeted SMS promotions to reach your customers more effectively.</li>
+                            <li><b>Brand Identity:</b> Update your business logo and other details to maintain a professional image.</li>
+                            <li><b>Data Insights:</b> Gain valuable insights through the comprehensive dashboard to optimize your business strategies.</li>
+                            <li><b>Reward Your Customers:</b> Design and manage a loyalty program to incentivize repeat business and customer engagement (Manage Rewards and Loyalty points).</li>
+                          </ul>
+                        </div>
+                        
+                        
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane" id="tab2"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <h2>Welcome to Admin Dashboard (Under Construction)</h2> -->
+      <div class="row ">
+        <div class="col-xl-4 col-md-3 col-12">
+          <div class="info-box bg-danger">
+            <span class="info-box-icon push-bottom"><i class="material-icons">monetization_on</i></span>
+            <div class="info-box-content">
+              <span class="info-box-text fw-bold mt-1 ">
+                <%= __('Total Revenue') %>
+              </span>
+              <a href="#" class="text-decoration-none text-white">
+                <span class="progress-description mt-2 mb-2">
+                  $<%= roundedTotalRevenue == null ? 0 : roundedTotalRevenue %>
+                    <%= __('Total Revenue') %>
+                </span>
+              </a>
+              <a href="#" class="text-decoration-none text-white">
+                <span class="progress-description fs-4 mb-5">
+                  
+                </span>
+            </a>
+              <span class="progress-description fs-4 mb-2">
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-4 col-md-3 col-12">
+          <div class="info-box bg-orange">
+            <span class="info-box-icon push-bottom">
+              <i class="material-icons">group</i>
+            </span>
+            <div class="info-box-content">
+              <span class="info-box-text fw-bold mt-1 ">
+                <%= __('Total Members') %>
+              </span>
+              <a href="#" class="text-decoration-none text-white">
+                <span class="progress-description mt-2 mb-2">
+                  <%= totalMembers %>
+                    <%= __('Total Members') %>
+                </span>
+              </a>
+              <a href="#" class="text-decoration-none text-white">
+                <span class="progress-description fs-4 mb-5">
+                  
+                </span>
+            </a>
+              <span class="progress-description fs-4 mb-2">
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-4 col-md-3 col-12">
+          <div class="info-box bg-purple">
+            <span class="info-box-icon push-bottom">
+              <i class="material-icons">local_offer</i>
+            </span>
+            <div class="info-box-content">
+              <span class="info-box-text fw-bold mt-1 ">
+                <%= __('Total Promotions') %>
+              </span>
+              <a href="#" class="text-decoration-none text-white">
+                <span class="progress-description mt-2 mb-2">
+                  <%= totalPromotions %>
+                    <%= __('Total Promotions') %>
+                </span>
+              </a>
+              <a href="#" class="text-decoration-none text-white">
+                <span class="progress-description fs-4 mb-5">
+                  
+                </span>
+            </a>
+              <span class="progress-description fs-4 mb-2">
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-4 col-md-3 col-12">
+          <div class="info-box deepPink-bgcolor">
+            <span class="info-box-icon push-bottom"><i class="material-icons">redeem</i></span>
+            <div class="info-box-content">
+              <span class="info-box-text fw-bold mt-1 ">
+                <%= __('Total Points Redeemed') %>
+              </span>
+              <a href="#" class="text-decoration-none text-white">
+                <span class="progress-description mt-2 mb-2">
+                  <%= totalLoyaltyPointsRedeemed == null ? 0 : totalLoyaltyPointsRedeemed %>
+                    <%= __('Total Points Redeemed') %>
+                </span>
+              </a>
+              <a href="#" class="text-decoration-none text-white">
+                <span class="progress-description fs-4 mb-5">
+                  
+                </span>
+            </a>
+              <span class="progress-description fs-4 mb-2">
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-4 col-md-3 col-12">
+          <div class="info-box bg-blue">
+            <span class="info-box-icon push-bottom"><i class="material-icons">loyalty</i></span>
+            <div class="info-box-content">
+              <span class="info-box-text fw-bold mt-1 ">
+                <%= __('Total Loyalty Points Issued') %>
+              </span>
+              <a href="#" class="text-decoration-none text-white">
+                <span class="progress-description mt-2 mb-2">
+                  <%= loyaltyPointsSum == null ? 0 : loyaltyPointsSum %>
+                    <%= __('Total Loyalty Points Issued') %>
+                </span>
+              </a>
+              <a href="#" class="text-decoration-none text-white">
+                <span class="progress-description fs-4 mb-5">
+                  
+                </span>
+            </a>
+              <span class="progress-description fs-4 mb-2">
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-4 col-md-3 col-12">
+          <div class="info-box bg-success">
+            <span class="info-box-icon push-bottom"><i class="material-icons">
+              account_balance_wallet:
+            </i></span>
+            <div class="info-box-content">
+              <span class="info-box-text fw-bold mt-1 ">
+                <%= __('Total Additional Revenue') %>
+              </span>
+              <a href="#" class="text-decoration-none text-white">
+                <span class="progress-description mt-2 mb-2">
+                  $<%= (isNaN(TARofconservative) || TARofconservative == null) ? 0 : TARofconservative %>
+                    <%= __('Conservative Revenue') %>
+                </span>
+            </a>
+            <a href="#" class="text-decoration-none text-white">
+              <span class="progress-description fs-5">
+                $<%= (isNaN(TARofoptimistic) || TARofoptimistic == null) ? 0 : TARofoptimistic %>
+                <%= __('Optimistic Revenue') %>
+              </span>
+          </a>
+              <span class="progress-description fs-4 mb-3">
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-4 col-md-3 col-12">
+          <div class="info-box bg-orange">
+              <span class="info-box-icon push-bottom"><i class="material-icons">group</i></span>
+              <div class="info-box-content">
+                  <span class="info-box-text fw-bold mt-1 ">
+                      <%= __('Total Spent Per Member') %>
+                  </span>
+                  <a href="#" class="text-decoration-none text-white">
+                    <span class="progress-description mt-2 mb-2">
+                      $<%= (isNaN(totalSpentPerMemberWithOutDiscountAmount) || totalSpentPerMemberWithOutDiscountAmount == null) ? 0 : totalSpentPerMemberWithOutDiscountAmount %>
+                        <%= __('Before Discount Amount') %>
+                    </span>
+                </a>
+                <a href="#" class="text-decoration-none text-white">
+                  <span class="progress-description fs-5">
+                    $<%= (isNaN(totalSpentPerMemberWithDiscountAmount) || totalSpentPerMemberWithDiscountAmount == null) ? 0 : totalSpentPerMemberWithDiscountAmount %>
+                    <%= __('After Discount Amount') %>
+                  </span>
+              </a>
+              </div>
+          </div>
+      </div>
+      </div>
+      <div class="row clearfix">
+        <div class="col-12 col-sm-12 col-lg-6">
+          <div class="card">
+            <div class="card-head">
+              <header>New User Sign-Up (Bar Chart)</header>
+            </div>
+            <div class="card-body">
+             
+              <div class="mdl-tabs mdl-js-tabs">
+                <div class="mdl-tabs__tab-bar tab-left-side">
+                  <a href="#monthlySignup" class="mdl-tabs__tab is-active tab1">Monthly</a>
+                  <a href="#thisWeekSignup" class="mdl-tabs__tab tab1">Weekly</a>
+                  <a href="#lastWeekSignup" class="mdl-tabs__tab tab1">Daily</a>
+                </div>
+                <div class="mdl-tabs__panel p-t-20 is-active tab1" id="monthlySignup"></div>
+                <div class="mdl-tabs__panel p-t-20 tab1" id="thisWeekSignup"></div>
+                <div class="mdl-tabs__panel p-t-20 tab1" id="lastWeekSignup"></div>
+              </div>
+            </div>
+              <!-- <div class="recent-report__chart">
+                <div id="chart8"></div>
+              </div> -->
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-12 col-lg-6">
+          <div class="card" style="height: 485px;">
+            <div class="card-head">
+              <header>Spending Trends</header>
+            </div>
+            <div class="card-body">
+              <div class="d-flex justify-content-between">
+                <div class="mdl-tabs mdl-js-tabs">
+                  <div class="mdl-tabs__tab-bar tab-left-side">
+                    <a href="#monthlySignup" class="mdl-tabs__tab is-active">
+                      Monthly
+                    </a>
+                    <a href="#thisWeekSignup" class="mdl-tabs__tab">
+                      Yearly
+                    </a>
+                  </div>
+                  <div class="mdl-tabs__panel p-t-20 is-active" id="monthlySignup">
+                    <table class="table table-striped table-responsive table-bordered table-hover custom-table table-sm" id="example4">
+                      <thead>
+                        <tr>
+                          <!-- <th class="text-center">
+                            <%= __('S. No.') %>
+                          </th> -->
+                          <th class="text-center">
+                            <%= __('Month') %>
+                          </th>
+                          <th class="text-center">
+                            <%= __('Spending Trends') %>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td class="text-center">Last Month (<%= lastMonthNameWithYear %>)</td>
+                          <td class="text-center">
+                            $<%= (isNaN(lastMonthSpendingTrend) || lastMonthSpendingTrend === null || !isFinite(lastMonthSpendingTrend)) ? 0 : lastMonthSpendingTrend %>
+                           </td>
+                        </tr>
+                        <tr>
+                          <td class="text-center">This Month (<%= currentMonthNameWithYear %>)</td>
+                          <td class="text-center">
+                            $<%= (isNaN(thisMonthSpendingTrend) || thisMonthSpendingTrend === null || !isFinite(thisMonthSpendingTrend)) ? 0 : thisMonthSpendingTrend 
+                            %>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="mdl-tabs__panel p-t-20" id="thisWeekSignup">
+                    <table class="table table-striped table-responsive table-bordered table-hover custom-table table-sm" id="example4">
+                      <thead>
+                        <tr>
+                          <th class="text-center">
+                            <%= __('Year') %>
+                          </th>
+                          <th class="text-center">
+                            <%= __('Spending Trends') %>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                            <td class="text-center">Last Year (<%= lastYearName %>)</td>
+                          <td class="text-center">
+                            $<%= (isNaN(lastYearSpendingTrend) || lastYearSpendingTrend === null || !isFinite(lastYearSpendingTrend)) ? 0 : lastYearSpendingTrend %>
+                         </td>
+                        </tr>
+                        <tr>
+                          <td class="text-center">This Year (<%= currentYearName %>)</td>
+                          <td class="text-center">
+                            $<%= (isNaN(thisYearSpendingTrend) || thisYearSpendingTrend === null || !isFinite(thisYearSpendingTrend)) ? 0 : thisYearSpendingTrend %>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row clearfix">
+       
+      </div>
+  
+      <div class="row">
+        <div class="col-md-6">
+          <div class="tabbable-line">
+            <div class="tab-content">
+              <div class="tab-pane active fontawesome-demo" id="tab1">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="card">
+                      <div class="card-head">
+                        <header>Growth Rate of membership</header>
+                      </div>
+                      <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                          <div class="mdl-tabs mdl-js-tabs">
+                            <div class="mdl-tabs__tab-bar tab-left-side">
+                              <a href="#monthlySignup" class="mdl-tabs__tab is-active">
+                                Monthly
+                              </a>
+                              <a href="#thisWeekSignup" class="mdl-tabs__tab">
+                                Weekly
+                              </a>
+                              <a href="#lastWeekSignup" class="mdl-tabs__tab">
+                                Daily
+                              </a>
+                            </div>
+                            <div class="mdl-tabs__panel p-t-20 is-active" id="monthlySignup">
+                              <table class="table table-striped table-responsive table-bordered table-hover custom-table table-sm" id="example4">
+                                <thead>
+                                  <tr>
+                                    <!-- <th class="text-center">
+                                      <%= __('S. No.') %>
+                                    </th> -->
+                                    <th class="text-center">
+                                      <%= __('Month') %>
+                                    </th>
+                                    <th class="text-center">
+                                      <%= __('Total Sign-Up') %>
+                                    </th>
+                                    <th class="text-center">
+                                      <%= __('Growth Rate') %>
+                                    </th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                 
+                                  <% let initialValue = 0; %>
+                              
+                                  <% // Display last month first %>
+                                  <% if (lastMonthAndThisMonthUserSignups.last_month !== 'month_total') { %>
+                                    <tr>
+                                     
+                                      <td class="text-center">Last Month (<%= lastMonthNameWithYear %>)</td>
+                                      <td class="text-center"><%= lastMonthAndThisMonthUserSignups.last_month %></td>
+                                      <td class="text-center">
+                                        <% if (lastMonthAndThisMonthUserSignups.last_month !== 0 && typeof lastMonthAndThisMonthUserSignups.last_month !== 'undefined') { %>
+                                          <i class="fas fa-arrow-up"></i>
+                                          <%= (lastMonthAndThisMonthUserSignups.last_month * 100).toFixed(2) %>% 
+                                          
+                                        <% } else { %>
+                                          <%= (lastMonthAndThisMonthUserSignups.last_month * 100).toFixed(2) %>% 
+                                        <% } %>
+                                      </td>
+                                    </tr>
+                                  
+                                  <% } %>
+                              
+                                  <% // Display this month %>
+                                  <% if (lastMonthAndThisMonthUserSignups.this_month !== 'month_total') { %>
+                                    <tr>
+                                     
+                                      <td class="text-center">This Month (<%= currentMonthNameWithYear %>)</td>
+                                      <td class="text-center"><%= lastMonthAndThisMonthUserSignups.this_month %></td>
+                                      <td class="text-center">
+                                        <%
+                                          let monthGrowthRate;
+                                          if (lastMonthAndThisMonthUserSignups.last_month !== 0 && typeof lastMonthAndThisMonthUserSignups.last_month !== 'undefined') {
+                                            monthGrowthRate = (lastMonthAndThisMonthUserSignups.this_month - lastMonthAndThisMonthUserSignups.last_month) / lastMonthAndThisMonthUserSignups.last_month * 100;
+                                          } else {
+                                            monthGrowthRate = lastMonthAndThisMonthUserSignups.this_month * 100;
+                                          }
+                                        %>
+                                        <% if (monthGrowthRate > 0) { %>
+                                          <i class="fas fa-arrow-up"></i>
+                                          <%= monthGrowthRate.toFixed(2) %>%
+                                        <% } else if (monthGrowthRate < 0) { %>
+                                          <i class="fas fa-arrow-down"></i>
+                                          <%= monthGrowthRate.toFixed(2) %>%
+                                        <% } else { %>
+                                          -
+                                        <% } %>
+                                      </td>
+                                    </tr>
+                                  <% } %>
+                                </tbody>
+                              </table>
+                            </div>
+                            <div class="mdl-tabs__panel p-t-20" id="thisWeekSignup">
+                              <table class="table table-striped table-responsive table-bordered table-hover custom-table table-sm" id="example4">
+                                <thead>
+                                  <tr>
+                                    <th class="text-center">
+                                      <%= __('Week') %>
+                                    </th>
+                                    <th class="text-center">
+                                      <%= __('Total Sign-Up') %>
+                                    </th>
+                                    <th class="text-center">
+                                      <%= __('Growth Rate') %>
+                                    </th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td class="text-center">Last Week (<%= `${lastWeekStartDate} - ${lastWeekEndDate}` %>)</td>
+                                    <td class="text-center"><%= lastWeekNewUserSignups.last_week_total %></td>
+                                    <td class="text-center">
+                                      <%
+                                        // Calculate last week growth rate
+                                        let lastWeekGrowthRate = 0;
+                                        if (lastWeekNewUserSignups.last_week_total !== 0 && typeof lastWeekNewUserSignups.last_week_total !== 'undefined') {
+                                          lastWeekGrowthRate = (lastWeekNewUserSignups.last_week_total * 100).toFixed(2);
+                                        } else {
+                                          lastWeekGrowthRate = (lastWeekNewUserSignups.last_week_total * 100).toFixed(2);
+                                        }
+                                
+                                        // Set arrow class based on growth rate
+                                        let lastWeekArrowClass = lastWeekGrowthRate > 0 ? "fas fa-arrow-up" : "fas fa-arrow-down";
+                                      %>
+                                      <i class="<%= lastWeekArrowClass %>"></i>
+                                      <%= lastWeekGrowthRate %>%
+                                    </td>
+                                  </tr>
+                                
+                                  <tr>
+                                    <td class="text-center">This Week (<%= `${currentWeekStartDate} - ${ currentWeekEndDate}` %>)</td>
+                                    <td class="text-center"><%= newUserweek.week_total %></td>
+                                    <td class="text-center">
+                                      <%
+                                        // Calculate this week growth rate
+                                        let thisWeekGrowthRate = 0;
+                                        if (lastWeekNewUserSignups.last_week_total !== 0 && typeof lastWeekNewUserSignups.last_week_total !== 'undefined') {
+                                          thisWeekGrowthRate = ((newUserweek.week_total - lastWeekNewUserSignups.last_week_total) / lastWeekNewUserSignups.last_week_total * 100).toFixed(2);
+                                        } else {
+                                          thisWeekGrowthRate = (newUserweek.week_total * 100).toFixed(2);
+                                        }
+                                
+                                        // Set arrow class based on growth rate
+                                        let thisWeekArrowClass = thisWeekGrowthRate > 0 ? "fas fa-arrow-up" : "fas fa-arrow-down";
+                                      %>
+                                      <i class="<%= thisWeekArrowClass %>"></i>
+                                      <%= thisWeekGrowthRate %>%
+                                    </td>
+                                  </tr>
+                                </tbody>
+                                
+                              </table>
+                            </div>
+                            <div class="mdl-tabs__panel p-t-20" id="lastWeekSignup">
+                              <table class="table table-striped table-responsive table-bordered table-hover custom-table table-sm" id="example4">
+                                <thead>
+                                  <tr>
+                                    <th class="text-center">
+                                      <%= __('Day') %>
+                                    </th>
+                                    <th class="text-center">
+                                      <%= __('Total Sign-Up') %>
+                                    </th>
+                                    <th class="text-center">
+                                      <%= __('Growth Rate') %>
+                                    </th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td class="text-center">Yesterday (<%= yesterdayDate %>)</td>
+                                    <td class="text-center"><%= currentAndYesterdayUserSignups.yesterday %></td>
+                                    <td class="text-center">
+                                      <%
+  
+                                        let yesterdayGrowthRate;
+                                
+                                        // Check if yesterday is non-zero before calculating growth rate
+                                        if (currentAndYesterdayUserSignups.two_day_total !== 0) {
+                                          yesterdayGrowthRate = currentAndYesterdayUserSignups.yesterday * 100;
+                                        } else {
+                                          yesterdayGrowthRate = currentAndYesterdayUserSignups.yesterday * 100;
+                                        }
+                                      %>
+                                      <% if (yesterdayGrowthRate > 0) { %>
+                                
+                                        <i class="fas fa-arrow-up"></i>
+                                
+                                        <%= yesterdayGrowthRate.toFixed(2) %>%
+                                
+                                      <% } else if (yesterdayGrowthRate < 0) { %>
+                                
+                                        <i class="fas fa-arrow-down"></i>
+                                
+                                        <%= yesterdayGrowthRate.toFixed(2) %>%
+                                
+                                      <% } else { %>
+  
+                                        -
+  
+                                      <% } %>
+                                
+                                    </td>
+                                
+                                  </tr>
+                                
+                                  <!-- Display Today's Growth Rate -->
+                                
+                                  <tr>
+                                
+                                    <td class="text-center">Today (<%= todayDate %>)</td>
+                                
+                                    <td class="text-center"><%= currentAndYesterdayUserSignups.today %></td>
+                                
+                                    <td class="text-center">
+                                
+                                      <%
+                                        let todayGrowthRate;
+    
+                                        // Check if yesterday is non-zero before calculating growth rate
+                                        if (currentAndYesterdayUserSignups.yesterday !== 0) {
+                                          todayGrowthRate = (currentAndYesterdayUserSignups.today - currentAndYesterdayUserSignups.yesterday) / currentAndYesterdayUserSignups.yesterday * 100;
+                                        } else {
+                                          todayGrowthRate = currentAndYesterdayUserSignups.today * 100;
+                                        }
+                                
+                                      %>
+              
+                                      <% if (todayGrowthRate > 0) { %>
+                                
+                                        <i class="fas fa-arrow-up"></i>
+                                
+                                        <%= todayGrowthRate.toFixed(2) %>%
+                                
+                                      <% } else if (todayGrowthRate < 0) { %>
+                                
+                                        <i class="fas fa-arrow-down"></i>
+                                
+                                        <%= todayGrowthRate.toFixed(2) %>%
+                                
+                                      <% } else { %>
+                                        -
+                                      <% } %>
+                                
+                                    </td>
+                                
+                                  </tr>
+                                
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane" id="tab2"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="tabbable-line">
+            <div class="tab-content">
+              <div class="tab-pane active fontawesome-demo" id="tab1">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="card">
+                      <div class="card-head">
+                        <header>Amount Spent (Average Expenditure)</header>
+                      </div>
+                      <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                          <div class="mdl-tabs mdl-js-tabs">
+                            <div class="mdl-tabs__tab-bar tab-left-side">
+                              <a href="#monthlySignup" class="mdl-tabs__tab is-active">
+                                Monthly
+                              </a>
+                              <a href="#thisWeekSignup" class="mdl-tabs__tab">
+                                Weekly
+                              </a>
+                            </div>
+                            <div class="mdl-tabs__panel p-t-20 is-active" id="monthlySignup">
+                              <table class="table table-striped table-responsive table-bordered table-hover custom-table table-sm" id="example4">
+                                <thead>
+                                  <tr>
+                                    <!-- <th class="text-center">
+                                      <%= __('S. No.') %>
+                                    </th> -->
+                                    <th class="text-center">
+                                      <%= __('Month') %>
+                                    </th>
+                                    <th class="text-center">
+                                      <%= __('Average Expenditure') %>
+                                    </th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td class="text-center">Last Month (<%= lastMonthNameWithYear %>)</td>
+                                    <td class="text-center">
+                                      $<%= (isNaN(lastMonthAverageExpenditure) || lastMonthAverageExpenditure === null || !isFinite(lastMonthAverageExpenditure)) ? 0 : lastMonthAverageExpenditure %>
+                                     </td>
+                                  </tr>
+                                  <tr>
+                                    <td class="text-center">This Month (<%= currentMonthNameWithYear %>)</td>
+                                    <td class="text-center">
+                                      $<%= (isNaN(thisMonthAverageExpenditure) || thisMonthAverageExpenditure === null || !isFinite(thisMonthAverageExpenditure)) ? 0 : thisMonthAverageExpenditure 
+                                      %>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                            <div class="mdl-tabs__panel p-t-20" id="thisWeekSignup">
+                              <table class="table table-striped table-responsive table-bordered table-hover custom-table table-sm" id="example4">
+                                <thead>
+                                  <tr>
+                                    <th class="text-center">
+                                      <%= __('Week') %>
+                                    </th>
+                                    <th class="text-center">
+                                      <%= __('Average Expenditure') %>
+                                    </th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                      <td class="text-center">Last Week (<%= `${lastWeekStartDate} - ${lastWeekEndDate}` %>)</td>
+                                    <td class="text-center">
+                                      $<%= (isNaN(lastWeekAverageExpenditure) || lastWeekAverageExpenditure === null || !isFinite(lastWeekAverageExpenditure)) ? 0 : lastWeekAverageExpenditure %>
+                                   </td>
+                                  </tr>
+                                  <tr>
+                                    <td class="text-center">This Week (<%= `${currentWeekStartDate} - ${ currentWeekEndDate}` %>)</td>
+                                    <td class="text-center">
+                                      $<%= (isNaN(thisWeekAverageExpenditure) || thisWeekAverageExpenditure === null || !isFinite(thisWeekAverageExpenditure)) ? 0 : thisWeekAverageExpenditure %>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane" id="tab2"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="row">
+        <div class="col-md-12">
+          <div class="tabbable-line">
+            <div class="tab-content">
+              <div class="tab-pane active fontawesome-demo" id="tab1">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="card">
+                      <div class="card-head">
+                        <header>Spending Trends</header>
+                      </div>
+                      <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                          <div class="mdl-tabs mdl-js-tabs">
+                            <div class="mdl-tabs__tab-bar tab-left-side">
+                              <a href="#monthlySignup" class="mdl-tabs__tab is-active">
+                                Monthly
+                              </a>
+                              <a href="#thisWeekSignup" class="mdl-tabs__tab">
+                                Yearly
+                              </a>
+                            </div>
+                            <div class="mdl-tabs__panel p-t-20 is-active" id="monthlySignup">
+                              <table class="table table-striped table-responsive table-bordered table-hover custom-table table-sm" id="example4">
+                                <thead>
+                                  <tr>
+                                  
+                                    <th class="text-center">
+                                      <%= __('Month') %>
+                                    </th>
+                                    <th class="text-center">
+                                      <%= __('Spending Trends') %>
+                                    </th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td class="text-center">Last Month (<%= lastMonthNameWithYear %>)</td>
+                                    <td class="text-center">
+                                      $<%= (isNaN(lastMonthSpendingTrend) || lastMonthSpendingTrend === null || !isFinite(lastMonthSpendingTrend)) ? 0 : lastMonthSpendingTrend %>
+                                     </td>
+                                  </tr>
+                                  <tr>
+                                    <td class="text-center">This Month (<%= currentMonthNameWithYear %>)</td>
+                                    <td class="text-center">
+                                      $<%= (isNaN(thisMonthSpendingTrend) || thisMonthSpendingTrend === null || !isFinite(thisMonthSpendingTrend)) ? 0 : thisMonthSpendingTrend 
+                                      %>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                            <div class="mdl-tabs__panel p-t-20" id="thisWeekSignup">
+                              <table class="table table-striped table-responsive table-bordered table-hover custom-table table-sm" id="example4">
+                                <thead>
+                                  <tr>
+                                    <th class="text-center">
+                                      <%= __('Year') %>
+                                    </th>
+                                    <th class="text-center">
+                                      <%= __('Spending Trends') %>
+                                    </th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                      <td class="text-center">Last Year (<%= lastYearName %>)</td>
+                                    <td class="text-center">
+                                      $<%= (isNaN(lastYearSpendingTrend) || lastYearSpendingTrend === null || !isFinite(lastYearSpendingTrend)) ? 0 : lastYearSpendingTrend %>
+                                   </td>
+                                  </tr>
+                                  <tr>
+                                    <td class="text-center">This Year (<%= currentYearName %>)</td>
+                                    <td class="text-center">
+                                      $<%= (isNaN(thisYearSpendingTrend) || thisYearSpendingTrend === null || !isFinite(thisYearSpendingTrend)) ? 0 : thisYearSpendingTrend %>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane" id="tab2"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+    </div>
+  </div>
+<% } %>
+
+
+
+
+
+
+
+

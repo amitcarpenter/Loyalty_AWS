@@ -1,0 +1,235 @@
+<!-- start page content -->
+<style>
+    .color-item {
+        width: 28px;
+        height: 28px;
+        border: 1px solid #ddd;
+        margin: 5px;
+        border-radius: 152px;
+        position: relative;
+        cursor: pointer;
+    }
+
+    /* .color-item {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+    cursor: pointer;
+} */
+    /* .color-item {
+  width: 50px;
+  height: 50px;
+  border: 2px solid #ddd;
+  margin: 5px;
+  position: relative;
+  cursor: pointer;
+} */
+
+    .color-item.selected::after {
+        content: "";
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        bottom: 5px;
+        right: 5px;
+        border: 4px solid #4CAF50;
+        /* Adjust border color as needed */
+        border-radius: 50%;
+    }
+
+    .selected::after {
+        content: '\2713';
+        /* Unicode checkmark symbol */
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+    }
+</style>
+
+<div class="page-content-wrapper">
+    <div class="page-content">
+        <div class="page-bar">
+            <div class="page-title-breadcrumb">
+                <div class=" pull-left">
+                    <div class="page-title">
+                        <%= __('Create Subscription') %>
+                    </div>
+                </div>
+                <ol class="breadcrumb page-breadcrumb pull-right">
+                    <li><i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="/admin/list">
+                            <%= __('Home') %>
+                        </a>&nbsp;<i class="fa fa-angle-right"></i>
+                    </li>
+                    <li><a class="parent-item" href="#">
+                            <%= __('Admin') %>
+                        </a>&nbsp;<i class="fa fa-angle-right"></i>
+                    </li>
+                    <li><a class="parent-item" href="#">
+                            <%= __('Create Admin') %>
+                        </a></li>
+                </ol>
+            </div>
+        </div>
+        <div class="row">
+            <!-- end color quick setting -->
+            <div class="col-md-12 col-sm-12">
+                <div class="card card-box">
+                    <div class="card-head">
+                    </div>
+                    <div class="card-body" id="bar-parent">
+                        <!-- MESSAGE CONTAINER START -->
+                        <div>
+                            <% if(message !='' ) { %>
+                                <div id="myDivSuccess" class="alert alert-dismissible fade show mb-0"
+                                    style="background-color: rgb(183, 237, 183); border: none; color: rgb(2, 120, 2);"
+                                    role="alert">
+                                    <%= message %>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                            aria-label="Close" onclick="hideDivSuccess()"></button>
+                                </div>
+
+                                <script>
+                                    function hideDivSuccess() {
+                                        var div = document.getElementById('myDivSuccess');
+                                        div.style.display = 'none';
+                                    }
+                                </script>
+                                <% } else if(error !='' ){ %>
+                                    <div id="myDiv" class="alert alert-dismissible fade show mb-0"
+                                        style="background-color: rgb(237 183 183); border: none; color: rgb(120 2 2);"
+                                        role="alert">
+                                        <%= error %>
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                                aria-label="Close" onclick="hideDiv()"></button>
+                                    </div>
+                                    <script>
+                                        function hideDiv() {
+                                            var div = document.getElementById('myDiv');
+                                            div.style.display = 'none';
+                                        }
+                                    </script>
+                                    <% } %>
+                        </div>
+                        <!-- MESSAGE CONTAINER END -->
+                        <form action="/admin/subscription/create" method="post" id="form_sample_1"
+                            class="form-horizontal">
+                            <div class="form-body">
+                                <div class="form-group row">
+                                    <label class="control-label col-md-3">
+                                        <%= __('Name') %>
+                                            <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-5">
+                                        <input type="text" name="name" data-required="1"
+                                            placeholder="<%= __('Enter Name') %>" required
+                                            class="form-control input-height" />
+                                    </div>
+                                </div>
+                                <!-- <div class="form-group row">
+                                    <label class="control-label col-md-3">
+                                        <%= __('Currency') %>
+                                            <span class="required"> * </span>
+                                    </label>
+                                    <div class="col-md-5">
+                                        <select class="form-control input-height" name="currency" required>
+                                            <option selected="selected" value="">Select</option>
+                                            <option value="USD">United States Dollar (USD)</option>
+                                            <option value="EUR">Euro (EUR)</option>
+                                            <option value="GBP">British Pound (GBP)</option>
+                                            <option value="JPY">Japanese Yen (JPY)</option>
+                                            <option value="INR">Indian Rupee (INR)</option>
+                                            <option value="CNY">Chinese Yuan (CNY)</option>
+                                            <option value="AUD">Australian Dollar (AUD)</option>
+                                            <option value="CAD">Canadian Dollar (CAD)</option>
+                                            <option value="CHF">Swiss Franc (CHF)</option>
+                                        </select>
+                                    </div>
+                                </div> -->
+                                <div class="form-group row">
+                                    <label class="control-label col-md-3">
+                                        <%= __('Price') %>
+                                            <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-5">
+                                        <input type="number" name="price" data-required="1"
+                                            placeholder="<%= __('Enter Price') %>" required
+                                            class="form-control input-height" />
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="control-label col-md-3">
+                                        <%= __('Subscription Type') %>
+                                            <span class="required"> * </span>
+                                    </label>
+                                    <div class="col-md-5">
+                                        <select class="form-control input-height" name="subscription_type" required>
+                                            <option selected="selected" value="">Select</option>
+                                            <option value="month">Monthly</option>
+                                            <option value="year">Yearly</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="control-label col-md-3">
+                                        <%= __('Period Days') %>
+                                            <span class="required"> * </span>
+                                    </label>
+                                    <div class="col-md-5">
+                                        <div class="input-group col-md-8">
+                                            <input type="number" name="trial_period" data-required="1"
+                                                placeholder="<%= __('Enter Period Days') %>" required
+                                                class="form-control input-height" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="form-group row">
+                                    <label class="control-label col-md-3">
+                                        <%= __('Active') %>
+                                            <span class="required"> * </span>
+                                    </label>
+                                    <div class="col-md-5">
+                                        <select class="form-control input-height" name="subscription_type" required>
+                                            <option selected="selected" value="">Select</option>
+                                            <option value="YES">YES</option>
+                                            <option value="NO">NO</option>
+                                        </select>
+                                    </div>
+                                </div> -->
+                                <div class="form-actions">
+                                    <div class="col-lg-12 p-t-20 text-center">
+                                        <button type="submit"
+                                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 m-r-20 btn-circle btn-primary">
+                                            <%= __('Submit') %>
+                                        </button>
+                                        <a href="/admin/subscription/list">
+                                            <button type="button"
+                                                class="reset mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 btn-circle btn-danger">
+                                                <%= __('Cancel') %>
+                                            </button>
+                                        </a>
+                                    </div>
+                                </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    (function ($) {
+        'use strict';
+        $(function () {
+            $(".reset").click(function () {
+                $(this).closest('form').find("input[type=text], textarea").val("");
+                $(this).closest('form').find("input[type=number], textarea").val("");
+                $(this).closest('form').find("input[type=file], textarea").val("");
+            });
+        });
+    })(jQuery);
+</script>

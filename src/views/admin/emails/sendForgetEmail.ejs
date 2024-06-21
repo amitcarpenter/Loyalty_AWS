@@ -1,0 +1,207 @@
+<html>
+  <head>
+    <style>
+ html, body {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f0f0; /* Add your desired background color */
+}
+
+.form-container {
+  max-width: 400px;
+  background-color: #fff;
+  padding: 32px 24px;
+  font-size: 14px;
+  font-family: inherit;
+  color: #212121;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 370px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.084), 0px 2px 3px rgba(0, 0, 0, 0.168);
+}
+
+.form-container button:active {
+  scale: 0.95;
+}
+
+.form-container .logo-container {
+  text-align: center;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.form-container .form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-container .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.form-container .form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-container .form-group input {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 6px;
+  font-family: inherit;
+  border: 1px solid #ccc;
+}
+
+.form-container .form-group input::placeholder {
+  opacity: 0.5;
+}
+
+.form-container .form-group input:focus {
+  outline: none;
+  border-color: #1778f2;
+}
+
+.form-container .form-submit-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: inherit;
+  color: #fff;
+  background-color: #212121;
+  border: none;
+  width: 100%;
+  padding: 12px 16px;
+  font-size: inherit;
+  gap: 8px;
+  margin: 12px 0;
+  cursor: pointer;
+  border-radius: 6px;
+  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.084), 0px 2px 3px rgba(0, 0, 0, 0.168);
+}
+
+.form-container .form-submit-btn:hover {
+  background-color: #313131;
+}
+
+.form-container .link {
+  color: #1778f2;
+  text-decoration: none;
+}
+
+.form-container .signup-link {
+  align-self: center;
+  font-weight: 500;
+}
+
+.form-container .signup-link .link {
+  font-weight: 400;
+}
+
+.form-container .link:hover {
+  text-decoration: underline;
+}
+
+
+    </style>
+  </head>
+  <body>
+    <div class="form-container">
+      <div class="logo-container">
+        Forgot Password
+      </div>
+
+      <form class="form">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="text" id="email" name="email" placeholder="Enter your email" required="">
+        </div>
+        <button class="form-submit-btn" type="button" onclick="sendEmail()">Send Email</button>
+           <!-- MESSAGE CONTAINER START -->
+           <div>
+            <% if(message && message !='' ) { %>
+                <div id="myDivSuccess" class="alert alert-dismissible fade show mb-0"
+                    style="background-color: rgb(183, 237, 183); border: none; color: rgb(2, 120, 2);"
+                    role="alert">
+                    <%= message %>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"
+                            aria-label="Close" onclick="hideDivSuccess()"></button>
+                </div>
+                <script>
+                    function hideDivSuccess() {
+                        var div = document.getElementById('myDivSuccess');
+                        div.style.display = 'none';
+                    }
+                </script>
+                <% } else if(error && error !='' ){ %>
+                    <div id="myDiv" class="alert alert-dismissible fade show mb-0"
+                        style="background-color: rgb(237 183 183); border: none; color: rgb(120 2 2);"
+                        role="alert">
+                        <%= error %>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                aria-label="Close" onclick="hideDiv()"></button>
+                    </div>
+                    <script>
+                        function hideDiv() {
+                            var div = document.getElementById('myDiv');
+                            div.style.display = 'none';
+                        }
+                    </script>
+                    <% } %>
+        </div>
+        <!-- MESSAGE CONTAINER END -->
+      </form>
+
+      <p class="signup-link">
+        Don't have an account?
+        <a href="#" class="signup-link link"> Sign up now</a>
+      </p>
+    </div>
+  </body>
+  <script>
+     function sendEmail() {
+      // Get the email value from the input
+      const email = document.getElementById('email').value;
+      console.log('email',email)
+      // Your API endpoint
+      const apiUrl = `/admin/emails/sendToken?email=${email}`;
+      // const url = `/admin/emails/reset-password?resetToken=${resetToken}&newPassword=${NewPassword}`;
+
+      // Redirect to the new URL
+      window.location.href = apiUrl;
+      // Make a POST request using the Fetch API
+      // fetch(apiUrl, {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({
+      //     email: email,
+      //     // Add any other data you want to send in the request body
+      //   }),
+      // })
+      // .then(response => {
+      //   if (!response.ok) {
+      //     throw new Error('Network response was not ok');
+      //   }
+      //   return response.json();
+      // })
+      // .then(data => {
+      //   // Handle the response data as needed
+      //   console.log('API response:', data);
+      //   // You can update the UI or show a success message here
+      // })
+      // .catch(error => {
+      //   console.error('There was a problem with the fetch operation:', error);
+      //   // Handle errors or display an error message
+      // });
+    }
+  </script>
+</html>

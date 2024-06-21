@@ -1,0 +1,283 @@
+
+<div>
+    <% if(message !='' ) { %>
+        <div id="myDivSuccess" class="alert alert-dismissible fade show mb-0"
+            style="background-color: rgb(183, 237, 183); border: none; color: rgb(2, 120, 2);" role="alert">
+            <%= message %>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
+                    onclick="hideDivSuccess()"></button>
+        </div>
+        <script>
+            function hideDivSuccess() {
+                var div = document.getElementById('myDivSuccess');
+                div.style.display = 'none';
+            }
+        </script>
+        <% } else if(error !='' ){ %>
+            <div id="myDiv" class="alert alert-dismissible fade show mb-0"
+                style="background-color: rgb(237 183 183); border: none; color: rgb(120 2 2);" role="alert">
+                <%= error %>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
+                        onclick="hideDiv()"></button>
+            </div>
+            <script>
+                function hideDiv() {
+                    var div = document.getElementById('myDiv');
+                    div.style.display = 'none';
+                }
+            </script>
+            <% } %>
+</div>
+<div class="page-content-wrapper">
+    <div class="page-content">
+        <div class="page-bar">
+            <div class="page-title-breadcrumb">
+                <div class=" pull-left">
+                    <div class="page-title">
+                        <%= __('Customer Details') %>
+                    </div>
+                </div>
+                <ol class="breadcrumb page-breadcrumb pull-right">
+                    <li><i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="/admin/dashboard">
+                            <%= __('Home') %>
+                        </a>&nbsp;<i class="fa fa-angle-right"></i>
+                    </li>
+                    <li><a class="parent-item" href="#">
+                            <%= __('Customers Info') %>
+                        </a>&nbsp;<i class="fa fa-angle-right"></i>
+                    </li>
+                    <li><a class="parent-item" href="#">
+                            <%= __('Customers Details') %>
+                        </a>&nbsp;<i class="fa fa-angle-right"></i>
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <div class="row ">
+            <!-- <div class="col-xl-3 col-md-6 col-12">
+                <div class="info-box bg-success">
+                    <span class="info-box-icon push-bottom"><i
+                            class="material-icons">monetization_on</i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Hospital Earning</span>
+                        <span class="info-box-number">13,921</span><span>$</span>
+                        <div class="progress">
+                            <div class="progress-bar" style="width: 50%"></div>
+                        </div>
+                        <span class="progress-description">
+                            50% Increase in 28 Days
+                        </span>
+                    </div>
+                </div>
+            </div> -->
+            <div class="col-xl-4 col-md-3 col-12">
+                <div class="info-box bg-danger">
+                    <span class="info-box-icon push-bottom"><i class="material-icons">terrain</i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text fw-bold mt-1 ">
+                            <%= __('Total Loyalty Points') %>
+                      </span>
+                      <a href="/admin/subscription/manual" class="text-decoration-none text-white">
+                          <span class="progress-description mt-2 mb-2">
+                            <%= totalLoyaltyPoints == null ? 0 : totalLoyaltyPoints %>
+                            <%= __('Total No of Loyalty Points') %>
+                        </span>
+                        </a>
+                        <span class="progress-description fs-4 mb-3">
+                        </span>
+                    </div>
+                </div>
+            </div>
+          
+            <div class="col-xl-4 col-md-3 col-12">
+                <div class="info-box bg-orange">
+                    <span class="info-box-icon push-bottom"><i class="material-icons">public</i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text fw-bold mt-1 ">
+                            <%= __('Total Spent Loyalty Points') %>
+                        </span>
+                        <a href="#" class="text-decoration-none text-white">
+                            <span class="progress-description mt-2 mb-2">
+                                <%= totalRedeemLoyaltyPoints == null ? 0 : totalRedeemLoyaltyPoints %>
+                                <%= __('Total No Of Spent Loyalty Points') %>
+                            </span>
+                        </a>
+                        <span class="progress-description fs-4 mb-3">
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-md-3 col-12">
+                <div class="info-box bg-purple">
+                    <span class="info-box-icon push-bottom"><i class="material-icons">lock</i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text fw-bold mt-1 ">
+                            <%= __('Total Remaining Loyalty Points') %>
+                        </span>
+                        <a href="#" class="text-decoration-none text-white">
+                            <span class="progress-description mt-2 mb-2">
+                                <%= totalRemainingLoyaltyPoints == null ? 0 : totalRemainingLoyaltyPoints %>
+                                <%= __('Total No of Remaining Loyalty Points') %>
+                            </span>
+                        </a>
+                        <span class="progress-description fs-4 mb-3">
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-md-3 col-12">
+                <div class="info-box deepPink-bgcolor">
+                    <span class="info-box-icon push-bottom"><i class="material-icons">hourglass_empty</i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text fw-bold mt-1 ">
+                            <%= __('Total Transaction Amount') %>
+                        </span>
+                        <a href="#" class="text-decoration-none text-white">
+                            <span class="progress-description mt-2 mb-2">
+                                <%= totalTransactionAmount == null ? 0 : totalTransactionAmount %>
+                                <%= __('Total Transaction Amount') %>
+                            </span>
+                        </a> 
+                        <span class="progress-description fs-4 mb-3">
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-md-3 col-12">
+                <div class="info-box deepPink-bgcolor bg-blue">
+                    <span class="info-box-icon push-bottom"><i class="material-icons">trending_up</i></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text fw-bold mt-1 ">
+                            <%= __('Engagement Rate/Current Month') %>
+                        </span>
+                        <a href="#" class="text-decoration-none text-white">
+                            <span class="progress-description mt-2 mb-2">
+                              <%= isNaN(engagementRate) ? '0' : engagementRate %>
+                              <%= __('% Engagement Rate') %>
+                            </span>
+                          </a>              
+                        <span class="progress-description fs-4 mb-3">
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tabbable-line">
+                    <div class="tab-content">
+                        <div class="tab-pane active fontawesome-demo" id="tab1">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-head">
+                                            <header>Transaction Details</header>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between">
+                                            </div>
+                                            <table class="table table-striped table-responsive table-bordered table-hover custom-table table-sm" id="example4">
+                                                <thead>
+                                                  <tr>
+                                                    <th class="text-center"><%= __('S. No.') %></th>
+                                                    <th class="text-center"><%= __('Date of Visit') %></th>
+                                                    <th class="text-center"><%= __('Transaction Amount') %></th>
+                                                    <th class="text-center"><%= __('Points Redeemed') %></th>
+                                                    <th class="text-center"><%= __('Points Received') %></th>
+                                                  </tr>
+                                                </thead>
+                                                <tbody>
+                                                  <% if (totalItems) { %>
+                                                    <% items.forEach((data, index) => { %>
+                                                      <tr>
+                                                        <td class="text-center">
+                                                          <%= index + 1 + ((currentPage - 1) * 10) %>
+                                                        </td>
+                                                        <td class="text-center">
+                                                          <%= data.visit_date %>
+                                                        </td>
+                                                        <td class="text-center">
+                                                          <%= data.transaction_amount !== null ? data.transaction_amount : '0' %>
+                                                        </td>
+                                                        <td class="text-center">
+                                                          <%= data.redeem_loyalty_point !== null ? data.redeem_loyalty_point : '0' %>
+                                                        </td>
+                                                        <td class="text-center">
+                                                          <%= data.received_loyalty_point !== null ? data.received_loyalty_point : '0' %>
+                                                        </td> 
+                                                        
+                                                      </tr>
+                                                    <% }) %>
+                                                  <% } else { %>
+                                                    <tr>
+                                                      <td valign="top" colspan="11" class="dataTables_empty" style="width: 200%">
+                                                        <%= __('No data found') %>
+                                                      </td>
+                                                    </tr>
+                                                  <% } %>
+                                                </tbody>
+                                                
+                                              </table>
+                                              <nav aria-label="Page navigation example">
+                                                <% if (totalPages> 0) { %>
+                                                  <ul class="pagination text-center">
+                                                    <% if (currentPage==1) { %>
+                                                      <li class="disabled"><a>
+                                                          <%= __('First') %>
+                                                        </a></li>
+                                                      <% } else { %>
+                                                        <li>
+                                                          <a href="/admin/customer/detail/<%= customerID %>?page=1&limit=10">
+                                                            <%= __('First') %>
+                                                          </a>
+                                                        </li>
+                                                        <% } %>
+                                                          <% var i=(Number(currentPage)> 5 ?
+                                                            Number(currentPage) - 4 : 1) %> <% if (i !==1) { %>
+                                                              <li class="disabled"><a>...</a></li>
+                                                              <% } %>
+                                                                <% for (; i <=(Number(currentPage) + 4) && i <=totalPages; i++) { %>
+                                                                  <% if (i==currentPage) { %>
+                                                                    <li class="active"><a>
+                                                                        <%= i %>
+                                                                      </a></li>
+                                                                    <% } else { %>
+                                                                      <li>
+                                                                        <a
+                                                                          href="/admin/customer/detail/<%= customerID %>?page=<%= i %>&limit=10">
+                                                                          <%= i %>
+                                                                        </a>
+                                                                      </li>
+                                                                      <% } %>
+                                                                        <% if (i==Number(currentPage) + 4 && i < totalPages) { %>
+                                                                          <li class="disabled"><a>...</a></li>
+                                                                          <% } %>
+                                                                            <% } %>
+                                                                              <% if (currentPage==totalPages) { %>
+                                                                                <li class="disabled"><a>
+                                                                                    <%= __('Last') %>
+                                                                                  </a></li>
+                                                                                <% } else { %>
+                                                                                  <li>
+                                                                                    <a
+                                                                                      href="/admin/customer/detail/<%= customerID %>?page=<%= totalPages %>&limit=10">
+                                                                                      <%= __('Last') %>
+                                                                                    </a>
+                                                                                  </li>
+                                                                                  <% } %>
+                                                  </ul>
+                                                  <% } %>
+                                              </nav>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="tab2"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

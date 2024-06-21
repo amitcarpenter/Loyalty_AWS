@@ -1,0 +1,167 @@
+<!-- start page content -->
+<div class="page-content-wrapper">
+    <div class="page-content">
+        <div class="page-bar">
+            <div class="page-title-breadcrumb">
+                <div class=" pull-left">
+                    <div class="page-title">
+                        <%= __('Edit Reward') %>
+                    </div>
+                </div>
+                <ol class="breadcrumb page-breadcrumb pull-right">
+                    <li><i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="/admin/dashboard">
+                            <%= __('Home') %>
+                        </a>&nbsp;<i class="fa fa-angle-right"></i>
+                    </li>
+                    <li><a class="parent-item" href="/admin/reward/list">
+                            <%= __('Rewards') %>
+                        </a>&nbsp;<i class="fa fa-angle-right"></i>
+                    </li>
+                    <li><a class="parent-item" href="#">
+                            <%= __('Edit Reward') %>
+                        </a></li>
+                </ol>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12">
+                <div class="card card-box">
+                    <div class="card-head">
+                    </div>
+                    <div class="card-body" id="bar-parent">
+                        <!-- MESSAGE CONTAINER START -->
+                        <div>
+                            <% if(message !='' ) { %>
+                                <div id="myDivSuccess" class="alert alert-dismissible fade show mb-0"
+                                    style="background-color: rgb(183, 237, 183); border: none; color: rgb(2, 120, 2);"
+                                    role="alert">
+                                    <%= message %>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                            aria-label="Close" onclick="hideDivSuccess()"></button>
+                                </div>
+                                <script>
+                                    function hideDivSuccess() {
+                                        var div = document.getElementById('myDivSuccess');
+                                        div.style.display = 'none';
+                                    }
+                                </script>
+                                <% } else if(error !='' ){ %>
+                                    <div id="myDiv" class="alert alert-dismissible fade show mb-0"
+                                        style="background-color: rgb(237 183 183); border: none; color: rgb(120 2 2);"
+                                        role="alert">
+                                        <%= error %>
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                                aria-label="Close" onclick="hideDiv()"></button>
+                                    </div>
+                                    <script>
+                                        function hideDiv() {
+                                            var div = document.getElementById('myDiv');
+                                            div.style.display = 'none';
+                                        }
+                                    </script>
+                                    <% } %>
+                        </div>
+                        <!-- MESSAGE CONTAINER END -->
+                        <form action="/admin/reward/update/<%= data.id %>" method="post" id="form_sample_1" class="form-horizontal">
+                        <div class="form-body">
+                            <div class="form-group row">
+                                <label class="control-label col-md-3">
+                                    <%= __('Reward Title') %>
+                                        <span class="required">*</span>
+                                </label>
+                                <div class="col-md-5">
+                                    <input type="text" name="title" data-required="1"
+                                        placeholder="<%= __('Enter Reward Title') %>" required
+                                        class="form-control input-height"  value="<%= data.title %>"/>
+                                </div>
+                            </div>
+                            <!-- <div class="form-group row">
+                                <label class="control-label col-md-3">
+                                    <%= __('Reward Image') %>
+                                        <span class="required"> * </span>
+                                </label>
+                                <div class="col-md-5">
+                                    <input type="file" name="image" class="default" />
+                                    <a href="<%= data.image %>" target="_blank">
+                                        <img src="<%= data.image %>"
+                                             style="height: 50px; width: 50px; border-radius: 100%;" alt="...">
+                                    </a>
+                                </div>
+                            </div> -->
+                            <div class="form-group row">
+                                <label class="control-label col-md-3">
+                                    <%= __('Loyalty Points') %>
+                                        <span class="required"> * </span>
+                                </label>
+                                <div class="col-md-5">
+                                    <input type="number" name="loyalty_point" data-required="1"
+                                        placeholder="<%= __('Enter Loyalty Points') %>" required
+                                        class="form-control input-height"  value="<%= data.loyalty_point %>" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label col-md-3">
+                                    <%= __('Valid From Start Date') %>
+                                        <!-- <span class="required">*</span> -->
+                                </label>
+                                <div class="col-md-5">
+                                    <div id="dateIcon" class="input-append date">
+                                        <div class="input-group datePicker">
+                                            <input class="formDatePicker form-control" type="date" 
+                                            placeholder="<%= __('Valid From Start Date') %>" 
+                                                name="start_date" data-input  value="<%= data.start_date %>">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label col-md-3">
+                                    <%= __('Valid till End Date') %>
+                                        <!-- <span class="required"> * </span> -->
+                                </label>
+                                <div class="col-md-5">
+                                    <div id="dateIcon3" class="input-append date">
+                                        <div class="input-group datePicker">
+                                            <input class="formDatePicker form-control" type="date" 
+                                            placeholder="<%= __('Valid From End Date') %>"
+                                                name="end_date" data-input value="<%= data.end_date %>">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                                                      
+                            <div class="form-actions">
+                                <div class="col-lg-12 p-t-20 text-center">
+                                    <button type="submit"
+                                        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 m-r-20 btn-circle btn-primary">
+                                        <%= __('Submit') %>
+                                    </button>
+                                    <a href="/admin/reward/list">
+                                        <button type="button"
+                                            class="reset mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 btn-circle btn-danger">
+                                            <%= __('Cancel') %>
+                                        </button>
+                                    </a>
+                                </div>
+                            </div>
+                    </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end page content -->
+<script>
+    (function ($) {
+        'use strict';
+        $(function () {
+            $(".reset").click(function () {
+                $(this).closest('form').find("input[type=text], textarea").val("");
+                $(this).closest('form').find("input[type=number], textarea").val("");
+                $(this).closest('form').find("input[type=file], textarea").val("");
+            });
+        });
+    })(jQuery);
+</script>

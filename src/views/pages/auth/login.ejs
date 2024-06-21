@@ -1,0 +1,104 @@
+<div class="main">
+  <!-- Sing in Form -->
+  <section class="sign-in">
+      <div class="container">
+          <div class="signin-content">
+              <div class="signin-image">
+                  <figure><img src="/public/admin/img/oridos/login-img.png" alt="sing up image"></figure>
+              </div>
+              <div class="signin-form">
+                  <h2 class="form-title">
+                     Login 
+                  </h2>
+                     <!-- MESSAGE CONTAINER START -->
+                     <div>
+                        <% if(message !='' ) { %>
+                            <div id="myDivSuccess" class="alert alert-dismissible fade show mb-0"
+                                style="background-color: rgb(183, 237, 183); border: none; color: rgb(2, 120, 2);"
+                                role="alert">
+                                <%= message %>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                        aria-label="Close" onclick="hideDivSuccess()"></button>
+                            </div>
+                            <script>
+                                function hideDivSuccess() {
+                                    var div = document.getElementById('myDivSuccess');
+                                    div.style.display = 'none';
+                                }
+                            </script>
+                            <% } else if(error !='' ){ %>
+                                <div id="myDiv" class="alert alert-dismissible fade show mb-0"
+                                    style="background-color: rgb(237 183 183); border: none; color: rgb(120 2 2);"
+                                    role="alert">
+                                    <%= error %>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                            aria-label="Close" onclick="hideDiv()"></button>
+                                </div>
+                                <script>
+                                    function hideDiv() {
+                                        var div = document.getElementById('myDiv');
+                                        div.style.display = 'none';
+                                    }
+                                </script>
+                                <% } %>
+                    </div>
+                    <!-- MESSAGE CONTAINER END -->
+                    <form class="register-form" id="login-form" action="/admin/login" method="post">
+                        <div class="form-group">
+                            <div class="">
+                                <input name="email" type="text" placeholder="User Name" required
+                                    value="<%= formValue && formValue.email ? formValue.email:''  %>"
+                                    class="form-control input-height" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="">
+                                <input name="password" type="password" placeholder="Password" required
+                                    value="<%= formValue && formValue.password ? formValue.password: ''  %>"
+                                    class="form-control input-height" />
+                            </div>
+                        </div>
+                        <div class="form-group form-button">
+                            <button class="btn btn-round btn-primary mx-2" type="submit" name="signin" id="signin"
+                                style="letter-spacing: 1.5px;
+                                font-size: 12px;background: #6673fc">
+                                <%= __("Login") %>
+                            </button>
+                            <!-- <a href="/admin/forget-password" class="" name="signin" id="signin"
+                            style="letter-spacing: 1.5px;
+                                    font-size: 14px;
+                                    text-decoration: underline;"> -->
+                                    <a href="/admin/forget-password" class="" name="signin" id="signin"
+                            style="letter-spacing: 1.5px;
+                                    font-size: 14px;
+                                    text-decoration: underline;">
+                            <%= __("Forgot Password") %>
+                        </a>                        
+                        </div>
+                    </form>
+                  <br>
+                  <!-- <button class="btn btn-round btn-primary mx-2" type="submit" name="signin" id="signin"
+                  style="letter-spacing: 1.5px;
+                  font-size: 12px;background: #6673fc">
+                Login
+              </button>
+                  <button onclick="forgetPassword()" class="btn btn-round btn-primary mx-2"
+                  style="letter-spacing: 1.5px;
+                  font-size: 12px;background: #6673fc">
+                Forget Password
+              </button> -->
+              </div>
+          </div>
+      </div>
+  </section>
+
+</div>
+<script>
+    function forgetPassword() {
+        // Construct the URL with the query parameter
+        const url = `/admin/emails/forgot-password`;
+
+        // Redirect to the constructed URL or perform any other action
+        window.location.href = url;
+    }
+</script>

@@ -1,0 +1,535 @@
+<div class="page-content-wrapper">
+    <div class="page-content">
+      <div class="page-bar">
+        <div class="page-title-breadcrumb">
+            <div class=" pull-left">
+                <div class="page-title"><%= __('All Subscriptions') %></div>
+            </div>
+            <ol class="breadcrumb page-breadcrumb pull-right">
+                <li><i class="fa fa-home"></i>&nbsp;<a class="parent-item"
+                        href="/admin/list"><%= __('Home') %></a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li><a class="parent-item" href="#"><%= __('Subscriptions') %></a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <!-- <li><a class="parent-item" href="#"><%= __('Create Banner') %></a></li> -->
+            </ol>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="tabbable-line">
+            <div class="tab-content">
+              <div class="tab-pane active fontawesome-demo" id="tab1">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="card">
+                      <div class="card-body">
+                        <div>
+                          <% if(message !='' ) { %>
+                            <div id="myDivSuccess" class="alert alert-dismissible fade show mb-0"
+                              style="background-color: rgb(183, 237, 183); border: none; color: rgb(2, 120, 2);"
+                              role="alert">
+                              <%= message %>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
+                                  onclick="hideDivSuccess()"></button>
+                            </div>
+                            <script>
+                              function hideDivSuccess() {
+                                var div = document.getElementById('myDivSuccess');
+                                div.style.display = 'none';
+                              }
+                            </script>
+                            <% } else if(error !='' ){ %>
+                              <div id="myDiv" class="alert alert-dismissible fade show mb-0"
+                                style="background-color: rgb(237 183 183); border: none; color: rgb(120 2 2);"
+                                role="alert">
+                                <%= error %>
+                                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
+                                    onclick="hideDiv()"></button>
+                              </div>
+                              <script>
+                                function hideDiv() {
+                                  var div = document.getElementById('myDiv');
+                                  div.style.display = 'none';
+                                }
+                              </script>
+                              <% } %>
+                        </div>
+                        <div class="d-flex bd-highlight mb-3">
+                          <div class="p-2 bd-highlight"><a type="button" class="btn btn-round btn-primary"
+                              href="/admin/subscription/create">
+                              <%= __('Add Subscription') %>
+                            </a></div>
+                          <!-- <div class="p-2 bd-highlight">
+                            <button type="button" class="btn btn-round btn-primary" id="editCategoryButton"
+                              data-bs-toggle="modal" data-bs-target="#categoryModal">
+                              <%= __('Login as Admin') %>
+                            </button>
+                          </div> -->
+                        </div>
+                        <div class="d-flex justify-content-between">
+                          <!-- <div class="card-head ms-3"> -->
+                            <!-- <ul class="navbar-nav ms-auto mb-2 mb-lg-2">
+                              <a type="button" class="btn btn-round btn-primary" href="/admin/create">
+                                <%= __('Add Admin') %>
+                              </a>
+                            </ul> -->
+                          <!-- </div> -->
+                          <!-- <ul>
+                            <form method="get" style="display: flex">
+                              <ul class="navbar-nav ms-auto mb-2 mb-lg-2 me-3">
+                                <input
+                                  type="text"
+                                  value="<%= search_text%>"
+                                  name="search_text"
+                                  style="height: 35px"
+                                  class="form-control form-control-lg border-1"
+                                  placeholder="<%= __('Banner Title') %>"
+                                />
+                              </ul>
+                              <ul class="navbar-nav ms-auto mb-2 mb-lg-2">
+                                <button
+                                  type="button"
+                                  class="btn btn-round btn-primary"
+                                  onclick="submit()"
+                                >
+                                  <%= __('Search') %>
+                                </button>
+                              </ul>
+                            </form>
+                          </ul> -->
+                        </div>
+                        <table class="table table-striped table-responsive table-bordered table-hover custom-table table-sm" id="example4">
+                          <thead>
+                              <tr>
+                                  <th class="text-center"><%= __('S. No.') %></th>
+                                  <th class="text-center"><%= __('Name') %></th>
+                                  <th class="text-center"><%= __('Price') %></th>
+                                  <th class="text-center"><%= __('Subscription Type') %></th>
+                                  <th class="text-center"><%= __('Period Days') %></th>
+                                  <th class="text-center"><%= __('Actions') %></th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <% if (totalItems) { %>
+                                  <% items.forEach((data, index) => { %>
+                                      <tr>
+                                          <td class="text-center">
+                                              <%= index + 1 + ((currentPage - 1) * 10) %>
+                                          </td>
+                                          <td class="text-center">
+                                              <%= data.name ? data.name : "-----" %>
+                                          </td>
+                                          <td class="text-center">
+                                            <%= data.price !== null && data.price !== undefined ? data.price : "-----" %>
+                                        </td>
+                                        
+                                          <td class="text-center">
+                                              <%= (data.id === 1) ? (data.subscription_type ? data.subscription_type : "-----") : (data.subscription_type ? (data.subscription_type.charAt(0).toUpperCase() + data.subscription_type.slice(1) + 'ly') : "-----") %>
+                                          </td>
+                                          <td class="text-center">
+                                            <%= data.trial_period !== null && data.trial_period !== undefined ? data.trial_period : "-----" %>
+                                        </td>
+                                        
+                                          <td class="text-center">
+                                            <% if (data.id === 1) { %>
+                                                <a href="/admin/subscription/edit/<%= data.id %>" class="tblEditBtn">
+                                                    <i class="fa fa-pencil"></i>
+                                                </a>
+                                            <% } else { %>
+                                                <a href="/admin/subscription/edit/<%= data.id %>" class="tblEditBtn">
+                                                    <i class="fa fa-pencil"></i>
+                                                </a>
+                                                <button data-id="<%= data.id %>" style="border: none;" value="<%= data.id %>" type="button" class="deleteRequest tblDelBtn btn">
+                                                    <i class="fa fa-trash-o"></i>
+                                                </button>
+                                            <% } %>
+                                        </td>
+                                        
+                                          
+                                      </tr>
+                                  <% }) %>
+                              <% } else { %>
+                                  <tr>
+                                      <td valign="top" colspan="11" class="dataTables_empty" style="width: 200%">
+                                          <%= __('No data found') %>
+                                      </td>
+                                  </tr>
+                              <% } %>
+                          </tbody>
+                      </table>
+                      
+                        
+                      
+                        <nav aria-label="Page navigation example">
+                          <% if (totalPages > 0) { %>
+                          <ul class="pagination text-center">
+                            <% if (currentPage == 1) { %>
+                            <li class="disabled"><a><%= __('First') %></a></li>
+                            <% } else { %>
+                            <li>
+                              <a
+                                href="/admin/subscription/list?page=1&limit=10?search_text=<%= search_text%>"
+                                ><%= __('First') %></a
+                              >
+                            </li>
+                            <% } %> <% var i = (Number(currentPage) > 5 ?
+                            Number(currentPage) - 4 : 1) %> <% if (i !== 1) { %>
+                            <li class="disabled"><a>...</a></li>
+                            <% } %> <% for (; i <= (Number(currentPage) + 4) && i
+                            <=totalPages; i++) { %> <% if (i == currentPage) { %>
+                            <li class="active"><a><%= i %></a></li>
+                            <% } else { %>
+                            <li>
+                              <a
+                                href="/admin/subscription/list?page=<%= i %>&limit=10?search_text=<%= search_text%>"
+                              >
+                                <%= i %>
+                              </a>
+                            </li>
+                            <% } %> <% if (i == Number(currentPage) + 4 && i <
+                            totalPages) { %>
+                            <li class="disabled"><a>...</a></li>
+                            <% } %> <% } %> <% if (currentPage == totalPages) { %>
+                            <li class="disabled"><a><%= __('Last') %></a></li>
+                            <% } else { %>
+                            <li>
+                              <a
+                                href="/admin/subscription/list?page=<%= totalPages %>&limit=10?search_text=<%= search_text%>"
+                              >
+                                <%= __('Last') %>
+                              </a>
+                            </li>
+                            <% } %>
+                          </ul>
+                          <% } %>
+                        </nav>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane" id="tab2"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <style>
+      .pagination {
+        display: inline-block;
+        padding-left: 0;
+        margin: 20px 0;
+        border-radius: 4px;
+      }
+  
+      .pagination>li {
+        display: inline;
+      }
+  
+      .pagination>li>a,
+      .pagination>li>span {
+        position: relative;
+        float: left;
+        padding: 6px 12px;
+        margin-left: -1px;
+        line-height: 1.42857143;
+        color: #337ab7;
+        text-decoration: none;
+        background-color: #fff;
+        border: 1px solid #ddd;
+      }
+  
+      .pagination>li:first-child>a,
+      .pagination>li:first-child>span {
+        margin-left: 0;
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+      }
+  
+      .pagination>li:last-child>a,
+      .pagination>li:last-child>span {
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px;
+      }
+  
+      .pagination>li>a:hover,
+      .pagination>li>span:hover,
+      .pagination>li>a:focus,
+      .pagination>li>span:focus {
+        background-color: #eee;
+      }
+  
+      .pagination>.active>a,
+      .pagination>.active>span,
+      .pagination>.active>a:hover,
+      .pagination>.active>span:hover,
+      .pagination>.active>a:focus,
+      .pagination>.active>span:focus {
+        z-index: 2;
+        color: #fff;
+        cursor: default;
+        background-color: #337ab7;
+        border-color: #337ab7;
+      }
+  
+      .pagination>.disabled>span,
+      .pagination>.disabled>span:hover,
+      .pagination>.disabled>span:focus,
+      .pagination>.disabled>a,
+      .pagination>.disabled>a:hover,
+      .pagination>.disabled>a:focus {
+        color: #777;
+        cursor: not-allowed;
+        background-color: #fff;
+        border-color: #ddd;
+      }
+  
+      .pagination-lg>li>a,
+      .pagination-lg>li>span {
+        padding: 10px 16px;
+        font-size: 18px;
+        line-height: 1.3333333;
+      }
+  
+      .pagination-lg>li:first-child>a,
+      .pagination-lg>li:first-child>span {
+        border-top-left-radius: 6px;
+        border-bottom-left-radius: 6px;
+      }
+  
+      .pagination-lg>li:last-child>a,
+      .pagination-lg>li:last-child>span {
+        border-top-right-radius: 6px;
+        border-bottom-right-radius: 6px;
+      }
+  
+      .pagination-sm>li>a,
+      .pagination-sm>li>span {
+        padding: 5px 10px;
+        font-size: 12px;
+        line-height: 1.5;
+      }
+  
+      .pagination-sm>li:first-child>a,
+      .pagination-sm>li:first-child>span {
+        border-top-left-radius: 3px;
+        border-bottom-left-radius: 3px;
+      }
+  
+      .pagination-sm>li:last-child>a,
+      .pagination-sm>li:last-child>span {
+        border-top-right-radius: 3px;
+        border-bottom-right-radius: 3px;
+      }
+  
+      .responsive-table {
+        width: 100%;
+        table-layout: fixed;
+      }
+  
+      .responsive-table td,
+      .responsive-table th {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+      }
+  
+      .table {
+        width: 100%;
+        max-width: 100%;
+        margin-bottom: 1rem;
+      }
+  
+      .table th,
+      .table td {
+        padding: 0.75rem;
+        vertical-align: top;
+        border-top: 1px solid #eceeef;
+      }
+  
+      .table thead th {
+        vertical-align: bottom;
+        font-size: small;
+        border-bottom: 2px solid #eceeef;
+      }
+  
+      .table tbody+tbody {
+        border-top: 2px solid #eceeef;
+      }
+  
+      .table .table {
+        background-color: #fff;
+      }
+  
+      .table-sm th,
+      .table-sm td {
+        padding: 0.3rem;
+      }
+  
+      .table-bordered {
+        border: 1px solid #eceeef;
+      }
+  
+      .table-bordered th,
+      .table-bordered td {
+        border: 1px solid #eceeef;
+      }
+  
+      .table-bordered thead th,
+      .table-bordered thead td {
+        border-bottom-width: 2px;
+      }
+  
+      .table-striped tbody tr:nth-of-type(odd) {
+        background-color: rgba(0, 0, 0, 0.05);
+      }
+  
+      .table-hover tbody tr:hover {
+        background-color: rgba(0, 0, 0, 0.075);
+      }
+  
+      .table-active,
+      .table-active>th,
+      .table-active>td {
+        background-color: rgba(0, 0, 0, 0.075);
+      }
+  
+      .table-hover .table-active:hover {
+        background-color: rgba(0, 0, 0, 0.075);
+      }
+  
+      .table-hover .table-active:hover>td,
+      .table-hover .table-active:hover>th {
+        background-color: rgba(0, 0, 0, 0.075);
+      }
+  
+      .table-success,
+      .table-success>th,
+      .table-success>td {
+        background-color: #dff0d8;
+      }
+  
+      .table-hover .table-success:hover {
+        background-color: #d0e9c6;
+      }
+  
+      .table-hover .table-success:hover>td,
+      .table-hover .table-success:hover>th {
+        background-color: #d0e9c6;
+      }
+  
+      .table-info,
+      .table-info>th,
+      .table-info>td {
+        background-color: #d9edf7;
+      }
+  
+      .table-hover .table-info:hover {
+        background-color: #c4e3f3;
+      }
+  
+      .table-hover .table-info:hover>td,
+      .table-hover .table-info:hover>th {
+        background-color: #c4e3f3;
+      }
+  
+      .table-warning,
+      .table-warning>th,
+      .table-warning>td {
+        background-color: #fcf8e3;
+      }
+  
+      .table-hover .table-warning:hover {
+        background-color: #faf2cc;
+      }
+  
+      .table-hover .table-warning:hover>td,
+      .table-hover .table-warning:hover>th {
+        background-color: #faf2cc;
+      }
+  
+      .table-danger,
+      .table-danger>th,
+      .table-danger>td {
+        background-color: #f2dede;
+      }
+  
+      .table-hover .table-danger:hover {
+        background-color: #ebcccc;
+      }
+  
+      .table-hover .table-danger:hover>td,
+      .table-hover .table-danger:hover>th {
+        background-color: #ebcccc;
+      }
+  
+      .thead-inverse th {
+        color: #fff;
+        background-color: #292b2c;
+      }
+  
+      .thead-default th {
+        color: #464a4c;
+        background-color: #eceeef;
+      }
+  
+      .table-inverse {
+        color: #fff;
+        background-color: #292b2c;
+      }
+  
+      .table-inverse th,
+      .table-inverse td,
+      .table-inverse thead th {
+        border-color: #fff;
+      }
+  
+      .table-inverse.table-bordered {
+        border: 0;
+      }
+  
+      .table-responsive {
+        /* display: block; */
+        width: 100%;
+        font-size: small;
+        overflow-x: auto;
+        -ms-overflow-style: -ms-autohiding-scrollbar;
+      }
+  
+      .table-responsive.table-bordered {
+        border: 0;
+      }
+    </style>
+  </div>
+  
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <script>
+    let id;
+    const deleteButtons = document.querySelectorAll('.deleteRequest');
+    deleteButtons.forEach((button) => {
+      button.addEventListener('click', (e) => {
+        const DataId = e.target.closest('[data-id]').getAttribute('data-id');
+        id = DataId;
+        console.log(DataId)
+        event.preventDefault();
+        confirmDelete(e.target.href);
+        console.log("id")
+      })
+    })
+    function confirmDelete(deleteUrl) {
+      Swal.fire({
+        title: '<%- __("Are you sure") -%>',
+        text: '<%- __("You want to delete it") -%>',
+        icon: '<%- __("warning") -%>',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '<%- __("Yes, delete it") -%>'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = `/admin/subscription/delete/${id}`;
+        }
+      });
+    }
+  
+  </script>

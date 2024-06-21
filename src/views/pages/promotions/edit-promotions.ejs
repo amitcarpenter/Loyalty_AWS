@@ -1,0 +1,316 @@
+<!-- start page content -->
+<style>
+    .color-item {
+        width: 28px;
+        height: 28px;
+        border: 1px solid #ddd;
+        margin: 5px;
+        border-radius: 152px;
+        position: relative;
+        cursor: pointer;
+    }
+
+    .color-item.selected::after {
+        content: "";
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        bottom: 5px;
+        right: 5px;
+        border: 4px solid #4CAF50;
+        /* Adjust border color as needed */
+        border-radius: 50%;
+    }
+
+    .selected::after {
+        content: '\2713';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+    }
+</style>
+
+<div class="page-content-wrapper">
+    <div class="page-content">
+        <div class="page-bar">
+            <div class="page-title-breadcrumb">
+                <div class=" pull-left">
+                    <div class="page-title">
+                        <%= __('Edit Promotion') %>
+                    </div>
+                </div>
+                <ol class="breadcrumb page-breadcrumb pull-right">
+                    <li><i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="/admin/dashboard">
+                            <%= __('Home') %>
+                        </a>&nbsp;<i class="fa fa-angle-right"></i>
+                    </li>
+                    <li><a class="parent-item" href="#">
+                            <%= __('Promotion') %>
+                        </a>&nbsp;<i class="fa fa-angle-right"></i>
+                    </li>
+                    <li><a class="parent-item" href="#">
+                            <%= __('Edit Promotion') %>
+                        </a></li>
+                </ol>
+            </div>
+        </div>
+        <div class="row">
+            <!-- start color quick setting -->
+            <!-- <div class="settingSidebar">
+                <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>
+                </a>
+                <div class="settingSidebar-body ps-container ps-theme-default">
+                    <div class=" fade show active">
+                        <div class="setting-panel-header">Setting Panel
+                        </div>
+                        <div class="quick-setting slimscroll-style">
+                            <ul id="themecolors">
+                                <li>
+                                    <p class="sidebarSettingTitle">Sidebar Color</p>
+                                </li>
+                                <li class="complete">
+                                    <div class="theme-color sidebar-theme">
+                                        <a href="#" data-theme="white"><span class="head"></span><span
+                                                class="cont"></span></a>
+                                        <a href="#" data-theme="dark"><span class="head"></span><span
+                                                class="cont"></span></a>
+                                        <a href="#" data-theme="blue"><span class="head"></span><span
+                                                class="cont"></span></a>
+                                        <a href="#" data-theme="indigo"><span class="head"></span><span
+                                                class="cont"></span></a>
+                                        <a href="#" data-theme="cyan"><span class="head"></span><span
+                                                class="cont"></span></a>
+                                        <a href="#" data-theme="green"><span class="head"></span><span
+                                                class="cont"></span></a>
+                                        <a href="#" data-theme="red"><span class="head"></span><span
+                                                class="cont"></span></a>
+                                    </div>
+                                </li>
+                                <li>
+                                    <p class="sidebarSettingTitle">Header Brand color</p>
+                                </li>
+                                <li class="theme-option">
+                                    <div class="theme-color logo-theme">
+                                        <a href="#" data-theme="logo-white"><span class="head"></span><span
+                                                class="cont"></span></a>
+                                        <a href="#" data-theme="logo-dark"><span class="head"></span><span
+                                                class="cont"></span></a>
+                                        <a href="#" data-theme="logo-blue"><span class="head"></span><span
+                                                class="cont"></span></a>
+                                        <a href="#" data-theme="logo-indigo"><span class="head"></span><span
+                                                class="cont"></span></a>
+                                        <a href="#" data-theme="logo-cyan"><span class="head"></span><span
+                                                class="cont"></span></a>
+                                        <a href="#" data-theme="logo-green"><span class="head"></span><span
+                                                class="cont"></span></a>
+                                        <a href="#" data-theme="logo-red"><span class="head"></span><span
+                                                class="cont"></span></a>
+                                    </div>
+                                </li>
+                                <li>
+                                    <p class="sidebarSettingTitle">Header color</p>
+                                </li>
+                                <li class="theme-option">
+                                    <div class="theme-color header-theme">
+                                        <a href="#" data-theme="header-white"><span class="head"></span><span
+                                                class="cont"></span></a>
+                                        <a href="#" data-theme="header-dark"><span class="head"></span><span
+                                                class="cont"></span></a>
+                                        <a href="#" data-theme="header-blue"><span class="head"></span><span
+                                                class="cont"></span></a>
+                                        <a href="#" data-theme="header-indigo"><span class="head"></span><span
+                                                class="cont"></span></a>
+                                        <a href="#" data-theme="header-cyan"><span class="head"></span><span
+                                                class="cont"></span></a>
+                                        <a href="#" data-theme="header-green"><span class="head"></span><span
+                                                class="cont"></span></a>
+                                        <a href="#" data-theme="header-red"><span class="head"></span><span
+                                                class="cont"></span></a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+            <!-- end color quick setting -->
+            <div class="col-md-12 col-sm-12">
+                <div class="card card-box">
+                    <div class="card-head">
+                    </div>
+                    <div class="card-body" id="bar-parent">
+                        <!-- MESSAGE CONTAINER START -->
+                        <div>
+                            <% if(message !='' ) { %>
+                                <div id="myDivSuccess" class="alert alert-dismissible fade show mb-0"
+                                    style="background-color: rgb(183, 237, 183); border: none; color: rgb(2, 120, 2);"
+                                    role="alert">
+                                    <%= message %>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                            aria-label="Close" onclick="hideDivSuccess()"></button>
+                                </div>
+                                <script>
+                                    function hideDivSuccess() {
+                                        var div = document.getElementById('myDivSuccess');
+                                        div.style.display = 'none';
+                                    }
+                                </script>
+                                <% } else if(error !='' ){ %>
+                                    <div id="myDiv" class="alert alert-dismissible fade show mb-0"
+                                        style="background-color: rgb(237 183 183); border: none; color: rgb(120 2 2);"
+                                        role="alert">
+                                        <%= error %>
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                                aria-label="Close" onclick="hideDiv()"></button>
+                                    </div>
+                                    <script>
+                                        function hideDiv() {
+                                            var div = document.getElementById('myDiv');
+                                            div.style.display = 'none';
+                                        }
+                                    </script>
+                                    <% } %>
+                        </div>
+                        <!-- MESSAGE CONTAINER END -->
+                        <form action="/admin/promotion/update/<%= data.id %>" method="post" id="form_sample_1" class="form-horizontal">
+                            <div class="form-body">
+                                <div class="form-group row">
+                                    <label class="control-label col-md-3">
+                                        <%= __('Promotion Message') %>
+                                        <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-5">
+                                        <textarea name="message" class="form-control" rows="3" placeholder="<%= __('Enter Promotional Message...') %>"><%= data.message %></textarea>
+                                    </div>
+                                </div>
+                                <!-- <div class="form-group row">
+                                    <label class="control-label col-md-3">
+                                        <%= __('Age') %>
+                                        <span class="required"> * </span>
+                                    </label>
+                                    <div class="col-md-5">
+                                        <select class="form-control input-height" id="inputID" name="age" required>
+                                            <option selected disabled value="">
+                                                <%= __('Select') %>
+                                            </option>
+                                            <option value="Above 18" <%= data.age === 'Above 18' ? 'selected' : '' %>>
+                                                <%= __('Above 18') %>
+                                            </option>
+                                            <option value="Below 18" <%= data.age === 'Below 18' ? 'selected' : '' %>>
+                                                <%= __('Below 18') %>
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div> -->
+                                <!-- <div class="form-group row">
+                                    <label class="control-label col-md-3">
+                                        <%= __('Age') %>
+                                        <span class="required"> * </span>
+                                    </label>
+                                    <div class="col-md-5">
+                                        <form class="form-inline">
+                                            <div class="radio mr-3">
+                                                <input id="radiobg1" name="radio2" type="radio" checked="checked">
+                                                <label for="radiobg1">Above 18</label>
+                                            </div>
+                                            <div class="radio">
+                                                <input id="radiobg2" name="radio2" type="radio" checked="checked">
+                                                <label for="radiobg2">Below 18</label>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div> -->
+
+                                <!-- <div class="form-group row">
+                                    <label class="control-label col-md-3">
+                                        <%= __('Age') %>
+                                            <span class="required"> * </span>
+                                    </label>
+                                    <div class="col-md-5">
+                                        <input type="number" name="age" data-required="1"
+                                            placeholder="<%= __('Enter Age') %>" required
+                                            class="form-control input-height" />
+                                    </div>
+                                </div> -->
+                                <div class="form-group row">
+                                    <label class="control-label col-md-3">
+                                        <%= __('Promotion Start Date') %>
+                                            <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-5">
+                                        <div id="dateIcon3" class="input-append date">
+                                            <div class="input-group datePicker">
+                                                <input class="formDatePicker form-control" type="date" value="<%= data.start_date %>"
+                                                    placeholder="<%= __('Select Promotion Start Date') %>" required
+                                                    name="start_date" data-input>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="control-label col-md-3">
+                                        <%= __('Status') %>
+                                            <span class="required"> * </span>
+                                    </label>
+                                    <div class="col-md-5">
+                                        <select class="form-control input-height" name="is_refundable" required>
+                                          <option selected="selected" value="">Select</option>
+                                          <option value="Active" <%= data.status === 'Active' ? 'selected' : '' %>>Active</option>
+                                          <option value="Inactive" <%= data.status === 'Inactive' ? 'selected' : '' %>>Inactive</option>
+                                        </select>
+                                      </div>
+                                   
+                                </div>       
+                                <!-- <div class="form-group row">
+                                    <label class="control-label col-md-3">
+                                        <%= __('Valid till End Date') %>
+                                            <span class="required"> * </span>
+                                    </label>
+                                    <div class="col-md-5">
+                                        <div id="dateIcon3" class="input-append date">
+                                            <div class="input-group datePicker">
+                                                <input class="formDatePicker form-control" type="date" 
+                                                placeholder="<%= __('Valid From End Date') %>" required 
+                                                    name="end_date" data-input>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> -->
+
+
+                                <div class="form-actions">
+                                    <div class="col-lg-12 p-t-20 text-center">
+                                        <button type="submit"
+                                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 m-r-20 btn-circle btn-primary">
+                                            <%= __('Submit') %>
+                                        </button>
+                                        <a href="/Cashier/list">
+                                            <button type="button"
+                                                class="reset mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 btn-circle btn-danger">
+                                                <%= __('Cancel') %>
+                                            </button>
+                                        </a>
+                                    </div>
+                                </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function ($) {
+        'use strict';
+        $(function () {
+            $(".reset").click(function () {
+                $(this).closest('form').find("input[type=text], textarea").val("");
+                $(this).closest('form').find("input[type=number], textarea").val("");
+                $(this).closest('form').find("input[type=file], textarea").val("");
+            });
+        });
+    })(jQuery);
+</script>
