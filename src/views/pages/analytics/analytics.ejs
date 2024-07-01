@@ -1,0 +1,448 @@
+<div class="page-content-wrapper">
+  <div class="page-content">
+    <div class="page-bar">
+      <div class="page-title-breadcrumb">
+        <div class="pull-left">
+          <div class="page-title"><%= __('Create Cashier') %></div>
+        </div>
+        <ol class="breadcrumb page-breadcrumb pull-right">
+          <li>
+            <i class="fa fa-home"></i>&nbsp;<a
+              class="parent-item"
+              href="/admin/dashboard"
+            >
+              <%= __('Home') %> </a
+            >&nbsp;<i class="fa fa-angle-right"></i>
+          </li>
+
+          <li>
+            <a class="parent-item" href="#"> <%= __('All Analytics') %> </a
+            >&nbsp;<i class="fa fa-angle-right"></i>
+          </li>
+        </ol>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="tabbable-line">
+          <div class="tab-content">
+            <div class="tab-pane active fontawesome-demo" id="tab1">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="card">
+                    <div class="card-body">
+                      <div>
+                        <% if (message != '') { %>
+                        <div
+                          id="myDivSuccess"
+                          class="alert alert-dismissible fade show mb-0"
+                          style="
+                            background-color: rgb(183, 237, 183);
+                            border: none;
+                            color: rgb(2, 120, 2);
+                          "
+                          role="alert"
+                        >
+                          <%= message %>
+                          <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="alert"
+                            aria-label="Close"
+                            onclick="hideDivSuccess()"
+                          ></button>
+                        </div>
+                        <script>
+                          function hideDivSuccess() {
+                            var div = document.getElementById("myDivSuccess");
+                            div.style.display = "none";
+                          }
+                        </script>
+                        <% } else if (error != '') { %>
+                        <div
+                          id="myDiv"
+                          class="alert alert-dismissible fade show mb-0"
+                          style="
+                            background-color: rgb(237, 183, 183);
+                            border: none;
+                            color: rgb(120, 2, 2);
+                          "
+                          role="alert"
+                        >
+                          <%= error %>
+                          <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="alert"
+                            aria-label="Close"
+                            onclick="hideDiv()"
+                          ></button>
+                        </div>
+                        <script>
+                          function hideDiv() {
+                            var div = document.getElementById("myDiv");
+                            div.style.display = "none";
+                          }
+                        </script>
+                        <% } %>
+                      </div>
+
+                      <!-- Tab navigation -->
+                      <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                          <button
+                            class="nav-link active"
+                            id="top-spenders-tab"
+                            data-bs-toggle="tab"
+                            data-bs-target="#top-spenders"
+                            type="button"
+                            role="tab"
+                            aria-controls="top-spenders"
+                            aria-selected="true"
+                          >
+                            Top Spenders
+                          </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                          <button
+                            class="nav-link"
+                            id="most-frequent-buyers-tab"
+                            data-bs-toggle="tab"
+                            data-bs-target="#most-frequent-buyers"
+                            type="button"
+                            role="tab"
+                            aria-controls="most-frequent-buyers"
+                            aria-selected="false"
+                          >
+                            Most Frequent Buyers
+                          </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                          <button
+                            class="nav-link"
+                            id="least-frequent-buyers-tab"
+                            data-bs-toggle="tab"
+                            data-bs-target="#least-frequent-buyers"
+                            type="button"
+                            role="tab"
+                            aria-controls="least-frequent-buyers"
+                            aria-selected="false"
+                          >
+                            Least Frequent Buyers
+                          </button>
+                        </li>
+                      </ul>
+
+                      <!-- Tab content -->
+                      <div class="tab-content mt-3" id="myTabContent">
+                        <!-- Top Spenders tab -->
+                        <div
+                          class="tab-pane fade show active"
+                          id="top-spenders"
+                          role="tabpanel"
+                          aria-labelledby="top-spenders-tab"
+                        >
+                          <table
+                            class="table table-striped table-responsive table-bordered table-hover custom-table table-sm"
+                            id="topSpendersTable"
+                          >
+                            <thead>
+                              <tr>
+                                <th class="text-center"><%= __('S. No.') %></th>
+                                <th class="text-center"><%= __('Name') %></th>
+                                <th class="text-center">
+                                  <%= __('Contact Number') %>
+                                </th>
+                                <th class="text-center">
+                                  <%= __('Total Transaction Amount') %>
+                                </th>
+                                <th class="text-center">
+                                  <%= __('Number of Activity') %>
+                                </th>
+                                <th class="text-center">
+                                  <%= __('Number of Transaction') %>
+                                </th>
+                                <th class="text-center"><%= __('TIER') %></th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <% if (topSpenders.length > 0) { %> <%
+                              topSpenders.forEach((spender, index) => { %>
+                              <tr>
+                                <td class="text-center"><%= index + 1  %></td>
+                                <td class="text-center"><%= spender.name || '___' %></td>
+                                <td class="text-center">
+                                  <%= spender.contact_number || '___' %>
+                                </td>
+                                <td class="text-center">
+                                  <%= spender.total_spent %>
+                                </td>
+                                <td class="text-center">
+                                  <%= spender.visit_count %>
+                                </td>
+                                <td class="text-center">
+                                  <%= spender.transaction_count %>
+                                </td>
+                                <td
+                                  class="text-center"
+                                  style="<%= spender.tier.toLowerCase() === 'bronze' ? 'background-color: #cd7f32; color: white;' : spender.tier.toLowerCase() === 'silver' ? 'background-color: #c0c0c0; color: black;' : 'background-color: #ffd700; color: black;' %>"
+                                >
+                                  <%= spender.tier %>
+                                </td>
+                              </tr>
+                              <% }) %> <% } else { %>
+                              <tr>
+                                <td colspan="6" class="text-center">
+                                  <%= __('No data found') %>
+                                </td>
+                              </tr>
+                              <% } %>
+                            </tbody>
+                          </table>
+                        </div>
+
+                        <!-- Most Frequent Buyers tab -->
+                        <div
+                          class="tab-pane fade"
+                          id="most-frequent-buyers"
+                          role="tabpanel"
+                          aria-labelledby="most-frequent-buyers-tab"
+                        >
+                          <table
+                            class="table table-striped table-responsive table-bordered table-hover custom-table table-sm"
+                            id="mostFrequentBuyersTable"
+                          >
+                            <thead>
+                              <tr>
+                                <th class="text-center"><%= __('S. No.') %></th>
+                                <th class="text-center"><%= __('Name') %></th>
+                                <th class="text-center">
+                                  <%= __('Contact Number') %>
+                                </th>
+                                <th class="text-center">
+                                  <%= __('Total Transaction Amount') %>
+                                </th>
+                                <th class="text-center">
+                                  <%= __('Number of Activity') %>
+                                </th>
+                                <th class="text-center">
+                                  <%= __('Number of Transaction') %>
+                                </th>
+                                <th class="text-center"><%= __('TIER') %></th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <% if (mostFrequentBuyers.length > 0) { %> <%
+                              mostFrequentBuyers.forEach((buyer, index) => { %>
+                              <tr>
+                                <td class="text-center"><%= index + 1 %></td>
+                                <td class="text-center">
+                                  <%= buyer.name || '___' %>
+                                </td>
+                                <td class="text-center">
+                                  <%= buyer.contact_number|| '___' %>
+                                </td>
+                                <td class="text-center">
+                                  <%= buyer.total_spent %>
+                                </td>
+                                <td class="text-center">
+                                  <%= buyer.visit_count %>
+                                </td>
+                                <td class="text-center">
+                                  <%= buyer.transaction_count %>
+                                </td>
+                                <td
+                                  class="text-center"
+                                  style="<%= buyer.tier.toLowerCase() === 'bronze' ? 'background-color: #cd7f32; color: white;' : buyer.tier.toLowerCase() === 'silver' ? 'background-color: #c0c0c0; color: black;' : 'background-color: #ffd700; color: black;' %>"
+                                >
+                                  <%= buyer.tier %>
+                                </td>
+                              </tr>
+                              <% }) %> <% } else { %>
+                              <tr>
+                                <td colspan="6" class="text-center">
+                                  <%= __('No data found') %>
+                                </td>
+                              </tr>
+                              <% } %>
+                            </tbody>
+                          </table>
+                        </div>
+
+                        <!-- Least Frequent Buyers tab -->
+                        <div
+                          class="tab-pane fade"
+                          id="least-frequent-buyers"
+                          role="tabpanel"
+                          aria-labelledby="least-frequent-buyers-tab"
+                        >
+                          <table
+                            class="table table-striped table-responsive table-bordered table-hover custom-table table-sm"
+                            id="leastFrequentBuyersTable"
+                          >
+                            <thead>
+                              <tr>
+                                <th class="text-center"><%= __('S. No.') %></th>
+                                <th class="text-center"><%= __('Name') %></th>
+                                <th class="text-center">
+                                  <%= __('Contact Number') %>
+                                </th>
+                                <th class="text-center">
+                                  <%= __('Total Transaction Amount') %>
+                                </th>
+                                <th class="text-center">
+                                  <%= __('Number of Activity') %>
+                                </th>
+                                <th class="text-center">
+                                  <%= __('Number of Transaction') %>
+                                </th>
+                                <th class="text-center"><%= __('TIER') %></th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <% if (leastFrequentBuyers.length > 0) { %> <%
+                              leastFrequentBuyers.forEach((buyer, index) => { %>
+                              <tr>
+                                <td class="text-center"><%= index + 1 %></td>
+                                <td class="text-center">
+                                  <%= buyer.name || '___' %>
+                                </td>
+                                <td class="text-center">
+                                  <%= buyer.contact_number || '___' %>
+                                </td>
+                                <td class="text-center">
+                                  <%= buyer.total_spent %>
+                                </td>
+                                <td class="text-center">
+                                  <%= buyer.visit_count %>
+                                </td>
+                                <td class="text-center">
+                                  <%= buyer.transaction_count %>
+                                </td>
+                                <td
+                                  class="text-center"
+                                  style="<%= buyer.tier.toLowerCase() === 'bronze' ? 'background-color: #cd7f32; color: white;' : buyer.tier.toLowerCase() === 'silver' ? 'background-color: #c0c0c0; color: black;' : 'background-color: #ffd700; color: black;' %>"
+                                >
+                                  <%= buyer.tier %>
+                                </td>
+                              </tr>
+                              <% }) %> <% } else { %>
+                              <tr>
+                                <td colspan="6" class="text-center">
+                                  <%= __('No data found') %>
+                                </td>
+                              </tr>
+                              <% } %>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <script>
+                  document.addEventListener("DOMContentLoaded", function () {
+                    // Initialize Bootstrap tabs
+                    var myTab = new bootstrap.Tab(
+                      document.getElementById("myTab")
+                    );
+
+                    // Handle tab click event to reload corresponding data
+                    document
+                      .querySelectorAll(".nav-link")
+                      .forEach(function (tab) {
+                        tab.addEventListener("click", function (event) {
+                          event.preventDefault();
+                          var target =
+                            event.target.getAttribute("data-bs-target");
+                          myTab.show();
+                          fetchData(target);
+                        });
+                      });
+
+                    // Function to fetch data for each tab
+                    function fetchData(target) {
+                      var url;
+                      switch (target) {
+                        case "#top-spenders":
+                          url = "/admin/analytics";
+                          break;
+                        case "#most-frequent-buyers":
+                          url = "/admin/analytics";
+                          break;
+                        case "#least-frequent-buyers":
+                          url = "/admin/analytics";
+                          break;
+                        default:
+                          return;
+                      }
+
+                      fetch(url)
+                        .then((response) => response.json())
+                        .then((data) => {
+                          if (target === "#top-spenders") {
+                            populateTable("topSpendersTable", data.items);
+                          } else if (target === "#most-frequent-buyers") {
+                            populateTable(
+                              "mostFrequentBuyersTable",
+                              data.items
+                            );
+                          } else if (target === "#least-frequent-buyers") {
+                            populateTable(
+                              "leastFrequentBuyersTable",
+                              data.items
+                            );
+                          }
+                        })
+                        .catch((error) =>
+                          console.error("Error fetching data:", error)
+                        );
+                    }
+
+                    // Function to populate table with data
+                    function populateTable(tableId, items) {
+                      var tableBody = document
+                        .getElementById(tableId)
+                        .getElementsByTagName("tbody")[0];
+                      tableBody.innerHTML = "";
+
+                      if (items.length > 0) {
+                        items.forEach(function (item, index) {
+                          var row = tableBody.insertRow();
+                          var serialNumberCell = row.insertCell(0);
+                          var nameCell = row.insertCell(1);
+                          var contactNumberCell = row.insertCell(2);
+                          var totalTransactionAmountCell = row.insertCell(3);
+                          var numberOfTransactionsCell = row.insertCell(4);
+                          var biggestTransactionAmountCell = row.insertCell(5);
+
+                          serialNumberCell.textContent = index + 1;
+                          nameCell.textContent = item.name;
+                          contactNumberCell.textContent = item.contact_number;
+                          totalTransactionAmountCell.textContent =
+                            item.total_transaction_amount;
+                          numberOfTransactionsCell.textContent =
+                            item.number_of_transactions;
+                          biggestTransactionAmountCell.textContent =
+                            item.biggest_transaction_amount;
+                        });
+                      } else {
+                        var row = tableBody.insertRow();
+                        var noDataCell = row.insertCell();
+                        noDataCell.textContent = "No data found";
+                        noDataCell.colSpan = 6;
+                        noDataCell.className = "text-center";
+                      }
+                    }
+                  });
+                </script>
+              </div>
+              <div class="tab-pane" id="tab2"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

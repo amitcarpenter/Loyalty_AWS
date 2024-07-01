@@ -11,6 +11,8 @@ const moment = require("moment");
 const { Op } = require("sequelize");
 const { currentDate } = require("../utils/currentdate.gmt6");
 const momentTimezone = require("moment-timezone");
+
+
 module.exports = async (req, res, next) => {
   try {
     let token = helper.getcookieAdmin(req);
@@ -28,7 +30,7 @@ module.exports = async (req, res, next) => {
           const adminSubscription = await Admin_Subscription.findOne({
             order: [["id", "DESC"]],
             where: {
-              admin_id: decodedToken.id,
+              admin_id: decodedToken.id,  
               plan_period_end: {
                 [Op.gte]: currentDate,
               },
