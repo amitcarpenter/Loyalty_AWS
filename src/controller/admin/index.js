@@ -9,5 +9,7 @@ module.exports = {
     PromotionController: require('./promotion.controller'),
     CustomerController: require('./customer.controller'),
     SettingController: require('./setting.controller'),
-    SmsCampaignController: require('./smsCampaign.controller')
+    SmsCampaignController: require('./smsCampaign.controller'),
+    OffersController: require('./offers.controller'),
+    GPTController: require('./gpt.controller')
 }

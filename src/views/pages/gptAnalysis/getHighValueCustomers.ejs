@@ -1,0 +1,92 @@
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+    .chart-container {
+        position: relative;
+        width: 80%;
+        height: 80%;
+        max-width: 1200px;
+        max-height: 800px;
+
+
+    }
+</style>
+
+<div class="page-content-wrapper">
+    <div class="page-content">
+        <div class="page-bar">
+            <div class="page-title-breadcrumb">
+                <div class="pull-left">
+                    <div class="page-title">
+                        <%= __('High Value Customers Analysis') %>
+                    </div>
+                </div>
+                <ol class="breadcrumb page-breadcrumb pull-right">
+                    <li><i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="/admin/dashboard">
+                            <%= __('Home') %>
+                        </a>&nbsp;<i class="fa fa-angle-right"></i>
+                    </li>
+                    <li><a class="parent-item" href="#">
+                            <%= __('High Value Customers') %>
+                        </a>&nbsp;<i class="fa fa-angle-right"></i>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-md-12">
+          
+
+                    <div class="card mt-3">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <canvas id="totalAmountChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const labels = <%- JSON.stringify(items.map(item => item.name || 'Unknown')) %>;
+        const amounts = <%- JSON.stringify(items.map(item => item.total_amount_spent)) %>;
+
+        const ctx = document.getElementById('totalAmountChart').getContext('2d');
+        const myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Total Amount Spent',
+                    data: amounts,
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(54, 162, 235, 0.8)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Total Amount Spent ($)'
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>

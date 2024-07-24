@@ -1,0 +1,81 @@
+    <!-- admin/smsCampaign/insights.ejs -->
+
+<div class="page-content-wrapper">
+    <div class="page-content">
+      <div class="page-bar">
+        <div class="page-title-breadcrumb">
+          <div class="pull-left">
+            <div class="page-title">Customer Insights</div>
+          </div>
+          <ol class="breadcrumb page-breadcrumb pull-right">
+            <li>
+              <i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="/admin/dashboard">
+                <%= __('Home') %>
+              </a>&nbsp;<i class="fa fa-angle-right"></i>
+            </li>
+            <li><a class="parent-item" href="#">Customer Insights</a></li>
+          </ol>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-hover table-bordered">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Last Visit</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% items.forEach((customer, index) => { %>
+                      <tr>
+                        <td><%= (currentPage - 1) * limit + index + 1 %></td>
+                        <td><%= customer.name %></td>
+                        <td><%= customer.email %></td>
+                        <td><%= customer.Customer_Visits.length > 0 ? new Date(customer.Customer_Visits[0].createdAt).toLocaleDateString() : '-' %></td>
+                        <td>
+                          <a href="/admin/customer/details/<%= customer.id %>" class="btn btn-info btn-sm">View Details</a>
+                        </td>
+                      </tr>
+                    <% }); %>
+                  </tbody>
+                </table>
+              </div>
+              <% if (totalPages > 1) { %>
+                <nav aria-label="Page navigation">
+                  <ul class="pagination justify-content-end">
+                    <% if (currentPage > 1) { %>
+                      <li class="page-item">
+                        <a class="page-link" href="?page=<%= currentPage - 2 %>&limit=<%= limit %>&search_text=<%= search_text %>">Previous</a>
+                      </li>
+                    <% } %>
+                    <% for (let i = 0; i < totalPages; i++) { %>
+                      <li class="page-item <%= currentPage - 1 === i ? 'active' : '' %>">
+                        <a class="page-link" href="?page=<%= i %>&limit=<%= limit %>&search_text=<%= search_text %>"><%= i + 1 %></a>
+                      </li>
+                    <% } %>
+                    <% if (currentPage < totalPages) { %>
+                      <li class="page-item">
+                        <a class="page-link" href="?page=<%= currentPage %>&limit=<%= limit %>&search_text=<%= search_text %>">Next</a>
+                      </li>
+                    <% } %>
+                  </ul>
+                </nav>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // Optional JavaScript
+  </script>
+  

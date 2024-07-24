@@ -4,11 +4,13 @@
         <div id="remove-scroll" class="left-sidemenu">
             <ul class="sidemenu page-header-fixed slimscroll-style" data-keep-expanded="false" data-auto-scroll="true"
                 data-slide-speed="200" style="padding-top: 20px">
+
                 <li class="nav-item <%= (active === 1) ? " active" : "" %>">
                     <a href="/admin/dashboard" class="nav-link nav-toggle"><i data-feather="airplay"></i>
                         <span class="title">Dashboard</span>
                     </a>
                 </li>
+
                 <li class="nav-item <%= (active === 2 || active === 3) ? " active" : "" %>">
                     <a href="#" class="nav-link nav-toggle"><i data-feather="user"></i>
                         <span class="title">
@@ -34,26 +36,94 @@
                     </ul>
                 </li>
 
-                <li class="nav-item <%= (active === 13 ) ? " active" : "" %>">
-                    <a href="#" class="nav-link nav-toggle"> <i data-feather="bar-chart-2"></i></i>
+                <li class="nav-item <%= (active === 201 || active === 202) ? " active" : "" %>">
+                    <a href="#" class="nav-link nav-toggle"><i data-feather="activity"></i>
+                        <span class="title">
+                            <%= __('Graph Analysis') %>
+                        </span>
+                        <span class="arrow"></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item <%= (active === 201) ? " active" : "" %>">
+                            <a href="/admin/purchase-frequency" class="nav-link ">
+                                <span class="title mx-4">
+                                    <%= __('Purchase Frequency') %>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item <%= (active === 202) ? " active" : "" %>">
+                            <a href="/admin/average-transaction-amount" class="nav-link ">
+                                <span class="title mx-4">
+                                    <%= __('Average Transaction') %>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item <%= (active === 203) ? " active" : "" %>">
+                            <a href="/admin/loyalty-points" class="nav-link ">
+                                <span class="title mx-4">
+                                    <%= __('Loyalty Points ') %>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item <%= (active === 204) ? " active" : "" %>">
+                            <a href="/admin/visit-trends" class="nav-link ">
+                                <span class="title mx-4">
+                                    <%= __(' Visit Trends') %>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item <%= (active === 205) ? " active" : "" %>">
+                            <a href="/admin/customer-retention" class="nav-link ">
+                                <span class="title mx-4">
+                                    <%= __('Customer Retention') %>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item <%= (active === 206) ? " active" : "" %>">
+                            <a href="/admin/high-value-customers" class="nav-link ">
+                                <span class="title mx-4">
+                                    <%= __('High Value Customers') %>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item <%= (active === 207) ? " active" : "" %>">
+                            <a href="/admin/low-value-customers" class="nav-link ">
+                                <span class="title mx-4">
+                                    <%= __('Low Value Customers') %>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item <%= (active === 20 || (active === 21)) ? " active" : "" %>">
+                    <a href="#" class="nav-link nav-toggle"> <i data-feather="bar-chart-2"></i>
                         <span class="title">
                             <%= __('Analytics & Reporting') %>
                         </span>
                         <span class="arrow"></span>
                     </a>
                     <ul class="sub-menu">
-
-                        <li class="nav-item <%= (active === 13) ? " active" : "" %>">
+                        <li class="nav-item <%= (active === 20) ? " active" : "" %>">
                             <a href="/admin/analytics" class="nav-link ">
                                 <span class="title mx-4">
                                     <%= __('All Reporting') %>
                                 </span>
                             </a>
                         </li>
+                        <li class="nav-item <%= (active === 21)   ? " active" : "" %>">
+                            <a href="/admin/analytics-tier" class="nav-link ">
+                                <span class="title mx-4">
+                                    <%= __('Change Tier') %>
+                                </span>
+                            </a>
+                        </li>
                     </ul>
                 </li>
-                <li class="nav-item <%= (active === 14 ) ? " active" : "" %>">
-                    <a href="#" class="nav-link nav-toggle"> <i data-feather="bar-chart-2"></i></i>
+
+
+                <li class="nav-item <%= (active === 30 ) ? " active" : "" %>">
+                    <a href="#" class="nav-link nav-toggle"> <i data-feather="message-circle"></i>
                         <span class="title">
                             <%= __('SMS Campaign') %>
                         </span>
@@ -61,15 +131,38 @@
                     </a>
                     <ul class="sub-menu">
 
-                        <li class="nav-item <%= (active === 14) ? " active" : "" %>">
+                        <li class="nav-item <%= (active === 30) ? " active" : "" %>">
                             <a href="/admin/campaign-analytics" class="nav-link ">
                                 <span class="title mx-4">
                                     <%= __('All Reporting') %>
                                 </span>
                             </a>
                         </li>
+
+                        <li class="nav-item <%= (active === 31) ? " active" : "" %>">
+                            <a href="/admin/campaign-overview" class="nav-link ">
+                                <span class="title mx-4">
+                                    <%= __('Campaign Overview') %>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item <%= (active === 32) ? " active" : "" %>">
+                            <a href="/admin/campaign-create" class="nav-link ">
+                                <span class="title mx-4">
+                                    <%= __('Create Campaign ') %>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item <%= (active === 33) ? " active" : "" %>">
+                            <a href="/admin/smsCampaign/insights" class="nav-link ">
+                                <span class="title mx-4">
+                                    <%= __(' Insights') %>
+                                </span>
+                            </a>
+                        </li>
                     </ul>
                 </li>
+
                 <li class="nav-item <%= (active === 4 || active === 5 || active === 15) ? " active" : "" %>">
                     <a href="#" class="nav-link nav-toggle">
                         <i data-feather="award"></i>
@@ -114,6 +207,8 @@
                                 </li>
                     </ul>
                 </li>
+
+
                 <li class="nav-item <%= (active === 6 || active === 7) ? " active" : "" %>">
                     <a href="#" class="nav-link nav-toggle">
                         <i data-feather="star"></i>
@@ -140,6 +235,8 @@
                         </li>
                     </ul>
                 </li>
+
+
                 <li class="nav-item <%= (active === 8 || active === 9) ? " active" : "" %>">
                     <a href="#" class="nav-link nav-toggle"><i data-feather="tag"></i>
                         <span class="title">
@@ -164,14 +261,89 @@
                         </li>
                     </ul>
                 </li>
+
+                <li class="nav-item <%= (active === 40 || active === 41) ? " active" : "" %>">
+                    <a href="#" class="nav-link nav-toggle"><i data-feather="gift"></i>
+                        <span class="title">
+                            <%= __('Offers') %>
+                        </span>
+                        <span class="arrow"></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item <%= (active === 40) ? " active" : "" %>">
+                            <a href="/admin/offers/create" class="nav-link ">
+                                <span class="title mx-4">
+                                    <%= __('Create Offers') %>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item <%= (active === 41) ? " active" : "" %>">
+                            <a href="/admin/offers/list" class="nav-link ">
+                                <span class="title mx-4">
+                                    <%= __('All Offers') %>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item <%= (active === 101 || active === 102) ? " active" : "" %>">
+                    <a href="#" class="nav-link nav-toggle"><i data-feather="key"></i>
+                        <span class="title">
+                            <%= __('GPT Analysis') %>
+                        </span>
+                        <span class="arrow"></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item <%= (active === 101) ? " active" : "" %>">
+                            <a href="/admin/generateWeeklySuggestions" class="nav-link ">
+                                <span class="title mx-4">
+                                    <%= __('Weekly Analysis') %>
+                                </span>
+                            </a>
+                        </li>
+                        <!-- <li class="nav-item <%= (active === 102) ? " active" : "" %>">
+                            <a href="/admin/trendReports" class="nav-link ">
+                                <span class="title mx-4">
+                                    <%= __('TrendReports') %>
+                                </span>
+                            </a>
+                        </li> -->
+                        <li class="nav-item <%= (active === 103) ? " active" : "" %>">
+                            <a href="/admin/smsManagement/generate" class="nav-link ">
+                                <span class="title mx-4">
+                                    <%= __('Personalized SMS ') %>
+                                </span>
+                            </a>
+                        </li>
+                        <!-- <li class="nav-item <%= (active === 104) ? " active" : "" %>">
+                            <a href="/admin/sms/campaign-overview" class="nav-link ">
+                                <span class="title mx-4">
+                                    <%= __(' SMS Overview') %>
+                                </span>
+                            </a>
+                        </li> -->
+                        <li class="nav-item <%= (active === 105) ? " active" : "" %>">
+                            <a href="/admin/gpt/setting" class="nav-link ">
+                                <span class="title mx-4">
+                                    <%= __('GPT Setting') %>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
                 <li class="nav-item <%= (active === 10) ? " active" : "" %>">
                     <a href="/admin/customer/list" class="nav-link nav-toggle">
                         <i data-feather="users"></i>
                         <span class="title">
-                            <%= __('Customers Info') %>
+                            <%= __(' Customers Info') %>
                         </span>
                     </a>
                 </li>
+
+
                 <li class="nav-item <%= (active === 11) ? " active" : "" %>">
                     <a href="/admin/available/subscription/list" class="nav-link nav-toggle"><i
                             data-feather="bookmark"></i>
@@ -180,11 +352,15 @@
                         </span>
                     </a>
                 </li>
+
+
                 <!-- <li class="nav-item">
                     <a href="/admin/MySubscription" class="nav-link nav-toggle"><i data-feather="bookmark"></i>
                         <span class="title"><%= __('My Subscription') %></span>
                     </a>
                 </li> -->
+
+
                 <li class="nav-item <%= (active === 12) ? " active" : "" %>">
                     <a href="/admin/setting" class="nav-link nav-toggle"><i data-feather="settings"></i>
                         <span class="title">
@@ -192,6 +368,8 @@
                         </span>
                     </a>
                 </li>
+
+
                 <li class="nav-item">
                     <a href="/admin/log-out" class="nav-link nav-toggle"><i data-feather="log-out"></i>
                         <span class="title">
@@ -199,6 +377,7 @@
                         </span>
                     </a>
                 </li>
+
             </ul>
         </div>
     </div>

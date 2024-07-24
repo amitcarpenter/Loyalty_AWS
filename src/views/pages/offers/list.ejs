@@ -1,0 +1,155 @@
+<div class="page-content-wrapper">
+    <div class="page-content">
+        <div class="page-bar">
+            <div class="page-title-breadcrumb">
+                <div class="pull-left">
+                    <div class="page-title">
+                        <%= __('All Offers Information') %>
+                    </div>
+                </div>
+                <ol class="breadcrumb page-breadcrumb pull-right">
+                    <li>
+                        <i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="/admin/dashboard">
+                            <%= __('Home') %>
+                        </a>&nbsp;<i class="fa fa-angle-right"></i>
+                    </li>
+                    <li>
+                        <a class="parent-item" href="#">
+                            <%= __('Offers Info') %>
+                        </a>&nbsp;<i class="fa fa-angle-right"></i>
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-4 col-md-3 col-12">
+                <div class="info-box bg-orange">
+                    <span class="info-box-icon push-bottom">
+                        <i class="material-icons">campaign</i>
+                    </span>
+                    <div class="info-box-content">
+                        <span class="info-box-text fw-bold mt-1">
+                            <%= __('Total Offers') %>
+                        </span>
+                        <a href="#" class="text-decoration-none text-white">
+                            <span class="progress-description mt-2 mb-2">
+                                <%= totalItems %>
+                                    <%= __('Total Offers') %>
+                            </span>
+                        </a>
+                        <span class="progress-description fs-4 mb-3"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tabbable-line">
+                    <div class="tab-content">
+                        <div class="tab-pane active fontawesome-demo" id="tab1">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="d-flex bd-highlight mb-3">
+                                                <div class="p-2 bd-highlight"><a type="button"
+                                                        class="btn btn-round btn-primary" href="/admin/offers/create">
+                                                        <%= __('Add Offer') %>
+                                                    </a></div>
+                                            </div>
+                                            <div class="d-flex bd-highlight mb-3"></div>
+                                            <div class="d-flex justify-content-between"></div>
+
+                                            <table
+                                                class="table table-striped table-responsive table-bordered table-hover custom-table table-sm"
+                                                id="example4">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center">
+                                                            <%= __('S. No.') %>
+                                                        </th>
+                                                        <th class="text-center">
+                                                            <%= __('Offer Title') %>
+                                                        </th>
+                                                        <th class="text-center">
+                                                            <%= __('Discount') %>
+                                                        </th>
+                                                        <th class="text-center">
+                                                            <%= __('Start Date') %>
+                                                        </th>
+                                                        <th class="text-center">
+                                                            <%= __('End Date') %>
+                                                        </th>
+                                                        <th class="text-center">
+                                                            <%= __('Countdown') %>
+                                                        </th>
+                                                        <th class="text-center">
+                                                            <%= __('Actions') %>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% if (items && items.length> 0) { %>
+                                                        <% items.forEach((offer, index)=> { %>
+                                                            <tr>
+                                                                <td class="text-center">
+                                                                    <%= index + 1 + ((currentPage - 1) * limit) %>
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    <%= offer.title %>
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    <%= offer.discount_percentage %> %
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    <%= new Date(offer.start_date).toLocaleDateString()
+                                                                        %>
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    <%= new Date(offer.end_date).toLocaleDateString() %>
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    <% const now=new Date(); const endDate=new
+                                                                        Date(offer.end_date); const
+                                                                        timeDiff=endDate.getTime() - now.getTime();
+                                                                        const daysLeft=Math.ceil(timeDiff / (1000 * 3600
+                                                                        * 24)); if (daysLeft> 0) {
+                                                                        %>
+                                                                        <%= daysLeft %>
+                                                                            <%= daysLeft===1 ? 'day' : 'days' %>
+                                                                                <% } else { %>
+                                                                                    Offer expired
+                                                                                    <% } %>
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    <a href="/admin/offers/details/<%= offer.id %>"
+                                                                        class="btn btn-round btn-primary">
+                                                                        <%= __('View Details') %>
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                            <% }) %>
+                                                                <% } else { %>
+                                                                    <tr>
+                                                                        <td valign="top" colspan="7"
+                                                                            class="dataTables_empty"
+                                                                            style="width: 200%">
+                                                                            <%= __('No data found') %>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <% } %>
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="tab2"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

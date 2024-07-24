@@ -1,0 +1,126 @@
+<div class="page-content-wrapper">
+    <div class="page-content">
+        <div class="page-bar">
+            <div class="page-title-breadcrumb">
+                <div class="pull-left">
+                    <div class="page-title">
+                        <%= __('Analysis Results') %>
+                    </div>
+                </div>
+                <ol class="breadcrumb page-breadcrumb pull-right">
+                    <li>
+                        <i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="/admin/dashboard">
+                            <%= __('Home') %>
+                        </a>&nbsp;<i class="fa fa-angle-right"></i>
+                    </li>
+                    <li>
+                        <a class="parent-item" href="#">
+                            <%= __('Analysis') %>
+                        </a>&nbsp;<i class="fa fa-angle-right"></i>
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-4 col-md-3 col-12">
+                <div class="info-box bg-orange">
+                    <span class="info-box-icon push-bottom">
+                        <i class="material-icons">insights</i>
+                    </span>
+                    <div class="info-box-content">
+                        <span class="info-box-text fw-bold mt-1">
+                            <%= __('Total Analysis Results') %>
+                        </span>
+                        <a href="#" class="text-decoration-none text-white">
+                            <span class="progress-description mt-2 mb-2">
+                                <%= analysisResult.top_spenders.length %>
+                                <%= __('Results Found') %>
+                            </span>
+                        </a>
+                        <span class="progress-description fs-4 mb-3"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tabbable-line">
+                    <div class="tab-content">
+                        <div class="tab-pane active fontawesome-demo" id="tab1">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="d-flex bd-highlight mb-3">
+                                                <div class="p-2 bd-highlight"><a type="button"
+                                                        class="btn btn-round btn-primary" href="/admin/analysis/start">
+                                                        <%= __('Start New Analysis') %>
+                                                    </a></div>
+                                            </div>
+                                            <div class="d-flex bd-highlight mb-3"></div>
+                                            <div class="d-flex justify-content-between"></div>
+
+                                            <h4><%= __('Top Spenders') %></h4>
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th><%= __('Customer ID') %></th>
+                                                        <th><%= __('Total Spent') %></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% analysisResult.top_spenders.forEach(spender => { %>
+                                                        <tr>
+                                                            <td><%= spender.customer_id %></td>
+                                                            <td><%= spender.total_spent %></td>
+                                                        </tr>
+                                                    <% }) %>
+                                                </tbody>
+                                            </table>
+
+                                            <h4><%= __('Frequent Buyers') %></h4>
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th><%= __('Customer ID') %></th>
+                                                        <th><%= __('Visit Count') %></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% analysisResult.frequent_buyers.forEach(buyer => { %>
+                                                        <tr>
+                                                            <td><%= buyer.customer_id %></td>
+                                                            <td><%= buyer.visit_count %></td>
+                                                        </tr>
+                                                    <% }) %>
+                                                </tbody>
+                                            </table>
+
+                                            <h4><%= __('Loyalty Points Summary') %></h4>
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th><%= __('Total Points Earned') %></th>
+                                                        <th><%= __('Total Points Redeemed') %></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><%= analysisResult.loyalty_points_summary.total_points_earned %></td>
+                                                        <td><%= analysisResult.loyalty_points_summary.total_points_redeemed %></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="tab2"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

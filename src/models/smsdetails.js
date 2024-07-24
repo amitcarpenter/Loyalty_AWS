@@ -33,18 +33,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.ENUM,
       values: StatusEnum,
       allowNull: false,
-    },
-      send_date: {
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
-        allowNull: false,
-      },
-      created_at: {
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
-        allowNull: false,
-      },
-  
+    }  
   }, {
     timestamps: false,
     sequelize,

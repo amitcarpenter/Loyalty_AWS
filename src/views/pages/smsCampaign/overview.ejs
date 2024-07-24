@@ -1,0 +1,189 @@
+<div class="page-content-wrapper">
+  <div class="page-content">
+    <div class="page-bar">
+      <div class="page-title-breadcrumb">
+        <div class="pull-left">
+          <div class="page-title">
+            <%= __('All Campaigns Information') %>
+          </div>
+        </div>
+        <ol class="breadcrumb page-breadcrumb pull-right">
+          <li>
+            <i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="/admin/dashboard">
+              <%= __('Home') %>
+            </a>&nbsp;<i class="fa fa-angle-right"></i>
+          </li>
+          <li>
+            <a class="parent-item" href="#">
+              <%= __('Campaigns Info') %>
+            </a>&nbsp;<i class="fa fa-angle-right"></i>
+          </li>
+        </ol>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-4 col-md-3 col-12">
+        <div class="info-box bg-orange">
+          <span class="info-box-icon push-bottom">
+            <i class="material-icons">campaign</i>
+          </span>
+          <div class="info-box-content">
+            <span class="info-box-text fw-bold mt-1">
+              <%= __('Total Campaigns') %>
+            </span>
+            <a href="#" class="text-decoration-none text-white">
+              <span class="progress-description mt-2 mb-2">
+                <%= totalItems %>
+                  <%= __('Total Campaigns') %>
+              </span>
+            </a>
+            <span class="progress-description fs-4 mb-3"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="tabbable-line">
+          <div class="tab-content">
+            <div class="tab-pane active fontawesome-demo" id="tab1">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="d-flex bd-highlight mb-3">
+                        <div class="p-2 bd-highlight"><a type="button" class="btn btn-round btn-primary"
+                            href="/admin/campaign-create">
+                            <%= __('Add Campaign') %>
+                          </a></div>
+                      </div>
+                      <div class="d-flex bd-highlight mb-3"></div>
+                      <div class="d-flex justify-content-between"></div>
+                      <table
+                        class="table table-striped table-responsive table-bordered table-hover custom-table table-sm"
+                        id="example4">
+                        <thead>
+                          <tr>
+                            <th class="text-center">
+                              <%= __('S. No.') %>
+                            </th>
+                            <th class="text-center">
+                              <%= __('Campaign Name') %>
+                            </th>
+                            <th class="text-center">
+                              <%= __('Target Audience') %>
+                            </th>
+                            <th class="text-center">
+                              <%= __('Message Content') %>
+                            </th>
+                            <th class="text-center">
+                              <%= __('Start Date') %>
+                            </th>
+                            <th class="text-center">
+                              <%= __('End Date') %>
+                            </th>
+                            <th class="text-center">
+                              <%= __('Status') %>
+                            </th>
+                            <th class="text-center">
+                              <%= __('Actions') %>
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <% if (items && items.length> 0) { %>
+                            <% items.forEach((campaign, index)=> { %>
+                              <tr>
+                                <td class="text-center">
+                                  <%= index + 1 + ((currentPage - 1) * limit) %>
+                                </td>
+                                <td class="text-center">
+                                  <%= campaign.name %>
+                                </td>
+                                <td class="text-center">
+                                  <%= campaign.target_audience %>
+                                </td>
+                                <td class="text-center">
+                                  <% let maxLength=50; // Set the maximum length here let
+                                    messageContent=campaign.message_content || '___' ; if (messageContent.length>
+                                    maxLength) {
+                                    messageContent = messageContent.substring(0, maxLength) + '...';
+                                    }
+                                    %>
+                                    <%= messageContent %>
+                                </td>
+                                <td class="text-center">
+                                  <%= new Date(campaign.start_date).toLocaleDateString() %>
+                                </td>
+                                <td class="text-center">
+                                  <%= new Date(campaign.end_date).toLocaleDateString() %>
+                                </td>
+                                <td class="text-center">
+                                  <%= campaign.status %>
+                                </td>
+                                <td class="text-center">
+                                  <a href="/admin/campaign-details/<%= campaign.id %>"
+                                    class="btn btn-round btn-primary">
+                                    <%= __('View Details') %>
+                                  </a>
+                                </td>
+                              </tr>
+                              <% }) %>
+                                <% } else { %>
+                                  <tr>
+                                    <td valign="top" colspan="8" class="dataTables_empty" style="width: 200%">
+                                      <%= __('No data found') %>
+                                    </td>
+                                  </tr>
+                                  <% } %>
+                        </tbody>
+                      </table>
+                      <!-- <nav aria-label="Page navigation example">
+                        <% if (totalPages > 0) { %>
+                        <ul class="pagination text-center">
+                          <% if (currentPage == 1) { %>
+                          <li class="disabled"><a> <%= __('First') %> </a></li>
+                          <% } else { %>
+                          <li>
+                            <a href="/admin/smsCampaign/overview?page=1&limit=<%= limit %>&search_text=<%= search_text %>">
+                              <%= __('First') %>
+                            </a>
+                          </li>
+                          <% } %> <% var i = (Number(currentPage) > 5 ? Number(currentPage) - 4 : 1) %>
+                          <% if (i !== 1) { %>
+                          <li class="disabled"><a>...</a></li>
+                          <% } %> <% for (; i <= (Number(currentPage) + 4) && i <= totalPages; i++) { %>
+                          <% if (i == currentPage) { %>
+                          <li class="active"><a> <%= i %> </a></li>
+                          <% } else { %>
+                          <li>
+                            <a href="/admin/smsCampaign/overview?page=<%= i %>&limit=<%= limit %>&search_text=<%= search_text %>">
+                              <%= i %>
+                            </a>
+                          </li>
+                          <% } %> <% if (i == Number(currentPage) + 4 && i < totalPages) { %>
+                          <li class="disabled"><a>...</a></li>
+                          <% } %> <% } %> <% if (currentPage == totalPages) { %>
+                          <li class="disabled"><a> <%= __('Last') %> </a></li>
+                          <% } else { %>
+                          <li>
+                            <a href="/admin/smsCampaign/overview?page=<%= totalPages %>&limit=<%= limit %>&search_text=<%= search_text %>">
+                              <%= __('Last') %>
+                            </a>
+                          </li>
+                          <% } %>
+                        </ul>
+                        <% } %>
+                      </nav> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane" id="tab2"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

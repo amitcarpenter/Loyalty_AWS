@@ -122,9 +122,70 @@ router.post('/webhook', controller.SubscriptionController.subscriptionWebhook);
 
 //================================ 7771874281 Analysis ==================================
 router.get('/analytics', checkAuth, subscriptionCheck, controller.CustomerController.getCustomersBySpending);
+router.get('/analytics-tier', checkAuth, subscriptionCheck, controller.CustomerController.showTierCustomizePage);
+router.post('/tiersystem/update', checkAuth, subscriptionCheck, controller.CustomerController.updateTierSystem);
 
 
-//================================ 7771874281 sms CamPaign ==================================
+//================================ 7771874281 sms Campaign ==================================
 router.get('/campaign-analytics', checkAuth, subscriptionCheck, controller.SmsCampaignController.getCampaignAnalytics)
+router.get('/getMonthlyData', checkAuth, subscriptionCheck, controller.SmsCampaignController.getCampaignAnalytics)
+router.get('/campaign-overview', checkAuth, subscriptionCheck, controller.SmsCampaignController.getCampaignOverview)
+router.get('/campaign-create', checkAuth, subscriptionCheck, controller.SmsCampaignController.getCreateNewCampaign)
+router.post('/campaign-create', checkAuth, subscriptionCheck, controller.SmsCampaignController.postCreateNewCampaign)
+router.get('/campaign-details/:id', checkAuth, subscriptionCheck, controller.SmsCampaignController.getCampaignDetails)
+router.get('/smsCampaign/edit/:id', checkAuth, subscriptionCheck, controller.SmsCampaignController.getEditCampaign)
+router.post('/smsCampaign/update/:id', checkAuth, subscriptionCheck, controller.SmsCampaignController.updateCampaign)
+router.get('/smsCampaign/delete/:id', checkAuth, subscriptionCheck, controller.SmsCampaignController.deleteCampaign)
+router.get('/smsCampaign/insights', checkAuth, subscriptionCheck, controller.SmsCampaignController.updateCampaign)
+router.post('/smsCampaignSend/create', controller.SmsCampaignController.createSmsSend)
+
+
+//================================ 7771874281 Offers ==================================
+router.get('/offers/create', checkAuth, subscriptionCheck, controller.OffersController.getCreateLimitedTimeOffer)
+router.post('/offers/create', checkAuth, subscriptionCheck, controller.OffersController.postCreateLimitedTimeOffer)
+router.get('/offers/list', checkAuth, subscriptionCheck, controller.OffersController.getAllOffers)
+router.get('/offers/details/:id', checkAuth, subscriptionCheck, controller.OffersController.getOfferDetails)
+router.get('/offers/delete/:id', checkAuth, subscriptionCheck, controller.OffersController.deleteOffer)
+router.get('/offers/edit/:id', checkAuth, subscriptionCheck, controller.OffersController.getEditOffer)
+router.post('/offers/update/:id', checkAuth, subscriptionCheck, controller.OffersController.updateOffer)
+router.post('/singleUseOffers/create', controller.OffersController.createSingleUseOffer)
+
+
+// ============================== GPT Controller =================================
+// Data Analysis
+router.get('/dataAnalysis/start', checkAuth, subscriptionCheck, controller.GPTController.startAnalysis);
+
+// Trend Reports
+router.get('/trendReports', checkAuth, subscriptionCheck, controller.GPTController.getTrendReports);
+router.get('/generateTrendAnalysis', checkAuth, subscriptionCheck, controller.GPTController.generateTrendAnalysis);
+router.get('/generateWeeklySuggestions', checkAuth, subscriptionCheck, controller.GPTController.generateWeeklySuggestions);
+router.get('/trendReports/details/:id', checkAuth, subscriptionCheck, controller.GPTController.getTrendReportDetails);
+router.get('/trendReports/delete/:id', checkAuth, subscriptionCheck, controller.GPTController.deleteTrendReport)
+
+// SMS Management
+router.get('/smsManagement/generate', checkAuth, subscriptionCheck, controller.GPTController.generateSMS);
+router.get('/smsManagement/generate/chatgpt', checkAuth, subscriptionCheck, controller.GPTController.generate_sms_by_chatgpt);
+
+// Campaign Management
+router.get('/sms/campaign-overview', checkAuth, subscriptionCheck, controller.GPTController.getCampaignOverview);
+router.get('/campaign/create', checkAuth, subscriptionCheck, controller.GPTController.getCreateNewCampaign);
+router.post('/campaign/create', checkAuth, subscriptionCheck, controller.GPTController.postCreateNewCampaign);
+router.get('/campaign/:id', checkAuth, subscriptionCheck, controller.GPTController.getCampaignDetails);
+
+router.get('/gpt/setting', checkAuth, subscriptionCheck, controller.GPTController.getSettings);
+router.post('/gpt/setting', checkAuth, subscriptionCheck, controller.GPTController.postSettings);
+
+
+// ========================== Analysis Graphs for this ========================================
+router.get('/purchase-frequency', checkAuth, subscriptionCheck, controller.GPTController.getPurchaseFrequency);
+router.get('/average-transaction-amount', checkAuth, subscriptionCheck, controller.GPTController.getAverageTransactionAmount);
+router.get('/loyalty-points', checkAuth, subscriptionCheck, controller.GPTController.getLoyaltyPoints);
+router.get('/visit-trends', checkAuth, subscriptionCheck, controller.GPTController.getVisitTrends);
+router.get('/customer-retention', checkAuth, subscriptionCheck, controller.GPTController.getCustomerRetention);
+router.get('/high-value-customers', checkAuth, subscriptionCheck, controller.GPTController.getHighValueCustomers);
+router.get('/low-value-customers', checkAuth, subscriptionCheck, controller.GPTController.getLowValueCustomers);
+
+
+
 
 module.exports = router;

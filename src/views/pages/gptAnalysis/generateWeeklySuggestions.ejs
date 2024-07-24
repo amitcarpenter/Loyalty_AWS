@@ -1,0 +1,46 @@
+<div class="page-content-wrapper">
+    <div class="page-content">
+        <div class="page-bar">
+            <div class="page-title-breadcrumb">
+                <div class="pull-left">
+                    <div class="page-title">
+                        <%= __('Weekly Business Tips') %>
+                    </div>
+                </div>
+                <ol class="breadcrumb page-breadcrumb pull-right">
+                    <li>
+                        <i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="/admin/dashboard">
+                            <%= __('Home') %>
+                        </a>&nbsp;<i class="fa fa-angle-right"></i>
+                    </li>
+                    <li>
+                        <a class="parent-item" href="#">
+                            <%= __('Business Insights') %>
+                        </a>&nbsp;<i class="fa fa-angle-right"></i>
+                    </li>
+                    <li>
+                        <%= __('Weekly Business Tips') %>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">
+                            <%= __('Actionable Tips for Business Growth') %>
+                        </h4>
+                        <p>
+                            Based on the customer visit data from the last week, here are some actionable tips for improving customer engagement and increasing sales:
+                        </p>
+                        <ul>
+                            <%- suggestions.replace(/\n/g, '<br> <hr>') %>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

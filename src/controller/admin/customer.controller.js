@@ -7,6 +7,7 @@ const {
   Customer_Visit,
   Customer,
   sequelize,
+  TierSystem
 } = require("../../models");
 const { Op } = require("sequelize");
 const bcrypt = require("bcrypt");
@@ -16,6 +17,9 @@ const Joi = require("joi");
 const { Sequelize, QueryTypes } = require("sequelize");
 const { ACTIVE, BLOCKED } = require("../../utils/constants");
 const { currentDate } = require("../../utils/currentdate.gmt6");
+const Response = require("../../utils/response");
+
+
 
 exports.getCustomer = async (req, res, next) => {
   try {
@@ -425,138 +429,173 @@ exports.updateCustomer = async (req, res, next) => {
   }
 };
 
-//===================================  7771874281 ==============================================
-
-
-const determineTier = (totalSpent, transactionCount) => {
-  if (totalSpent > 500 || transactionCount > 5) {
-    return 'Gold';
-  } else if (totalSpent > 300 || transactionCount > 3) {
-    return 'Silver';
-  } else {
+//===================================  7771874281 Ananlytics ==============================================
+const determineTier = async (totalSpent, organizationId) => {
+  try {
+    // Fetch tier thresholds from the database
+    const tierSystem = await TierSystem.findOne({
+      where: { organization_id: organizationId }
+    });
+    if (!tierSystem.dataValues) {
+      console.error('No tier system found for this organization');
+      return 'Bronze';
+    }
+    if (totalSpent > tierSystem.dataValues.Gold) {
+      return 'Gold';
+    } else if (totalSpent > tierSystem.dataValues.Silver) {
+      return 'Silver';
+    } else {
+      return 'Bronze';
+    }
+  } catch (error) {
+    console.error('Error determining tier:', error);
     return 'Bronze';
   }
 };
 
-
 const getMostFrequentBuyers = async (adminOrganizationID, dateRange, topN = 100) => {
-  const startDate = new Date();
-  startDate.setDate(startDate.getDate() - dateRange);
+  try {
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - dateRange);
 
-  // Fetching customer visits and aggregating data
-  const customerVisits = await Customer_Visit.findAll({
-    where: {
-      organization_id: adminOrganizationID,
-      visit_date: {
-        [Op.gte]: startDate,
+    // Fetching customer visits and aggregating data
+    const customerVisits = await Customer_Visit.findAll({
+      where: {
+        organization_id: adminOrganizationID,
+        visit_date: {
+          [Op.gte]: startDate,
+        },
       },
-    },
-    attributes: [
-      "customer_id",
-      [sequelize.fn("COUNT", sequelize.col("id")), "visit_count"],
-      [sequelize.fn("SUM", sequelize.col("transaction_amount")), "total_spent"],
-      [
-        sequelize.fn("COUNT", sequelize.literal('CASE WHEN transaction_amount IS NOT NULL THEN 1 END')),
-        "transaction_count"
+      attributes: [
+        "customer_id",
+        [sequelize.fn("COUNT", sequelize.col("id")), "visit_count"],
+        [sequelize.fn("SUM", sequelize.col("transaction_amount")), "total_spent"],
+        [
+          sequelize.fn("COUNT", sequelize.literal('CASE WHEN transaction_amount IS NOT NULL THEN 1 END')),
+          "transaction_count"
+        ],
       ],
-    ],
-    group: ["customer_id"],
-    order: [[sequelize.fn("COUNT", sequelize.literal('CASE WHEN transaction_amount IS NOT NULL THEN 1 END')), "DESC"]], 
-    raw: true,
-  });
+      group: ["customer_id"],
+      order: [[sequelize.fn("COUNT", sequelize.literal('CASE WHEN transaction_amount IS NOT NULL THEN 1 END')), "DESC"]],
+      raw: true,
+    });
 
-  // Fetching customer details
-  const customerFields = ["id", "name", "contact_number"];
-  const customers = await Customer.findAll({
-    where: { organization_id: adminOrganizationID },
-    attributes: customerFields,
-    raw: true,
-  });
+    // Fetching customer details
+    const customerFields = ["id", "name", "contact_number"];
+    const customers = await Customer.findAll({
+      where: { organization_id: adminOrganizationID },
+      attributes: customerFields,
+      raw: true,
+    });
 
-  const customerMap = new Map();
-  customers.forEach((customer) => customerMap.set(customer.id, customer));
+    const customerMap = new Map();
+    customers.forEach((customer) => customerMap.set(customer.id, customer));
 
-  // Mapping customer visits to customer details and adding tiers
-  const frequentBuyers = customerVisits.map((visit) => {
-    const customer = customerMap.get(visit.customer_id);
+    // Mapping customer visits to customer details and adding tiers
+    const frequentBuyersPromises = customerVisits.map(async (visit) => {
+      const customer = customerMap.get(visit.customer_id);
+      if (!customer) {
+        console.warn(`Customer with ID ${visit.customer_id} not found`);
+        return null;
+      }
 
-    const tier = determineTier(
-      visit.total_spent ? parseFloat(visit.total_spent) : 0,
-      visit.transaction_count ? parseInt(visit.transaction_count, 10) : 0
-    );
+      const totalSpent = visit.total_spent ? parseFloat(visit.total_spent) : 0;
+      const transactionCount = visit.transaction_count ? parseInt(visit.transaction_count, 10) : 0;
 
-    return {
-      ...customer,
-      total_spent: visit.total_spent ? parseFloat(visit.total_spent) : 0,
-      transaction_count: visit.transaction_count ? parseInt(visit.transaction_count, 10) : 0,
-      visit_count: visit.visit_count ? parseInt(visit.visit_count, 10) : 0,
-      tier,
-    };
-  });
+      const tier = await determineTier(totalSpent, adminOrganizationID);
 
-  return frequentBuyers;
-};
+      return {
+        ...customer,
+        total_spent: totalSpent,
+        transaction_count: transactionCount,
+        visit_count: visit.visit_count ? parseInt(visit.visit_count, 10) : 0,
+        tier,
+      };
+    });
 
+    const frequentBuyers = await Promise.all(frequentBuyersPromises);
+
+    // Filter out any null values (from customers not found) and limit to topN
+    return frequentBuyers.filter(buyer => buyer !== null).slice(0, topN);
+
+  } catch (error) {
+    console.error('Error in getMostFrequentBuyers:', error);
+    throw error;  // Re-throw the error for the caller to handle
+  }
+}
 
 const getLeastFrequentBuyers = async (adminOrganizationID, dateRange) => {
-  const startDate = new Date();
-  startDate.setDate(startDate.getDate() - dateRange);
+  try {
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - dateRange);
 
-  const customerVisits = await Customer_Visit.findAll({
-    where: {
-      organization_id: adminOrganizationID,
-      visit_date: {
-        [Op.gte]: startDate,
+    const customerVisits = await Customer_Visit.findAll({
+      where: {
+        organization_id: adminOrganizationID,
+        visit_date: {
+          [Op.gte]: startDate,
+        },
       },
-    },
-    attributes: [
-      "customer_id",
-      [sequelize.fn("COUNT", sequelize.col("id")), "visit_count"],
-      [sequelize.fn("SUM", sequelize.col("transaction_amount")), "total_spent"],
-      [
-        sequelize.fn("COUNT", sequelize.literal('CASE WHEN transaction_amount IS NOT NULL THEN 1 END')),
-        "transaction_count"
+      attributes: [
+        "customer_id",
+        [sequelize.fn("COUNT", sequelize.col("id")), "visit_count"],
+        [sequelize.fn("SUM", sequelize.col("transaction_amount")), "total_spent"],
+        [
+          sequelize.fn("COUNT", sequelize.literal('CASE WHEN transaction_amount IS NOT NULL THEN 1 END')),
+          "transaction_count"
+        ],
       ],
-    ],
-    group: ["customer_id"],
-    order: [[sequelize.fn("COUNT", sequelize.literal('CASE WHEN transaction_amount IS NOT NULL THEN 1 END')), "ASC"]], 
-    raw: true,
-  });
+      group: ["customer_id"],
+      order: [[sequelize.fn("COUNT", sequelize.literal('CASE WHEN transaction_amount IS NOT NULL THEN 1 END')), "ASC"]],
+      raw: true,
+    });
 
-  const customerFields = ["id", "name", "contact_number"]; // Select specific fields
-  const customers = await Customer.findAll({
-    where: { organization_id: adminOrganizationID },
-    attributes: customerFields,
-    raw: true,
-  });
+    const customerFields = ["id", "name", "contact_number"];
+    const customers = await Customer.findAll({
+      where: { organization_id: adminOrganizationID },
+      attributes: customerFields,
+      raw: true,
+    });
 
-  const customerMap = new Map();
-  customers.forEach((customer) => customerMap.set(customer.id, customer));
+    const customerMap = new Map();
+    customers.forEach((customer) => customerMap.set(customer.id, customer));
 
-  const leastFrequentBuyers = customerVisits.map((visit) => {
-    const customer = customerMap.get(visit.customer_id);
+    const leastFrequentBuyersPromises = customerVisits.map(async (visit) => {
+      const customer = customerMap.get(visit.customer_id);
+      if (!customer) {
+        console.warn(`Customer with ID ${visit.customer_id} not found`);
+        return null;
+      }
 
+      const totalSpent = visit.total_spent ? parseFloat(visit.total_spent) : 0;
+      const transactionCount = visit.transaction_count ? parseInt(visit.transaction_count, 10) : 0;
 
-    const tier = determineTier(
-      visit.total_spent ? parseFloat(visit.total_spent) : 0,
-      visit.transaction_count ? parseInt(visit.transaction_count, 10) : 0
-    );
-    return {
-      ...customer,
-      total_spent: visit.total_spent ? parseFloat(visit.total_spent) : 0,
-      transaction_count: visit.transaction_count ? parseInt(visit.transaction_count, 10) : 0,
-      visit_count: visit.visit_count ? parseInt(visit.visit_count, 10) : 0,
-      tier,
-    };
-  });
+      const tier = await determineTier(totalSpent, adminOrganizationID);
 
-  // Sort least frequent buyers by visit_count in ascending order
-  const sortedLeastFrequentBuyers = leastFrequentBuyers.sort((a, b) => a.visit_count - b.visit_count);
+      return {
+        ...customer,
+        total_spent: totalSpent,
+        transaction_count: transactionCount,
+        visit_count: visit.visit_count ? parseInt(visit.visit_count, 10) : 0,
+        tier,
+      };
+    });
 
-  return sortedLeastFrequentBuyers;
+    const leastFrequentBuyers = await Promise.all(leastFrequentBuyersPromises);
+
+    // Filter out null values and sort by visit_count
+    const sortedLeastFrequentBuyers = leastFrequentBuyers
+      .filter(buyer => buyer !== null)
+      .sort((a, b) => a.visit_count - b.visit_count);
+
+    return sortedLeastFrequentBuyers;
+
+  } catch (error) {
+    console.error('Error in getLeastFrequentBuyers:', error);
+    throw error;  // Re-throw the error for the caller to handle
+  }
 };
 
-// All in one Ananlisys Function
 exports.getCustomersBySpending = async (req, res) => {
   try {
     const admin = req.admin;
@@ -575,13 +614,12 @@ exports.getCustomersBySpending = async (req, res) => {
     const adminOrganizationID = admin.Organizations[0].id;
     const superAdmin = admin.is_superadmin;
 
-    // Fetch total spending, transaction count, and biggest transaction amount for each customer
+    // Get customer spending data
     const customerSpendings = await Customer_Visit.findAll({
       where: { organization_id: adminOrganizationID },
       attributes: [
         "customer_id",
         [sequelize.fn("SUM", sequelize.col("transaction_amount")), "total_spent"],
-        // [sequelize.fn("COUNT", sequelize.col("id")), "transaction_count"],
         [
           sequelize.fn("COUNT", sequelize.literal('CASE WHEN transaction_amount IS NOT NULL THEN 1 END')),
           "transaction_count"
@@ -593,45 +631,51 @@ exports.getCustomersBySpending = async (req, res) => {
       raw: true,
     });
 
-    // Fetch most frequent buyers
+    // Get most and least frequent buyers
     const mostFrequentBuyers = await getMostFrequentBuyers(adminOrganizationID, date_range);
-
-    
-    // Fetch least frequent buyers
     const leastFrequentBuyers = await getLeastFrequentBuyers(adminOrganizationID, date_range);
-    
-    // return res.json(leastFrequentBuyers)
-    // Fetch customer details (ensure you only fetch necessary fields)
-    const customerFields = ["id", "name", "contact_number"]; // Select specific fields
+
+    // Get customer details
+    const customerFields = ["id", "name", "contact_number"];
     const customers = await Customer.findAll({
       where: { organization_id: adminOrganizationID },
       attributes: customerFields,
       raw: true,
     });
 
-    // Combine spending data with customer details (potential performance optimization)
-    const customerMap = new Map(); // Consider using a Map for faster lookups
+    const customerMap = new Map();
     customers.forEach((customer) => customerMap.set(customer.id, customer));
 
-    const customersWithSpending = customerSpendings.map((spending) => {
+    // Combine spending data with customer details
+    const customersWithSpendingPromises = customerSpendings.map(async (spending) => {
       const customer = customerMap.get(spending.customer_id);
 
-      const tier = determineTier(
-        spending.total_spent ? parseFloat(spending.total_spent) : 0,
-        spending.transaction_count ? parseInt(spending.transaction_count, 10) : 0
-      );
+      if (!customer) {
+        console.warn(`Customer with ID ${spending.customer_id} not found`);
+        return null;
+      }
+
+      const totalSpent = spending.total_spent ? parseFloat(spending.total_spent) : 0;
+      const transactionCount = spending.transaction_count ? parseInt(spending.transaction_count, 10) : 0;
+
+      const tier = await determineTier(totalSpent, adminOrganizationID);
+
       return {
         ...customer,
-        total_spent: spending.total_spent ? parseFloat(spending.total_spent) : 0,
-        transaction_count: spending.transaction_count ? parseInt(spending.transaction_count, 10) : 0,
+        total_spent: totalSpent,
+        transaction_count: transactionCount,
         biggest_transaction_amount: spending.biggest_transaction_amount ? parseFloat(spending.biggest_transaction_amount) : 0,
         visit_count: spending.visit_count ? parseInt(spending.visit_count, 10) : 0,
-        tier
+        tier,
       };
     });
 
-    // Sort customers by total_spent in descending order (get only the top spender)
-    const topSpenders = customersWithSpending.sort((a, b) => b.total_spent - a.total_spent);
+    const customersWithSpending = await Promise.all(customersWithSpendingPromises);
+
+    // Filter out null values and sort customers by total_spent in descending order
+    const topSpenders = customersWithSpending
+      .filter(customer => customer !== null)
+      .sort((a, b) => b.total_spent - a.total_spent);
 
     // Render the data to an EJS template
     return res.render("admin/analytics/analytics.ejs", {
@@ -647,8 +691,8 @@ exports.getCustomersBySpending = async (req, res) => {
       adminThemeColor,
       adminBusinessName,
       superAdmin,
-      active: 13,
       date_range,
+      active: 20,
     });
   } catch (error) {
     console.log("Error:", error);
@@ -658,4 +702,86 @@ exports.getCustomersBySpending = async (req, res) => {
     });
   }
 };
+
+// +=================================================7771874281 Tier Handle =============================================================
+exports.updateTierSystem = async (req, res) => {
+  try {
+    const schema = Joi.object({
+      Gold: Joi.number().integer().required(),
+      Silver: Joi.number().integer().required(),
+      Bronze: Joi.number().integer().required(),
+      organization_id: Joi.number().integer().required()
+    });
+
+    const { error, value } = schema.validate(req.body);
+
+    if (error) {
+      return Response.validationErrorResponseData(
+        res,
+        res.__(`${error.details[0].message}`)
+      );
+    }
+
+    const [record, created] = await TierSystem.findOrCreate({
+      where: { organization_id: value.organization_id },
+      defaults: value
+    });
+
+    if (!created) {
+      await record.update(value);
+    }
+
+    const responseMessage = created ? 'Tier system created successfully' : 'Tier system updated successfully';
+
+    return Response.successResponseData(
+      res,
+      record,
+      res.locals.__(responseMessage),
+    );
+
+  } catch (error) {
+    console.log('Error:', error);
+    return Response.errorResponseWithoutData(
+      res,
+      res.__('Something went wrong'),
+      500
+    );
+  }
+};
+
+exports.showTierCustomizePage = async (req, res, next) => {
+  try {
+    const { error, message, formValue } = req.query;
+
+    let admin = req.admin;
+    let adminOrganizationID = admin.Organizations[0].id;
+    const existingRecord = await TierSystem.findOne({
+      where: {
+        organization_id: adminOrganizationID
+      }
+    });
+
+    // Additional details from admin
+    let adminThemeColor = admin.Organizations[0].theme_color;
+    let adminBusinessName = admin.Organizations[0].business_name;
+    let superAdmin = admin.is_superadmin;
+
+    return res.render('admin/analytics/tier.ejs', {
+      title: existingRecord ? 'Update Tier System' : 'Create Tier System',
+      tierSystem: existingRecord || { Gold: '', Silver: '', Bronze: '', organization_id: adminOrganizationID },
+      error,
+      message,
+      formValue,
+      adminThemeColor,
+      adminBusinessName,
+      superAdmin,
+      active: 21
+    });
+  } catch (error) {
+    console.log('Error:', error);
+    next(error);
+  }
+};
+
+
 
