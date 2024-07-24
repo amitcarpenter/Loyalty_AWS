@@ -16,6 +16,7 @@ router.post('/sendsms', sendSMSJOB)
 router.get('/getsubscription', subscriptionCheckCron)
 router.post('/getsubscription', subscriptionCheckCron)
 // authcontroller
+router.get("/customer-mobile", controller.AuthController.getCustomerMobile);
 router.get("/login", controller.AuthController.getLogin);
 router.post("/login", controller.AuthController.login);
 router.get("/log-out", checkAuth, controller.AuthController.logOut);

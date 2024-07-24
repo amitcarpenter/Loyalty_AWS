@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Login</title>
+    <!-- <link rel="stylesheet" href="styles.css"> -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #e9ecef;
+        }
+
+        .container {
+            display: flex;
+            width: 800px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .left,
+        .right {
+            padding: 20px;
+        }
+
+        .left {
+            background-color: #f8f9fa;
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .welcome h2,
+        .welcome h3 {
+            text-align: center;
+        }
+
+        .logo-placeholder {
+            width: 100px;
+            height: 100px;
+            background-color: #ccc;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .social-media a {
+            margin: 10px;
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        .right {
+            background-color: #003a70;
+            width: 50%;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .right h2 {
+            margin-top: 20px;
+        }
+
+        .phone-number {
+            margin: 20px 0;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 60px);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .keypad button {
+            width: 60px;
+            height: 60px;
+            font-size: 24px;
+            border: none;
+            border-radius: 10px;
+            background-color: #fff;
+            color: #003a70;
+            cursor: pointer;
+        }
+
+        .keypad button.action-btn {
+            background-color: #dc3545;
+            color: #fff;
+        }
+
+        .keypad button#confirm {
+            background-color: #28a745;
+        }
+
+        .agreement {
+            display: flex;
+            align-items: center;
+        }
+
+        .agreement input {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="left">
+            <div class="welcome">
+                <h2>Welcome to</h2>
+                <div class="logo-placeholder">
+                    <p>Business Logo</p>
+                </div>
+                <h3>Business Name</h3>
+            </div>
+            <div class="social-media">
+                <a href="https://www.instagram.com/oyaltyapp" target="_blank">Instagram</a>
+                <a href="https://www.facebook.com/oyaltyapp" target="_blank">Facebook</a>
+            </div>
+        </div>
+        <div class="right">
+            <h2>Arc Rewards</h2>
+            <p>Enter Your Contact Number</p>
+            <div class="phone-number">
+                <p>(123) - 456 - 7890</p>
+            </div>
+            <div class="keypad">
+                <button>1</button>
+                <button>2</button>
+                <button>3</button>
+                <button>4</button>
+                <button>5</button>
+                <button>6</button>
+                <button>7</button>
+                <button>8</button>
+                <button>9</button>
+                <button class="action-btn" id="clear">✗</button>
+                <button>0</button>
+                <button class="action-btn" id="confirm">✓</button>
+            </div>
+            <div class="agreement">
+                <input type="checkbox" id="sms-agreement">
+                <label for="sms-agreement">I agree to receive SMS notifications and promotional offers.</label>
+            </div>
+        </div>
+    </div>
+    <!-- <script src="script.js"></script>/ -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const phoneNumberDisplay = document.querySelector('.phone-number p');
+            const keypadButtons = document.querySelectorAll('.keypad button');
+            const clearButton = document.getElementById('clear');
+            const confirmButton = document.getElementById('confirm');
+
+            let phoneNumber = '';
+
+            keypadButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    if (!button.classList.contains('action-btn')) {
+                        if (phoneNumber.length < 10) {
+                            phoneNumber += button.textContent;
+                            updatePhoneNumberDisplay();
+                        }
+                    }
+                });
+            });
+
+            clearButton.addEventListener('click', () => {
+                phoneNumber = '';
+                updatePhoneNumberDisplay();
+            });
+
+            confirmButton.addEventListener('click', () => {
+                alert(`Phone number ${phoneNumber} confirmed.`);
+            });
+
+            function updatePhoneNumberDisplay() {
+                phoneNumberDisplay.textContent = formatPhoneNumber(phoneNumber);
+            }
+
+            function formatPhoneNumber(number) {
+                if (number.length <= 3) {
+                    return `(${number}`;
+                } else if (number.length <= 6) {
+                    return `(${number.slice(0, 3)}) - ${number.slice(3)}`;
+                } else {
+                    return `(${number.slice(0, 3)}) - ${number.slice(3, 6)} - ${number.slice(6)}`;
+                }
+            }
+        });
+
+    </script>
+
+</body>
+
+</html>

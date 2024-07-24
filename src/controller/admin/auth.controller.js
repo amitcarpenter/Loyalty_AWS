@@ -7,6 +7,14 @@ const crypto = require('crypto');
 const { Op } = require("sequelize");
 const { ACTIVE, BLOCKED, CREDENTIAL,FORGOT_PASSWORD } = require("../../utils/constants");
 
+exports.getCustomerMobile = async (req, res, next) => {
+  try {
+    const { message, error, formValue } = req.query;
+    return res.render("partials/sinch.ejs", { message, error, formValue });
+  } catch (err) {
+    next(err);
+  }
+};
 exports.getLogin = async (req, res, next) => {
   try {
     const { message, error, formValue } = req.query;

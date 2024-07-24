@@ -36,7 +36,7 @@ app.use("/api",apiRoute);
 // app.get('/', (req, res) => {
 //     res.send('Hello, this is a test route!');
 // });
-// app.use(catchRouteError)
-// app.use(catchGlobalError)
+app.use(catchRouteError)
+app.use(catchGlobalError)
 
 module.exports = app;
